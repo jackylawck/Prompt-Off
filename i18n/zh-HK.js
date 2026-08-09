@@ -1,4 +1,4 @@
-// i18n/zh-HK.js - 繁體中文語言包 (Enterprise Plus 25+ Types)
+// i18n/zh-HK.js - 繁體中文語言包
 const LANG_ZH_HK = {
     // === 品牌與標題 ===
     appTitle: '🛡️ 離線淨言 <span>Prompt Offline</span>',
@@ -6,7 +6,7 @@ const LANG_ZH_HK = {
     appSubtitleEn: 'Purify at Hand, Prompt with Peace.',
     
     // === 導航列 ===
-    navSuite: '🌐 <strong>The Offline Suite</strong> <span style="color:#64748b;font-weight:400;">by Jacky Law</span>',
+    navSuite: '🌐 <strong>The Offline Suite</strong>',
     navSafe: '🔒 Safe Offline',
     navPrompt: '🛡️ Prompt Offline',
     navDaily: '📅 Daily Offline',
@@ -20,7 +20,7 @@ const LANG_ZH_HK = {
     toolRestoreBadge: 'De-pseudonymize',
     
     // === 輸入區 ===
-    inputPlaceholder: '貼上敏感文章 / 案情敘述…\n例如：員工王大明 (DOB: 1990-05-20, 信用卡 4111-1111-1111-1111) 於 SAP_CRYPTO 專案中，使用 API sk-live_123 連接資料庫。',
+    inputPlaceholder: '貼上敏感文章 / 案情敘述…\n例如：員工王大明 (DOB: 1990-05-20, 信用卡 4111-1111-1111-1111) 於專案 Project Aurora 中，使用 API token 連接資料庫。',
     inputAIPlaceholder: '貼上第三方 AI 回傳的脫敏版結果…\n例如：[EMPLOYEE_NAME_A] 於 [CONFIDENTIAL_PROJECT_A] 的表現符合預期。',
     
     // === 按鈕 ===
@@ -42,7 +42,7 @@ const LANG_ZH_HK = {
     footerZeroCloud: '🛑 Zero Cloud Transmission',
     footerSessionVolatile: '🧹 Session Volatile',
     footerCompliance: '📄 ISO 42001 · HK PDPO',
-    footerCopyright: '© 2026 Jacky Law',
+    footerCopyright: '© 2026 The Offline Suite',
     
     // === 語言切換 ===
     langZH: '繁體中文',
