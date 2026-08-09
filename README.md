@@ -31,12 +31,13 @@ Prompt-Off/
 * **`engine.js` (引擎層):** 純函式邏輯，處理比對、假名化與還原。零外部依賴、無狀態，保證運算透明可審計。
 * **`rules.js` (知識層):** 獨立抽離所有的 PII 特徵庫。企業可隨時擴充自定義的機密專案代號或內部術語，無需修改核心引擎。
 
-### 🧠 語意保留標籤 (Context-Preserving Tokens)
-棄用會破壞 LLM 推理能力的抽象代號（如 `[Amount_1]`），全面升級為分類標籤（Taxonomy Tokens），包含：
-- **結構化 PII:** `[CORPORATE_EMAIL_1]`, `[HKID_NUMBER_1]`, `[PASSPORT_NO_1]`, `[IP_ADDRESS_1]`, `[MAC_ADDRESS_1]`
-- **財務與商業:** `[SALARY_AMOUNT_1]`, `[EQUITY_SHARES_1]`
-- **組織與地點:** `[EMPLOYEE_NAME_A]`, `[ENTERPRISE_CLIENT_A]`, `[CONFIDENTIAL_PROJECT_A]`
-- **時間與績效:** `[RECORD_DATE_1]`, `[PERFORMANCE_SCORE_1]`
+### 語意保留標籤 (Context-Preserving Tokens) & 25+ 種 PII
+棄用會破壞 LLM 推理能力的抽象代號（如 ⁠[Amount_1]⁠），全面升級為分類標籤（Taxonomy Tokens），包含：
+ 結構化 PII (含行業校驗): ⁠[CORPORATE_EMAIL_1]⁠, ⁠[HKID_NUMBER_1]⁠, ⁠[TW_ID_NUMBER_1]⁠ (含模數校驗), ⁠[CREDIT_CARD_NO_1]⁠ (含 Luhn 演算法校驗), ⁠[PASSPORT_NO_1]⁠, ⁠[SWIFT_BIC_1]⁠, ⁠[IP_ADDRESS_1]⁠, ⁠[MAC_ADDRESS_1]⁠
+ DevOps & 科技資產: ⁠[API_TOKEN_1]⁠, ⁠[DATABASE_DSN_1]⁠, ⁠[SYSTEM_USER_ID_1]⁠
+ 財務、醫療與財產: ⁠[CONFIDENTIAL_AMOUNT_1]⁠, ⁠[EQUITY_SHARES_1]⁠, ⁠[MEDICAL_RECORD_NO_1]⁠, ⁠[VEHICLE_LICENSE_1]⁠, ⁠[PROPERTY_REG_NO_1]⁠
+ 組織與地點: ⁠[EMPLOYEE_NAME_A]⁠ (100 大常見姓氏識別), ⁠[ENTERPRISE_CLIENT_A]⁠, ⁠[CONFIDENTIAL_PROJECT_A]⁠, ⁠[ADDRESS_LOCATION_1]⁠
+ 時間與個資: ⁠[DATE_OF_BIRTH_1]⁠, ⁠[RECORD_DATE_1]⁠, ⁠[PERFORMANCE_SCORE_1]⁠
 
 ---
 
