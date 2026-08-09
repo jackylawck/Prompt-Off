@@ -1,4 +1,3 @@
-針對已解耦、支援多語言（繁中/英文）以及 Enterprise Plus 知識庫 v2.0 的 Prompt Offline (離線淨言)，為你整理出可直接複製並覆蓋到 README.md 的完整專案說明文件：
 # 🛡️ Prompt Offline (離線淨言)
 
 **淨言在手，輸入無憂 | Purify at Hand, Prompt with Peace.**
