@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Author & Credit Code-Level Annotation for SEO (羅子淇 Jacky Law) -->
     <!-- Author: 羅子淇 Jacky Law | Personal Site: https://jackylawck.github.io/jackylawck/ -->
@@ -10,167 +10,409 @@
     <!-- Google Search Console 驗證標籤 -->
     <meta name="google-site-verification" content="JZ5UohX-CcP_fQV0_DI9VadkKY4ZoTTkUifL88-fIcY" />
     
-    <!-- 精準 SEO 設定 (Google 搜尋結果格式優化) -->
-    <title>AI-Align | 香港企業生成式 AI 政策自動生成引擎 (Enterprise AI Policy Engine)</title>
-    <meta name="description" content="專為香港企業設計的開源、雙語生成式 AI 可接受使用政策 (AUP) 自動生成引擎 — 嚴格對齊私隱專員公署 (PCPD) 2024《人工智能：個人資料保障模範框架》與數字政策辦公室 (DPO) 2025《香港生成式人工智能技術及應用指引》。具備動態風險評級、雙軌金鑰資安架構與 72 小時通報機制。Enterprise AI Governance & AUP Generator.">
-    <meta name="keywords" content="AI-Align, PCPD 2024, DPO 2025, 個人資料私隱專員公署, 數字政策辦公室, 個人資料保障模範框架, 生成式人工智能技術及應用指引, AUP Generator, 可接受使用政策, AI Governance, AI管治, ISO 42001, Privacy-by-Design, Zero Data Retention, 羅子淇, Jacky Law">
-    <meta name="author" content="Jacky Law 羅子淇 (https://jackylawck.github.io/jackylawck/)">
+    <!-- 精準中英雙語 SEO 設定 (Google 搜尋結果格式優化) -->
+    <title>🛡️ 離線淨言 · Prompt Offline | AI 提示詞去識別化沙盒 · 淨言在手，輸入無憂</title>
+    <meta name="description" content="淨言在手，輸入無憂。100% 前端離線 · 零雲端傳輸 · AI 提示詞敏感數據脫敏與還原工具，對齊 ISO 42001、AIGP 及 HK PDPO 治理要求。Purify at Hand, Prompt with Peace. 100% Client-Side Local Prompt Sanitizer." />
+    <meta name="keywords" content="Prompt Offline, 離線淨言, AI提示詞脫敏, PII去識別化, AI Governance, AI管治, ISO 42001, AIGP, HK PDPO, 數據私隱, Zero Cloud, Privacy-by-Design, 羅子淇, Jacky Law" />
+    <meta name="author" content="Jacky Law 羅子淇 (https://jackylawck.github.io/jackylawck/)" />
     <link rel="author" href="https://jackylawck.github.io/jackylawck/" />
     <link rel="me" href="https://jackylawck.github.io/jackylawck/" />
 
     <!-- Open Graph 社群與多語言標籤 -->
-    <meta property="og:title" content="AI-Align | 香港企業生成式 AI 政策自動生成引擎 (Enterprise AI Policy Engine)">
-    <meta property="og:description" content="3 分鐘為香港企業生成具備審計防禦力的中英雙語 AI 可接受使用政策 (AUP)。嚴格對齊 PCPD 2024 模範框架與 DPO 2025 技術指引，具備雙軌金鑰資安架構與動態風險診斷。">
-    <meta property="og:url" content="https://jackylawck.github.io/ai-align/">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="zh_HK">
-    <meta property="og:locale:alternate" content="en_US">
-    <link rel="canonical" href="https://ai-align.streamlit.app/" />
+    <meta property="og:title" content="🛡️ 離線淨言 · Prompt Offline | 純本地端 AI 提示詞去識別化沙盒" />
+    <meta property="og:description" content="淨言在手，輸入無憂。100% 前端離線 · 零雲端傳輸 · 支援 25+ 種高敏 PII 脫敏與一鍵還原，符合 ISO 42001 及 HK PDPO 規範。" />
+    <meta property="og:url" content="https://jackylawck.github.io/Prompt-Off/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_HK" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <link rel="canonical" href="https://jackylawck.github.io/Prompt-Off/" />
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            500: '#0284c7',
-                            600: '#0369a1',
-                            900: '#0f172a',
-                        }
-                    }
-                }
-            }
-        }
+    <!-- JSON-LD 結構化數據 (幫助 Google 機器人辨識 Author 關聯，UI 完全隱形) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Prompt Offline (離線淨言)",
+      "url": "https://jackylawck.github.io/Prompt-Off/",
+      "description": "100% Client-Side Local AI Prompt Sanitizer and Pseudonymization Sandbox.",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "All",
+      "author": {
+        "@type": "Person",
+        "name": "羅子淇 (Jacky Law)",
+        "url": "https://jackylawck.github.io/jackylawck/"
+      }
+    }
     </script>
+
+    <link rel="manifest" href="manifest.json" />
+    
+    <!-- 企業級零信任 CSP -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        connect-src 'none';
+        img-src 'self' data:;
+        font-src 'self';
+        frame-ancestors 'none';
+        form-action 'none';
+        base-uri 'self';
+    " />
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft YaHei", sans-serif; background: #0b1120; color: #e8edf5; min-height: 100vh; display: flex; flex-direction: column; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
+        
+        .suite-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 16px 20px; background: rgba(255,255,255,0.04); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 20px; }
+        .suite-brand { font-size: 1.1rem; color: #94a3b8; display:flex; flex-direction: column;}
+        .suite-brand .slogan { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+        
+        .nav-center { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.9rem; }
+        .nav-center a { color: #94a3b8; text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; transition: 0.2s; }
+        .nav-center a:hover, .nav-center a.active { color: #60a5fa; border-bottom-color: #60a5fa; }
+        
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .trust-badge { font-size: 0.7rem; color: #64748b; background: rgba(255,255,255,0.04); padding: 4px 14px; border-radius: 20px; white-space: nowrap; border: 1px solid rgba(255,255,255,0.06); }
+        
+        /* 語言切換器 */
+        .lang-switcher { display: flex; align-items: center; background: #1e293b; border-radius: 20px; padding: 2px; }
+        .lang-btn { background: transparent; border: none; color: #64748b; padding: 4px 12px; font-size: 0.75rem; border-radius: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; }
+        .lang-btn:hover { color: #e8edf5; }
+        .lang-btn.active { background: #3b82f6; color: #fff; }
+
+        .tool-hero { text-align: center; padding: 12px 0 20px; }
+        .tool-hero h1 { font-size: 1.8rem; font-weight: 700; }
+        .tool-hero h1 span { color: #60a5fa; }
+        .tool-hero .slogan-main { font-size: 1.1rem; color: #94a3b8; margin-top: 4px; letter-spacing: 1.5px; }
+        .tool-hero .slogan-en { font-size: 0.85rem; color: #475569; margin-top: 2px; }
+        
+        .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+        .panel { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; }
+        .panel-title { font-size: 0.85rem; text-transform: uppercase; color: #94a3b8; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .panel-title .badge { background: #1e293b; padding: 2px 10px; border-radius: 12px; font-size: 0.6rem; color: #60a5fa; }
+        
+        textarea { width: 100%; flex: 1; min-height: 180px; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; color: #e8edf5; padding: 16px; font-size: 0.9rem; font-family: 'Menlo', monospace; resize: vertical; line-height: 1.7; transition: 0.2s; }
+        textarea:focus { outline: none; border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,0.15); }
+        textarea::placeholder { color: #475569; }
+        textarea[readonly] { background: #0a0f1a; color: #94a3b8; cursor: default; }
+        
+        .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 10px; }
+        .btn { background: #1e293b; border: none; color: #e8edf5; padding: 10px 22px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+        .btn:hover { background: #334155; transform: translateY(-1px); }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-primary:hover { background: #3b82f6; }
+        .btn-success { background: #059669; color: #fff; }
+        .btn-success:hover { background: #10b981; }
+        .btn-outline { background: transparent; border: 1px solid #334155; }
+        .btn-outline:hover { background: #1e293b; }
+        .btn-sm { padding: 6px 14px; font-size: 0.75rem; }
+        
+        .mapping-box { background: #0f172a; border-radius: 12px; padding: 12px 16px; font-size: 0.78rem; font-family: 'Menlo', monospace; max-height: 110px; overflow-y: auto; border: 1px solid #1e293b; color: #94a3b8; line-height: 1.9; margin-top: 8px; flex-shrink: 0; }
+        .mapping-box .highlight { color: #60a5fa; }
+        .mapping-box .empty { color: #475569; }
+        
+        .status-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 0.72rem; color: #64748b; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 10px; }
+        .status-bar .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; }
+        .dot.green { background: #22c55e; }
+        .dot.blue { background: #3b82f6; }
+        
+        .suite-footer { margin-top: 30px; padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 0.72rem; color: #475569; }
+        .suite-footer a { color: #64748b; text-decoration: none; }
+        .suite-footer a:hover { color: #94a3b8; }
+        .suite-footer .footer-trust { display: flex; gap: 14px; flex-wrap: wrap; }
+        
+        @media (max-width: 900px) {
+            .tool-grid { grid-template-columns: 1fr; }
+            textarea { min-height: 250px; font-size: 1rem; padding: 18px; }
+            .btn { padding: 14px 20px; font-size: 1rem; min-height: 52px; }
+            .btn-group { flex-direction: column; width: 100%; }
+            .btn-group .btn { width: 100%; }
+            .btn-group .flex-row { display: flex; gap: 10px; width: 100%; }
+            .btn-group .flex-row .btn { flex: 1; }
+            .panel { padding: 18px; }
+            .suite-header { flex-direction: column; align-items: stretch; text-align: center; }
+            .header-right { flex-direction: column; }
+            .nav-center { justify-content: center; }
+        }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #0f172a; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-sky-600 selection:text-white">
-
-    <!-- 導覽列 Navigation (單純為 AI-Align 專用，無視任何外鏈或無關選單) -->
-    <nav class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
-                <span>🇭🇰 AI-Align Engine</span>
-                <span class="text-xs text-sky-400 font-normal border border-sky-800/60 bg-sky-950/40 px-2 py-0.5 rounded">v1.0 HK-Compliant</span>
-            </div>
-            <div class="flex items-center space-x-6 text-sm font-medium text-slate-400">
-                <a href="#features" class="hover:text-sky-400 transition-colors">Features / 功能特色</a>
-                <a href="#frameworks" class="hover:text-sky-400 transition-colors">Governance / 官方框架對齊</a>
-                <a href="https://github.com/jackylawck/ai-align" target="_blank" class="hover:text-white transition-colors">GitHub Repo</a>
-            </div>
+<body>
+<div class="container">
+    
+    <header class="suite-header">
+        <div class="suite-brand">
+            <span data-i18n="navSuite">🌐 The Offline Suite</span>
+            <div class="slogan" data-i18n="appSubtitle">淨言在手 · 輸入無憂</div>
         </div>
-    </nav>
-
-    <!-- Hero 區域 -->
-    <header class="py-20 px-6 max-w-6xl mx-auto text-center sm:text-left">
-        <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/30 bg-sky-500/10 text-sky-400 text-xs font-semibold mb-6">
-                <span class="flex h-2 w-2 rounded-full bg-sky-400 animate-pulse"></span>
-                Enterprise AI Compliance & AUP Generator | 香港企業 AI 可接受使用政策自動生成引擎
-            </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6">
-                AI-Align: Enterprise AI Policy Engine<br>
-                <span class="text-sky-400 text-3xl sm:text-4xl">企業生成式 AI 政策自動生成引擎</span>
-            </h1>
-            
-            <div class="space-y-3 text-slate-300 leading-relaxed mb-8">
-                <p class="text-base sm:text-lg">
-                    專為香港企業設計的開源、雙語生成式 AI 政策生成引擎 — 根據企業數據等級與業務場景，只需 3 分鐘即可一鍵生成具備審計防禦力、嚴格對齊私隱專員公署 (PCPD) 2024 模範框架與數字政策辦公室 (DPO) 2025 技術指引的合規政策文件 (.docx)。
-                </p>
-                <p class="text-sm sm:text-base text-slate-400 italic">
-                    An open-source, bilingual AI Acceptable Use Policy (AUP) generator strictly aligned with Hong Kong PCPD (2024) Model Personal Data Protection Framework and DPO (2025) Generative AI Guidelines.
-                </p>
-            </div>
-            
-            <!-- 行動按鈕 -->
-            <div class="flex flex-wrap gap-4 justify-center sm:justify-start">
-                <a href="https://ai-align.streamlit.app" target="_blank" rel="noopener" class="px-8 py-4 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition-all shadow-lg shadow-sky-600/30 flex items-center gap-2">
-                    🚀 即刻生成政策文件 / Launch Policy Engine
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
-                <a href="https://github.com/jackylawck/ai-align" target="_blank" rel="noopener" class="px-6 py-4 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 font-medium transition-all">
-                    GitHub Source Code
-                </a>
+        <nav class="nav-center">
+            <a href="https://jackylawck.github.io/Safe-Off/" data-i18n="navSafe">🔒 Safe Offline</a>
+            <a href="https://jackylawck.github.io/Prompt-Off/" class="active" data-i18n="navPrompt">🛡️ Prompt Offline</a>
+            <a href="https://jackylawck.github.io/Daily-Off/" data-i18n="navDaily">📅 Daily Offline</a>
+            <a href="https://jackylawck.github.io/Calc-Off/" data-i18n="navCalc">🧮 Calc Offline</a>
+        </nav>
+        <div class="header-right">
+            <span class="trust-badge" data-i18n="navBadge">⚡ 100% Local · Zero Cloud</span>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="zh-HK" id="btnLangZH">繁體中文</button>
+                <button class="lang-btn" data-lang="en" id="btnLangEN">English</button>
             </div>
         </div>
     </header>
 
-    <!-- GitHub Topics 標籤牆 -->
-    <section class="py-6 border-y border-slate-900 bg-slate-900/30">
-        <div class="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <span class="text-xs text-slate-400 font-semibold mr-2">Topics & Compliance Standards:</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-sky-950/60 text-sky-400 border border-sky-800/50">ai-governance</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-sky-950/60 text-sky-400 border border-sky-800/50">ai-compliance</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-sky-950/60 text-sky-400 border border-sky-800/50">privacy-by-design</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-sky-950/60 text-sky-400 border border-sky-800/50">zero-data-retention</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-sky-950/60 text-sky-400 border border-sky-800/50">acceptable-use-policy</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700">pcpd-2024</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700">dpo-2025</span>
-            <span class="px-3 py-1 rounded-full text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700">iso-42001</span>
-        </div>
-    </section>
+    <div class="tool-hero">
+        <h1 data-i18n="appTitle">🛡️ 離線淨言 <span>Prompt Offline</span></h1>
+        <div class="slogan-main" data-i18n="appSubtitle">淨言在手，輸入無憂</div>
+        <div class="slogan-en" data-i18n="appSubtitleEn">Purify at Hand, Prompt with Peace.</div>
+    </div>
 
-    <!-- 核心特色 Section -->
-    <section id="features" class="py-16 px-6 max-w-6xl mx-auto">
-        <h2 class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-8">Key Capabilities / 核心特色</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/40 space-y-3">
-                <div class="text-3xl">🔑</div>
-                <h3 class="text-lg font-bold text-white">雙軌金鑰與零數據留存<br><span class="text-xs text-sky-400 font-normal">Dual-Key Architecture & ZDR</span></h3>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    提供零門檻「公共免費體驗」與企業級「自備 Key 模式」。數據直接傳送至 LLM 端且 Session 結束即銷毀，完全不安裝資料庫儲存企業數據。<br>
-                    <span class="text-xs text-slate-500 block mt-1">Supports Zero-Friction Public Mode and Custom Key Mode. Session-only processing ensures strict Zero Data Retention.</span>
-                </p>
+    <div class="tool-grid">
+        <!-- 左欄 -->
+        <div class="panel">
+            <div class="panel-title">
+                <span data-i18n="toolSanitize">🧹 ① 敏感數據脫敏</span>
+                <span class="badge" data-i18n="toolSanitizeBadge">Sanitize</span>
             </div>
-            <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/40 space-y-3">
-                <div class="text-3xl">⚖️</div>
-                <h3 class="text-lg font-bold text-white">官方專有名詞 100% 精準對齊<br><span class="text-xs text-sky-400 font-normal">Official Terminology Precision</span></h3>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    中英文條款精確對應 PCPD 與 DPO 官方文獻用字（如「人在環中」、「人為管控」、「模型幻覺」、「退出使用的選項」等）。<br>
-                    <span class="text-xs text-slate-500 block mt-1">Exact alignment with official PCPD/DPO legal terminology (e.g., Human-in-the-Loop, Human-in-Command, Model Hallucination).</span>
-                </p>
-            </div>
-            <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/40 space-y-3">
-                <div class="text-3xl">📊</div>
-                <h3 class="text-lg font-bold text-white">動態風險評級與智能備援<br><span class="text-xs text-sky-400 font-normal">Dynamic Risk Profiling & Smart Fallback</span></h3>
-                <p class="text-sm text-slate-400 leading-relaxed">
-                    問卷自動計算高/中/低風險等級並植入文件標頭。若 LLM 服務離線，規則引擎自動切換至關鍵字匹配，組裝圖像生成與客服條款。<br>
-                    <span class="text-xs text-slate-500 block mt-1">Calculates High/Medium/Low risk profiling badges and seamlessly activates fallback rule engines if LLM is offline.</span>
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 官方框架對齊 Section -->
-    <section id="frameworks" class="py-16 px-6 max-w-6xl mx-auto border-t border-slate-900">
-        <div class="rounded-3xl border border-sky-900/40 bg-gradient-to-b from-sky-950/20 to-slate-900/40 p-8 sm:p-12">
-            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                <span>🏛️</span> 香港官方合規框架與國際標準對齊
-            </h2>
-            <div class="grid md:grid-cols-2 gap-8 text-sm text-slate-300">
-                <div class="space-y-2">
-                    <h4 class="font-semibold text-sky-400 text-base">📋 PCPD《人工智能：個人資料保障模範框架》(2024)</h4>
-                    <p class="leading-relaxed text-slate-400">
-                        實踐基於風險的人為監督模式（「人在環中」、「人為管控」、「人在環外」），並強制整合 72 小時私隱外洩通報機制與透明度揭露。<br>
-                        <span class="text-xs text-slate-500 block mt-1">Implements risk-based human oversight (Human-in-the-Loop/Command) and mandatory 72-hour PCPD data breach notification protocols.</span>
-                    </p>
-                </div>
-                <div class="space-y-2">
-                    <h4 class="font-semibold text-sky-400 text-base">🌐 DPO《香港生成式人工智能技術及應用指引》(2025)</h4>
-                    <p class="leading-relaxed text-slate-400">
-                        全面落實「治理的五大維度」（個人資料私隱、知識產權、犯罪防治、真實可信、系統安全），並強制執行關閉對話存檔等保安設定。<br>
-                        <span class="text-xs text-slate-500 block mt-1">Operationalizes the Five Dimensions of Governance and security mandates (disabling chat history / data sharing).</span>
-                    </p>
+            <textarea id="inputRaw" data-i18n-ph="inputPlaceholder" placeholder="貼上敏感文章 / 案情敘述…"></textarea>
+            
+            <div class="btn-group">
+                <button class="btn btn-primary" id="btnSanitize" data-i18n="btnSanitize">🔐 執行脫敏</button>
+                <div class="flex-row">
+                    <button class="btn btn-outline btn-sm" id="btnClearInput" data-i18n="btnClear">清空</button>
+                    <button class="btn btn-outline btn-sm" id="btnSample" data-i18n="btnSample">📥 範例</button>
                 </div>
             </div>
+            
+            <div style="font-size:0.7rem;color:#475569;margin-bottom:6px;line-height:1.4;" data-i18n="labelAutoDetect">
+                ⚡ 自動識別：人名 · ID/護照 · 銀行/IP/MAC · 公司名 · 金額 · 日期 · 電郵 · 電話 · 專案名 · 合約號
+            </div>
+            
+            <textarea id="outputSanitized" readonly></textarea>
+            
+            <div class="mapping-box" id="mappingDisplay">
+                <span class="empty" data-i18n="labelMapping">📋 對照表 — 執行脫敏後自動生成</span>
+            </div>
+            
+            <div class="status-bar">
+                <span data-i18n="labelLocalProcessing"><span class="dot green"></span> 本地端處理 · 零上載</span>
+                <span id="charCount"><span data-i18n="labelCharCount">字元:</span> 0</span>
+            </div>
         </div>
-    </section>
-
+        
+        <!-- 右欄 -->
+        <div class="panel">
+            <div class="panel-title">
+                <span data-i18n="toolRestore">🔄 ② 一鍵復原真實數據</span>
+                <span class="badge" data-i18n="toolRestoreBadge">De-pseudonymize</span>
+            </div>
+            <textarea id="inputAISafe" data-i18n-ph="inputAIPlaceholder" placeholder="貼上第三方 AI 回傳的脫敏版結果…"></textarea>
+            
+            <div class="btn-group">
+                <button class="btn btn-success" id="btnRestore" data-i18n="btnRestore">🔓 復原真實數據</button>
+                <div class="flex-row">
+                    <button class="btn btn-outline btn-sm" id="btnClearAI" data-i18n="btnClear">清空</button>
+                    <button class="btn btn-outline btn-sm" id="btnCopyResult" data-i18n="btnCopy">📋 複製結果</button>
+                </div>
+            </div>
+            
+            <textarea id="outputRestored" readonly></textarea>
+            
+            <div class="status-bar">
+                <span data-i18n="labelEncryptedMemory"><span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)</span>
+                <span id="mappingCount"><span data-i18n="labelMappingCount">對照組:</span> 0</span>
+            </div>
+        </div>
+    </div>
+    
     <!-- Code-level credit for SEO crawlers: Developed by Jacky Law 羅子淇 (https://jackylawck.github.io/jackylawck/) -->
-    <footer class="border-t border-slate-900 py-8 px-6 text-center text-xs text-slate-600">
-        <p>© 2026 AI-Align: Enterprise AI Policy Engine. Released under MIT License / Open Source Governance Protocol.</p>
+    <footer class="suite-footer">
+        <div>
+            <span data-i18n="footerCopyright">© 2026 The Offline Suite</span>
+        </div>
+        <div class="footer-trust">
+            <span data-i18n="footerZeroCloud">🛑 Zero Cloud Transmission</span>
+            <span data-i18n="footerSessionVolatile">🧹 Session Volatile</span>
+            <span data-i18n="footerCompliance">📄 ISO 42001 · HK PDPO</span>
+        </div>
     </footer>
+</div>
 
+<!-- 載入知識庫、引擎與語言包 -->
+<script src="rules.js"></script>
+<script src="engine.js"></script>
+<script src="i18n/zh-HK.js"></script>
+<script src="i18n/en.js"></script>
+
+<!-- UI 控制、i18n 渲染與事件綁定 -->
+<script>
+(function() {
+    'use strict';
+    
+    // === i18n 多語言引擎 ===
+    const langMap = { 'zh-HK': LANG_ZH_HK, 'en': LANG_EN };
+    let currentLang = localStorage.getItem('prompt-off-lang') || 'zh-HK';
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        const dict = langMap[lang];
+        
+        // 替換文本
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (dict[key]) el.innerHTML = dict[key];
+        });
+        
+        // 替換 Placeholder
+        document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+            const key = el.getAttribute('data-i18n-ph');
+            if (dict[key]) el.setAttribute('placeholder', dict[key]);
+        });
+        
+        // 更新按鈕 UI
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+        
+        localStorage.setItem('prompt-off-lang', lang);
+        
+        // 重新渲染動態文字
+        updateCharCount();
+        renderMapping(engine.mapping.size > 0 ? Object.fromEntries(engine.mapping) : {});
+    }
+
+    document.getElementById('btnLangZH').addEventListener('click', () => setLanguage('zh-HK'));
+    document.getElementById('btnLangEN').addEventListener('click', () => setLanguage('en'));
+    
+    // 初始化語言
+    setLanguage(currentLang);
+
+    // === 核心引擎初始化 ===
+    const engine = new PromptSanitizerEngine(PROMPT_OFFLINE_RULES);
+    
+    const inputRaw = document.getElementById('inputRaw');
+    const outputSanitized = document.getElementById('outputSanitized');
+    const mappingDisplay = document.getElementById('mappingDisplay');
+    const inputAISafe = document.getElementById('inputAISafe');
+    const outputRestored = document.getElementById('outputRestored');
+    const charCount = document.getElementById('charCount');
+    const mappingCount = document.getElementById('mappingCount');
+    
+    // === 閒置自動清空 (5 分鐘) ===
+    let idleTimer;
+    function resetIdleTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+            if (engine.mapping.size > 0 || inputRaw.value !== '') {
+                document.getElementById('btnClearInput').click();
+                document.getElementById('btnClearAI').click();
+                const msg = currentLang === 'en' 
+                    ? '⏳ System idle for 5 mins. Sensitive data auto-cleared.' 
+                    : '⏳ 系統已閒置超過 5 分鐘。已自動清空所有敏感資料與對照表。';
+                alert(msg);
+            }
+        }, 5 * 60 * 1000);
+    }
+    ['click', 'input', 'keydown', 'mousemove', 'touchstart'].forEach(evt => 
+        document.addEventListener(evt, resetIdleTimer, { passive: true })
+    );
+    resetIdleTimer();
+    
+    // === UI 更新邏輯 ===
+    function updateCharCount() {
+        const prefix = langMap[currentLang].labelCharCount;
+        charCount.innerHTML = `<span>${prefix}</span> ${inputRaw.value.length}`;
+    }
+    inputRaw.addEventListener('input', updateCharCount);
+    
+    function renderMapping(table) {
+        const entries = Object.entries(table);
+        const prefix = langMap[currentLang].labelMappingCount;
+        
+        if (entries.length === 0) {
+            mappingDisplay.innerHTML = `<span class="empty">${langMap[currentLang].labelMapping}</span>`;
+            mappingCount.innerHTML = `<span>${prefix}</span> 0`;
+            return;
+        }
+        let html = '';
+        for (const [token, raw] of entries) {
+            html += `<span class="highlight">${token}</span> → ${raw} &nbsp;&nbsp;`;
+        }
+        mappingDisplay.innerHTML = html;
+        mappingCount.innerHTML = `<span>${prefix}</span> ${entries.length}`;
+    }
+    
+    // === 按鈕事件綁定 ===
+    document.getElementById('btnSanitize').addEventListener('click', () => {
+        const raw = inputRaw.value;
+        if (!raw.trim()) return alert(currentLang === 'en' ? 'Please enter sensitive content.' : '請先輸入敏感文章內容。');
+        const result = engine.sanitize(raw);
+        outputSanitized.value = result.sanitizedText;
+        renderMapping(result.mappingTable);
+    });
+    
+    document.getElementById('btnRestore').addEventListener('click', () => {
+        const safeText = inputAISafe.value;
+        if (!safeText.trim()) return alert(currentLang === 'en' ? 'Please paste AI output.' : '請貼上第三方 AI 回傳的內容。');
+        if (engine.mapping.size === 0) return alert(currentLang === 'en' ? 'Mapping empty. Sanitize first.' : '⚠️ 對照表為空。請先執行脫敏。');
+        outputRestored.value = engine.restore(safeText);
+    });
+    
+    document.getElementById('btnClearInput').addEventListener('click', () => {
+        inputRaw.value = ''; outputSanitized.value = ''; engine.resetSession();
+        renderMapping({}); updateCharCount();
+    });
+    
+    document.getElementById('btnClearAI').addEventListener('click', () => {
+        inputAISafe.value = ''; outputRestored.value = '';
+    });
+    
+    // 複製 (30秒抹除)
+    document.getElementById('btnCopyResult').addEventListener('click', () => {
+        const text = outputRestored.value;
+        if (!text) return alert(currentLang === 'en' ? 'Nothing to copy.' : '沒有可複製的內容。');
+        
+        const performCopy = () => {
+            const msg = currentLang === 'en' 
+                ? '✅ Copied! (Clipboard auto-clears in 30s)' 
+                : '✅ 已複製到剪貼簿！(剪貼簿將於 30 秒後自動清空)';
+            alert(msg);
+            setTimeout(() => { navigator.clipboard.writeText('').catch(()=>{}); }, 30000);
+        };
+        if (navigator.clipboard) { navigator.clipboard.writeText(text).then(performCopy).catch(() => fallbackCopy(text, performCopy)); } 
+        else { fallbackCopy(text, performCopy); }
+    });
+
+    function fallbackCopy(text, callback) {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = 0;
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        if (callback) callback();
+    }
+    
+    // 範例載入
+    document.getElementById('btnSample').addEventListener('click', () => {
+        inputRaw.value = currentLang === 'en' 
+            ? `Employee John Smith (Passport: AB1234567, Email: john.smith@company.com, Phone: +1 415 555 2671) joined Enterprise Solutions Ltd on 2025-03-15. Salary is USD$12,500.\n\nHe is managing Project Aurora and contract CT-2025-0042. Manager Sarah Davis (ID: B987654321, IP: 192.168.1.1) issued a PIP.`
+            : `員工張三（護照號碼 AB1234567，Email: zhang.san@company.com.hk，手機 +852 9123 4567）於 2025年3月15日 入職「智雲科技股份有限公司」。其月薪為 HK$85,000。\n\n近期於專案 Project Aurora 中負責合約 CT-2025-0042。部門協理李四（ID: B987654321，IP: 192.168.1.1）已發出 PIP。`;
+        updateCharCount();
+    });
+    
+    // 自動點擊範例
+    document.getElementById('btnSample').click();
+
+    // 註冊 PWA Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('✅ ServiceWorker Registered'))
+                .catch(err => console.warn('⚠️ ServiceWorker Failed:', err));
+        });
+    }
+})();
+</script>
 </body>
 </html>
