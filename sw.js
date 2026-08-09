@@ -1,8 +1,10 @@
 // sw.js - Prompt Offline Service Worker
-const CACHE_NAME = 'prompt-off-cache-v1';
+const CACHE_NAME = 'prompt-off-cache-v2';
 const urlsToCache = [
   './',
   './index.html',
+  './engine.js',
+  './rules.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
