@@ -1,0 +1,21 @@
+{
+  "name": "Prompt Offline (離線淨言)",
+  "short_name": "Prompt-Off",
+  "description": "淨言在手，輸入無憂。純本地端 AI 提示詞去識別化與還原工具。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
