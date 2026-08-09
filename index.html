@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🛡️ 離線淨言 · Prompt Offline — AI 提示詞去識別化 · 淨言在手，輸入無憂</title>
-    <meta name="description" content="淨言在手，輸入無憂。100% 前端離線 · 零雲端傳輸 · AI 提示詞敏感數據脫敏與還原工具，符合 ISO 42001 及 HK PDPO 治理要求。" />
+    <title>🛡️ 離線淨言 · Prompt Offline — AI 提示詞去識別化</title>
+    <meta name="description" content="100% 前端離線 · 零雲端傳輸 · AI 提示詞敏感數據脫敏與還原工具，符合 ISO 42001 及 HK PDPO 治理要求。" />
     <link rel="manifest" href="manifest.json" />
     
     <!-- 企業級零信任 CSP -->
@@ -22,31 +22,30 @@
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft YaHei", sans-serif;
-            background: #0b1120;
-            color: #e8edf5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft YaHei", sans-serif; background: #0b1120; color: #e8edf5; min-height: 100vh; display: flex; flex-direction: column; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
         
         .suite-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 16px 20px; background: rgba(255,255,255,0.04); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 20px; }
-        .suite-brand { font-weight: 700; font-size: 1.1rem; color: #94a3b8; }
-        .suite-brand strong { color: #60a5fa; }
-        .suite-brand .slogan { font-weight: 400; font-size: 0.75rem; color: #64748b; margin-left: 10px; }
-        .suite-nav { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.9rem; }
-        .suite-nav a { color: #94a3b8; text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; transition: 0.2s; }
-        .suite-nav a:hover, .suite-nav a.active { color: #60a5fa; border-bottom-color: #60a5fa; }
+        .suite-brand { font-size: 1.1rem; color: #94a3b8; display:flex; flex-direction: column;}
+        .suite-brand .slogan { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+        
+        .nav-center { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.9rem; }
+        .nav-center a { color: #94a3b8; text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; transition: 0.2s; }
+        .nav-center a:hover, .nav-center a.active { color: #60a5fa; border-bottom-color: #60a5fa; }
+        
+        .header-right { display: flex; align-items: center; gap: 12px; }
         .trust-badge { font-size: 0.7rem; color: #64748b; background: rgba(255,255,255,0.04); padding: 4px 14px; border-radius: 20px; white-space: nowrap; border: 1px solid rgba(255,255,255,0.06); }
         
+        /* 語言切換器 */
+        .lang-switcher { display: flex; align-items: center; background: #1e293b; border-radius: 20px; padding: 2px; }
+        .lang-btn { background: transparent; border: none; color: #64748b; padding: 4px 12px; font-size: 0.75rem; border-radius: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; }
+        .lang-btn:hover { color: #e8edf5; }
+        .lang-btn.active { background: #3b82f6; color: #fff; }
+
         .tool-hero { text-align: center; padding: 12px 0 20px; }
         .tool-hero h1 { font-size: 1.8rem; font-weight: 700; }
         .tool-hero h1 span { color: #60a5fa; }
         .tool-hero .slogan-main { font-size: 1.1rem; color: #94a3b8; margin-top: 4px; letter-spacing: 1.5px; }
-        .tool-hero .slogan-main em { font-style: normal; color: #60a5fa; font-weight: 500; }
         .tool-hero .slogan-en { font-size: 0.85rem; color: #475569; margin-top: 2px; }
         
         .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
@@ -60,7 +59,7 @@
         textarea[readonly] { background: #0a0f1a; color: #94a3b8; cursor: default; }
         
         .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 10px; }
-        .btn { background: #1e293b; border: none; color: #e8edf5; padding: 10px 22px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; border: 1px solid transparent; }
+        .btn { background: #1e293b; border: none; color: #e8edf5; padding: 10px 22px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
         .btn:hover { background: #334155; transform: translateY(-1px); }
         .btn-primary { background: #2563eb; color: #fff; }
         .btn-primary:hover { background: #3b82f6; }
@@ -87,15 +86,15 @@
         @media (max-width: 900px) {
             .tool-grid { grid-template-columns: 1fr; }
             textarea { min-height: 250px; font-size: 1rem; padding: 18px; }
-            .btn { padding: 14px 20px; font-size: 1rem; min-height: 52px; justify-content: center; }
+            .btn { padding: 14px 20px; font-size: 1rem; min-height: 52px; }
             .btn-group { flex-direction: column; width: 100%; }
             .btn-group .btn { width: 100%; }
             .btn-group .flex-row { display: flex; gap: 10px; width: 100%; }
             .btn-group .flex-row .btn { flex: 1; }
             .panel { padding: 18px; }
             .suite-header { flex-direction: column; align-items: stretch; text-align: center; }
-            .suite-nav { justify-content: center; }
-            .trust-badge { text-align: center; margin-top: 8px; }
+            .header-right { flex-direction: column; }
+            .nav-center { justify-content: center; }
         }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: #0f172a; border-radius: 8px; }
@@ -107,105 +106,150 @@
     
     <header class="suite-header">
         <div class="suite-brand">
-            🌐 <strong>The Offline Suite</strong> <span style="color:#64748b;font-weight:400;">by Jacky Law</span>
-            <div class="slogan" style="margin-top:4px; margin-left:0;">淨言在手 · 輸入無憂</div>
+            <span data-i18n="navSuite">🌐 The Offline Suite</span>
+            <div class="slogan" data-i18n="appSubtitle">淨言在手 · 輸入無憂</div>
         </div>
-        <nav class="suite-nav">
-            <a href="https://jackylawck.github.io/Safe-Off/">🔒 Safe Offline</a>
-            <a href="https://jackylawck.github.io/Prompt-Off/" class="active">🛡️ Prompt Offline</a>
-            <a href="https://jackylawck.github.io/Daily-Off/">📅 Daily Offline</a>
-            <a href="https://jackylawck.github.io/Calc-Off/">🧮 Calc Offline</a>
+        <nav class="nav-center">
+            <a href="https://jackylawck.github.io/Safe-Off/" data-i18n="navSafe">🔒 Safe Offline</a>
+            <a href="https://jackylawck.github.io/Prompt-Off/" class="active" data-i18n="navPrompt">🛡️ Prompt Offline</a>
+            <a href="https://jackylawck.github.io/Daily-Off/" data-i18n="navDaily">📅 Daily Offline</a>
+            <a href="https://jackylawck.github.io/Calc-Off/" data-i18n="navCalc">🧮 Calc Offline</a>
         </nav>
-        <span class="trust-badge">⚡ 100% Local · Zero Cloud</span>
+        <div class="header-right">
+            <span class="trust-badge" data-i18n="navBadge">⚡ 100% Local · Zero Cloud</span>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="zh-HK" id="btnLangZH">繁體中文</button>
+                <button class="lang-btn" data-lang="en" id="btnLangEN">English</button>
+            </div>
+        </div>
     </header>
 
     <div class="tool-hero">
-        <h1>🛡️ 離線<span>淨言</span></h1>
-        <div class="slogan-main">淨言在<em>手</em>，輸入無<em>憂</em></div>
-        <div class="slogan-en">Purify at Hand, Prompt with Peace.</div>
+        <h1 data-i18n="appTitle">🛡️ 離線淨言 <span>Prompt Offline</span></h1>
+        <div class="slogan-main" data-i18n="appSubtitle">淨言在手，輸入無憂</div>
+        <div class="slogan-en" data-i18n="appSubtitleEn">Purify at Hand, Prompt with Peace.</div>
     </div>
 
     <div class="tool-grid">
         <!-- 左欄 -->
         <div class="panel">
             <div class="panel-title">
-                🧹 ① 敏感數據脫敏
-                <span class="badge">Sanitize</span>
+                <span data-i18n="toolSanitize">🧹 ① 敏感數據脫敏</span>
+                <span class="badge" data-i18n="toolSanitizeBadge">Sanitize</span>
             </div>
-            <textarea id="inputRaw" placeholder="貼上敏感文章 / 案情敘述…&#10;例如：員工約翰 (john.doe@company.com) 於專案 Project Aurora 中，因合約 CT-2025-001 金額 NT$85,000 產生爭議。"></textarea>
+            <textarea id="inputRaw" data-i18n-ph="inputPlaceholder" placeholder="貼上敏感文章 / 案情敘述…"></textarea>
             
             <div class="btn-group">
-                <button class="btn btn-primary" id="btnSanitize">🔐 執行脫敏</button>
+                <button class="btn btn-primary" id="btnSanitize" data-i18n="btnSanitize">🔐 執行脫敏</button>
                 <div class="flex-row">
-                    <button class="btn btn-outline btn-sm" id="btnClearInput">清空</button>
-                    <button class="btn btn-outline btn-sm" id="btnSample">📥 範例</button>
+                    <button class="btn btn-outline btn-sm" id="btnClearInput" data-i18n="btnClear">清空</button>
+                    <button class="btn btn-outline btn-sm" id="btnSample" data-i18n="btnSample">📥 範例</button>
                 </div>
             </div>
             
-            <div style="font-size:0.7rem;color:#475569;margin-bottom:6px;letter-spacing:0.3px;line-height:1.4;">
+            <div style="font-size:0.7rem;color:#475569;margin-bottom:6px;line-height:1.4;" data-i18n="labelAutoDetect">
                 ⚡ 自動識別：人名 · ID/護照 · 銀行/IP/MAC · 公司名 · 金額 · 日期 · 電郵 · 電話 · 專案名 · 合約號
             </div>
             
-            <textarea id="outputSanitized" placeholder="脫敏後結果，可直接複製貼上外部 AI…" readonly></textarea>
+            <textarea id="outputSanitized" readonly></textarea>
             
             <div class="mapping-box" id="mappingDisplay">
-                <span class="empty">📋 對照表 — 執行脫敏後自動生成</span>
+                <span class="empty" data-i18n="labelMapping">📋 對照表 — 執行脫敏後自動生成</span>
             </div>
             
             <div class="status-bar">
-                <span><span class="dot green"></span> 本地端處理 · 零上載</span>
-                <span id="charCount">字元: 0</span>
+                <span data-i18n="labelLocalProcessing"><span class="dot green"></span> 本地端處理 · 零上載</span>
+                <span id="charCount"><span data-i18n="labelCharCount">字元:</span> 0</span>
             </div>
         </div>
         
         <!-- 右欄 -->
         <div class="panel">
             <div class="panel-title">
-                🔄 ② 一鍵復原真實數據
-                <span class="badge">De-pseudonymize</span>
+                <span data-i18n="toolRestore">🔄 ② 一鍵復原真實數據</span>
+                <span class="badge" data-i18n="toolRestoreBadge">De-pseudonymize</span>
             </div>
-            <textarea id="inputAISafe" placeholder="貼上第三方 AI 回傳的脫敏版結果…&#10;例如：[EMPLOYEE_NAME_A] 於 [CONFIDENTIAL_PROJECT_CODE_A] 的表現符合預期。"></textarea>
+            <textarea id="inputAISafe" data-i18n-ph="inputAIPlaceholder" placeholder="貼上第三方 AI 回傳的脫敏版結果…"></textarea>
             
             <div class="btn-group">
-                <button class="btn btn-success" id="btnRestore">🔓 復原真實數據</button>
+                <button class="btn btn-success" id="btnRestore" data-i18n="btnRestore">🔓 復原真實數據</button>
                 <div class="flex-row">
-                    <button class="btn btn-outline btn-sm" id="btnClearAI">清空</button>
-                    <button class="btn btn-outline btn-sm" id="btnCopyResult">📋 複製結果</button>
+                    <button class="btn btn-outline btn-sm" id="btnClearAI" data-i18n="btnClear">清空</button>
+                    <button class="btn btn-outline btn-sm" id="btnCopyResult" data-i18n="btnCopy">📋 複製結果</button>
                 </div>
             </div>
             
-            <textarea id="outputRestored" placeholder="還原後的完整文章…" readonly></textarea>
+            <textarea id="outputRestored" readonly></textarea>
             
             <div class="status-bar">
-                <span><span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)</span>
-                <span id="mappingCount">對照組: 0</span>
+                <span data-i18n="labelEncryptedMemory"><span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)</span>
+                <span id="mappingCount"><span data-i18n="labelMappingCount">對照組:</span> 0</span>
             </div>
         </div>
     </div>
     
     <footer class="suite-footer">
         <div>
-            © 2026 <a href="https://jackylawck.github.io">Jacky Law</a> · 
-            <a href="https://github.com/jackylawck">GitHub</a>
+            <span data-i18n="footerCopyright">© 2026 Jacky Law</span>
         </div>
         <div class="footer-trust">
-            <span>🛑 Zero Cloud Transmission</span>
-            <span>🧹 Session Volatile</span>
-            <span>📄 ISO 42001 · HK PDPO</span>
+            <span data-i18n="footerZeroCloud">🛑 Zero Cloud Transmission</span>
+            <span data-i18n="footerSessionVolatile">🧹 Session Volatile</span>
+            <span data-i18n="footerCompliance">📄 ISO 42001 · HK PDPO</span>
         </div>
     </footer>
 </div>
 
-<!-- 載入知識庫與核心引擎 -->
+<!-- 載入知識庫、引擎與語言包 -->
 <script src="rules.js"></script>
 <script src="engine.js"></script>
+<script src="i18n/zh-HK.js"></script>
+<script src="i18n/en.js"></script>
 
-<!-- UI 控制與事件綁定 -->
+<!-- UI 控制、i18n 渲染與事件綁定 -->
 <script>
 (function() {
     'use strict';
     
-    // 初始化引擎
+    // === i18n 多語言引擎 ===
+    const langMap = { 'zh-HK': LANG_ZH_HK, 'en': LANG_EN };
+    let currentLang = localStorage.getItem('prompt-off-lang') || 'zh-HK';
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        const dict = langMap[lang];
+        
+        // 替換文本
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (dict[key]) el.innerHTML = dict[key];
+        });
+        
+        // 替換 Placeholder
+        document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+            const key = el.getAttribute('data-i18n-ph');
+            if (dict[key]) el.setAttribute('placeholder', dict[key]);
+        });
+        
+        // 更新按鈕 UI
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+        
+        localStorage.setItem('prompt-off-lang', lang);
+        
+        // 重新渲染動態文字
+        updateCharCount();
+        renderMapping(engine.mapping.size > 0 ? Object.fromEntries(engine.mapping) : {});
+    }
+
+    document.getElementById('btnLangZH').addEventListener('click', () => setLanguage('zh-HK'));
+    document.getElementById('btnLangEN').addEventListener('click', () => setLanguage('en'));
+    
+    // 初始化語言
+    setLanguage(currentLang);
+
+    // === 核心引擎初始化 ===
     const engine = new PromptSanitizerEngine(PROMPT_OFFLINE_RULES);
     
     const inputRaw = document.getElementById('inputRaw');
@@ -216,7 +260,7 @@
     const charCount = document.getElementById('charCount');
     const mappingCount = document.getElementById('mappingCount');
     
-    // 閒置自動清空 (5 分鐘)
+    // === 閒置自動清空 (5 分鐘) ===
     let idleTimer;
     function resetIdleTimer() {
         clearTimeout(idleTimer);
@@ -224,7 +268,10 @@
             if (engine.mapping.size > 0 || inputRaw.value !== '') {
                 document.getElementById('btnClearInput').click();
                 document.getElementById('btnClearAI').click();
-                alert('⏳ 系統已閒置超過 5 分鐘。為確保資安合規，已自動清空所有敏感資料與內存對照表。');
+                const msg = currentLang === 'en' 
+                    ? '⏳ System idle for 5 mins. Sensitive data auto-cleared.' 
+                    : '⏳ 系統已閒置超過 5 分鐘。已自動清空所有敏感資料與對照表。';
+                alert(msg);
             }
         }, 5 * 60 * 1000);
     }
@@ -233,14 +280,20 @@
     );
     resetIdleTimer();
     
-    // UI 更新
-    inputRaw.addEventListener('input', () => charCount.textContent = `字元: ${inputRaw.value.length}`);
+    // === UI 更新邏輯 ===
+    function updateCharCount() {
+        const prefix = langMap[currentLang].labelCharCount;
+        charCount.innerHTML = `<span>${prefix}</span> ${inputRaw.value.length}`;
+    }
+    inputRaw.addEventListener('input', updateCharCount);
     
     function renderMapping(table) {
         const entries = Object.entries(table);
+        const prefix = langMap[currentLang].labelMappingCount;
+        
         if (entries.length === 0) {
-            mappingDisplay.innerHTML = '<span class="empty">📋 對照表 — 執行脫敏後自動生成</span>';
-            mappingCount.textContent = '對照組: 0';
+            mappingDisplay.innerHTML = `<span class="empty">${langMap[currentLang].labelMapping}</span>`;
+            mappingCount.innerHTML = `<span>${prefix}</span> 0`;
             return;
         }
         let html = '';
@@ -248,31 +301,30 @@
             html += `<span class="highlight">${token}</span> → ${raw} &nbsp;&nbsp;`;
         }
         mappingDisplay.innerHTML = html;
-        mappingCount.textContent = `對照組: ${entries.length}`;
+        mappingCount.innerHTML = `<span>${prefix}</span> ${entries.length}`;
     }
     
-    // 脫敏
+    // === 按鈕事件綁定 ===
     document.getElementById('btnSanitize').addEventListener('click', () => {
         const raw = inputRaw.value;
-        if (!raw.trim()) return alert('請先輸入敏感文章內容。');
+        if (!raw.trim()) return alert(currentLang === 'en' ? 'Please enter sensitive content.' : '請先輸入敏感文章內容。');
         const result = engine.sanitize(raw);
         outputSanitized.value = result.sanitizedText;
         renderMapping(result.mappingTable);
     });
     
-    // 復原
     document.getElementById('btnRestore').addEventListener('click', () => {
         const safeText = inputAISafe.value;
-        if (!safeText.trim()) return alert('請貼上第三方 AI 回傳的脫敏版內容。');
-        if (engine.mapping.size === 0) return alert('⚠️ 對照表為空。請先執行脫敏。');
+        if (!safeText.trim()) return alert(currentLang === 'en' ? 'Please paste AI output.' : '請貼上第三方 AI 回傳的內容。');
+        if (engine.mapping.size === 0) return alert(currentLang === 'en' ? 'Mapping empty. Sanitize first.' : '⚠️ 對照表為空。請先執行脫敏。');
         outputRestored.value = engine.restore(safeText);
     });
     
-    // 清空
     document.getElementById('btnClearInput').addEventListener('click', () => {
         inputRaw.value = ''; outputSanitized.value = ''; engine.resetSession();
-        renderMapping({}); charCount.textContent = '字元: 0';
+        renderMapping({}); updateCharCount();
     });
+    
     document.getElementById('btnClearAI').addEventListener('click', () => {
         inputAISafe.value = ''; outputRestored.value = '';
     });
@@ -280,11 +332,14 @@
     // 複製 (30秒抹除)
     document.getElementById('btnCopyResult').addEventListener('click', () => {
         const text = outputRestored.value;
-        if (!text) return alert('沒有可複製的內容。請先執行「復原真實數據」。');
+        if (!text) return alert(currentLang === 'en' ? 'Nothing to copy.' : '沒有可複製的內容。');
         
         const performCopy = () => {
-            alert('✅ 已複製到剪貼簿！(為保護資安，剪貼簿將於 30 秒後自動清空)');
-            setTimeout(() => { navigator.clipboard.writeText('').catch(()=>console.log('清空失敗')); }, 30000);
+            const msg = currentLang === 'en' 
+                ? '✅ Copied! (Clipboard auto-clears in 30s)' 
+                : '✅ 已複製到剪貼簿！(剪貼簿將於 30 秒後自動清空)';
+            alert(msg);
+            setTimeout(() => { navigator.clipboard.writeText('').catch(()=>{}); }, 30000);
         };
         if (navigator.clipboard) { navigator.clipboard.writeText(text).then(performCopy).catch(() => fallbackCopy(text, performCopy)); } 
         else { fallbackCopy(text, performCopy); }
@@ -297,23 +352,23 @@
         if (callback) callback();
     }
     
-    // 範例
+    // 範例載入
     document.getElementById('btnSample').addEventListener('click', () => {
-        inputRaw.value = `員工張三（護照號碼 AB1234567，Email: zhang.san@company.com.hk，手機 +852 9123 4567，銀行帳號 012345678912）於 2025年3月15日 入職「智雲科技股份有限公司」。其月薪為 HK$85,000。
-
-近期於專案 Project Aurora 中，因負責的合約 CT-2025-0042 (依據 Section 12) 發生款項延遲，部門協理李四（ID: B987654321，IP: 192.168.1.1）於 2025年4月1日 對張三發出 PIP。公司法務部已介入調查。`;
-        charCount.textContent = `字元: ${inputRaw.value.length}`;
+        inputRaw.value = currentLang === 'en' 
+            ? `Employee John Smith (Passport: AB1234567, Email: john.smith@company.com, Phone: +1 415 555 2671) joined Enterprise Solutions Ltd on 2025-03-15. Salary is USD$12,500.\n\nHe is managing Project Aurora and contract CT-2025-0042. Manager Sarah Davis (ID: B987654321, IP: 192.168.1.1) issued a PIP.`
+            : `員工張三（護照號碼 AB1234567，Email: zhang.san@company.com.hk，手機 +852 9123 4567）於 2025年3月15日 入職「智雲科技股份有限公司」。其月薪為 HK$85,000。\n\n近期於專案 Project Aurora 中負責合約 CT-2025-0042。部門協理李四（ID: B987654321，IP: 192.168.1.1）已發出 PIP。`;
+        updateCharCount();
     });
-    document.getElementById('btnSample').click();
     
-    console.log('🛡️ 離線淨言 · 引擎已初始化 (Knowledge-Engine Decoupled)');
+    // 自動點擊範例
+    document.getElementById('btnSample').click();
 
     // 註冊 PWA Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('✅ ServiceWorker 註冊成功:', reg.scope))
-                .catch(err => console.warn('⚠️ ServiceWorker 註冊失敗:', err));
+                .then(reg => console.log('✅ ServiceWorker Registered'))
+                .catch(err => console.warn('⚠️ ServiceWorker Failed:', err));
         });
     }
 })();
