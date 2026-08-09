@@ -77,16 +77,3 @@ Prompt Offline 原生支援 **繁體中文** 與 **English** 雙語介面，一�
 3. **一鍵還原真實數據 (De-pseudonymize):** 將外部 AI 回傳的處理結果貼回本工具，系統根據記憶體中的對照表，瞬間將代號還原為真實數據。
 
 ---
-
-## 🌐 關於 The Offline Suite
-
-**The Offline Suite** 是由 [Jacky Law](https://github.com/jackylawck) 開發的純本地端生產力與資安工具矩陣，致力於將「數據主權（Data Sovereignty）」還給使用者。
-
-* [🔒 Safe Offline (離線守密)](https://jackylawck.github.io/Safe-Off/)
-* [🛡️ Prompt Offline (離線淨言)](https://jackylawck.github.io/Prompt-Off/)
-* [📅 Daily Offline (離線日注)](https://jackylawck.github.io/Daily-Off/)
-* [🧮 Calculator Offline (離線算籌)](https://jackylawck.github.io/Calc-Off/)
-
----
-*Developed with focus on Corporate AI Compliance and Privacy Engineering.*
-
