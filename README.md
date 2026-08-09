@@ -31,13 +31,13 @@ Prompt-Off/
 * **`engine.js` (引擎層):** 純函式邏輯，處理比對、假名化與還原。零外部依賴、無狀態，保證運算透明可審計。
 * **`rules.js` (知識層):** 獨立抽離所有的 PII 特徵庫。企業可隨時擴充自定義的機密專案代號或內部術語，無需修改核心引擎。
 
-### 語意保留標籤 (Context-Preserving Tokens) & 25+ 種 PII
-棄用會破壞 LLM 推理能力的抽象代號（如 ⁠[Amount_1]⁠），全面升級為分類標籤（Taxonomy Tokens），包含：
- 結構化 PII (含行業校驗): ⁠[CORPORATE_EMAIL_1]⁠, ⁠[HKID_NUMBER_1]⁠, ⁠[TW_ID_NUMBER_1]⁠ (含模數校驗), ⁠[CREDIT_CARD_NO_1]⁠ (含 Luhn 演算法校驗), ⁠[PASSPORT_NO_1]⁠, ⁠[SWIFT_BIC_1]⁠, ⁠[IP_ADDRESS_1]⁠, ⁠[MAC_ADDRESS_1]⁠
- DevOps & 科技資產: ⁠[API_TOKEN_1]⁠, ⁠[DATABASE_DSN_1]⁠, ⁠[SYSTEM_USER_ID_1]⁠
- 財務、醫療與財產: ⁠[CONFIDENTIAL_AMOUNT_1]⁠, ⁠[EQUITY_SHARES_1]⁠, ⁠[MEDICAL_RECORD_NO_1]⁠, ⁠[VEHICLE_LICENSE_1]⁠, ⁠[PROPERTY_REG_NO_1]⁠
- 組織與地點: ⁠[EMPLOYEE_NAME_A]⁠ (100 大常見姓氏識別), ⁠[ENTERPRISE_CLIENT_A]⁠, ⁠[CONFIDENTIAL_PROJECT_A]⁠, ⁠[ADDRESS_LOCATION_1]⁠
- 時間與個資: ⁠[DATE_OF_BIRTH_1]⁠, ⁠[RECORD_DATE_1]⁠, ⁠[PERFORMANCE_SCORE_1]⁠
+### 🧠 語意保留標籤 (Context-Preserving Tokens) & 25+ 種 PII
+棄用會破壞 LLM 推理能力的抽象代號（如 `[Amount_1]`），全面升級為分類標籤（Taxonomy Tokens），包含：
+- **結構化 PII (含行業校驗):** `[CORPORATE_EMAIL_1]`, `[HKID_NUMBER_1]`, `[TW_ID_NUMBER_1]` (含模數校驗), `[CREDIT_CARD_NO_1]` (含 Luhn 演算法校驗), `[PASSPORT_NO_1]`, `[SWIFT_BIC_1]`, `[IP_ADDRESS_1]`, `[MAC_ADDRESS_1]`
+- **DevOps & 科技資產:** `[API_TOKEN_1]`, `[DATABASE_DSN_1]`, `[SYSTEM_USER_ID_1]`
+- **財務、醫療與財產:** `[CONFIDENTIAL_AMOUNT_1]`, `[EQUITY_SHARES_1]`, `[MEDICAL_RECORD_NO_1]`, `[VEHICLE_LICENSE_1]`, `[PROPERTY_REG_NO_1]`
+- **組織與地點:** `[EMPLOYEE_NAME_A]` (100 大常見姓氏識別), `[ENTERPRISE_CLIENT_A]`, `[CONFIDENTIAL_PROJECT_A]`, `[ADDRESS_LOCATION_1]`
+- **時間與個資:** `[DATE_OF_BIRTH_1]`, `[RECORD_DATE_1]`, `[PERFORMANCE_SCORE_1]`
 
 ---
 
@@ -59,13 +59,14 @@ Prompt Offline 原生支援 **繁體中文** 與 **English** 雙語介面，一�
 * **ISO/IEC 42001 (Domain A.6 Data for AI Systems):** 落實數據最小化（Data Minimization）原則，確保訓練池或外部模型無法獲取真實的企業機密。
 * **IAPP AIGP (Domain IV - Governing AI Deployment and Use):** 建立強大的輸入驗證（Input Verification）防護網，阻斷員工無意間造成的 Data Leakage。
 * **HK PDPO (DPP3 & DPP4):** 確保個人資料（如 HKID、薪資）在傳送予第三方平台前已被妥善假名化（Pseudonymization）。
+* **PCI-DSS & HIPAA 精神對齊:** 內建信用卡號 Luhn 檢查碼過濾與病歷號攔截，消除金融與醫療領域的高敏外洩風險。
 
 ---
 
 ## 🔐 Zero-Trust 技術架構 (Security by Design)
 
-* **物理級網絡隔離：** 內建極嚴格 CSP (`connect-src 'none'`)，直接由瀏覽器底層封殺所有外部連線，保證數據 **「零上載、零傳輸」**。
-* **記憶體揮發性存儲：** 對照表（Mapping Table）僅存於 RAM 中。支援 **閒置 5 分鐘自動清空** 及 **分頁關閉即銷毀** (Session Volatile)。
+* **物理級網絡隔離：** 內建極嚴格 CSP (`connect-src 'none'`)，由瀏覽器底層硬封鎖所有外部連線，保證數據 **「零上載、零傳輸」**。
+* **記憶體揮發性存儲：** 對照表（Mapping Table）僅存於 RAM 中。支援 **閒置 5 分鐘自動清空** 及 **分頁關閉即銷毀** (Session Volatility)。
 * **反竊取機制：** 剪貼簿資料於複製後 **30 秒自動抹除**。
 * **PWA 斷網可用：** 支援 Service Worker，可於飛航模式下完美執行。
 
@@ -73,8 +74,20 @@ Prompt Offline 原生支援 **繁體中文** 與 **English** 雙語介面，一�
 
 ## 🚀 核心功能與使用流程
 
-1. **敏感數據脫敏 (Sanitize):** 貼上原始案情文本（例如含有真實姓名、HKID、月薪的 PIP 文件）。本工具於本地端自動偵測並替換為 `[EMPLOYEE_NAME_A]`、`[HKID_NUMBER_1]`、`[SALARY_AMOUNT_1]`。
+1. **敏感數據脫敏 (Sanitize):** 貼上原始案情文本（例如含有真實姓名、HKID、月薪、API Key 的 PIP 或審計文件）。本工具於本地端自動偵測並替換為 `[EMPLOYEE_NAME_A]`、`[HKID_NUMBER_1]`、`[CONFIDENTIAL_AMOUNT_1]`。支援連續貼上累積處理（Incremental Session）。
 2. **安心互動 (Prompting):** 將淨化後的安全 Prompt，複製並貼至外部第三方 AI 工具（如 ChatGPT）進行處理。
-3. **一鍵還原真實數據 (De-pseudonymize):** 將外部 AI 回傳的處理結果貼回本工具，系統根據記憶體中的對照表，瞬間將代號還原為真實數據。
+3. **一鍵還原真實數據 (De-pseudonymize):** 將外部 AI 回傳的處理結果貼回本工具，系統根據記憶體中的對照表，瞬間將代號還原為真實數據，並自動相容 AI 回傳的大小寫變異。
 
 ---
+
+## 🌐 關於 The Offline Suite
+
+**The Offline Suite** 是由 [Jacky Law](https://github.com/jackylawck) 開發的純本地端生產力與資安工具矩陣，致力於將「數據主權（Data Sovereignty）」還給使用者。
+
+* [🔒 Safe Offline (離線守密)](https://jackylawck.github.io/Safe-Off/)
+* [🛡️ Prompt Offline (離線淨言)](https://jackylawck.github.io/Prompt-Off/)
+* [📅 Daily Offline (離線日注)](https://jackylawck.github.io/Daily-Off/)
+* [🧮 Calculator Offline (離線算籌)](https://jackylawck.github.io/Calc-Off/)
+
+---
+*Developed with focus on Corporate AI Compliance and Privacy Engineering.*
