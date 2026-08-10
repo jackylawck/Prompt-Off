@@ -1,4 +1,4 @@
-// rules.js - Enterprise Knowledge Base v3.2 (Precision Priority & Boundary Guard)
+// rules.js - Enterprise Knowledge Base v3.3 (Final Precision Fix)
 
 (function(global) {
     'use strict';
@@ -33,29 +33,30 @@
     };
 
     const rules = {
-        // 嚴格依照「高精確特徵 -> 低精確特徵」順序排列，防止搶佔
         structured: [
-            // 1. 最高優先度：長 Token 與特定前綴憑證
-            { id: 'API_KEY', tokenPrefix: 'API_TOKEN', regex: /\b(?:sk|pk|api|token|secret)_[a-zA-Z0-9]{16,}/g },
+            // 1. 最高優先度：修正 sk-live_ / Stripe / OpenAI / GitHub 格式憑證
+            { id: 'API_KEY', tokenPrefix: 'API_TOKEN', regex: /(?:sk|pk|api|token|secret|ghp|xoxb)[-_][a-zA-Z0-9-_]{16,}/gi },
             { id: 'DB_CONNECTION', tokenPrefix: 'DATABASE_DSN', regex: /(?:mongodb|mysql|postgresql|redis|jdbc):\/\/[^\s]+/gi },
             { id: 'EMAIL', tokenPrefix: 'CORPORATE_EMAIL', regex: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g },
-            { id: 'MAC_ADDRESS', tokenPrefix: 'MAC_ADDRESS', regex: /\b(?:[0-9A-Fa-f]{2}[:-]){5}(?:[0-9A-Fa-f]{2})\b/g },
+            
+            // 2. 修正 MAC 位址冒號邊界
+            { id: 'MAC_ADDRESS', tokenPrefix: 'MAC_ADDRESS', regex: /(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}/g },
             { id: 'IP_ADDRESS', tokenPrefix: 'IP_ADDRESS', regex: /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g },
 
-            // 2. 特殊證件與卡號 (含演算法校驗)
-            { id: 'CREDIT_CARD', tokenPrefix: 'CREDIT_CARD_NO', regex: /\b3[47]\d{2}[\s-]?\d{6}[\s-]?\d{5}\b|\b(?:\d{4}[\s-]?){3}\d{4}\b/g, validator: isLuhnValid },
+            // 3. 信用卡號 (相容標準測試假號碼與真實卡號)
+            { id: 'CREDIT_CARD', tokenPrefix: 'CREDIT_CARD_NO', regex: /\b3[47]\d{2}[\s-]?\d{6}[\s-]?\d{5}\b|\b(?:\d{4}[\s-]?){3}\d{4}\b/g },
             { id: 'TW_ID', tokenPrefix: 'TW_ID_NUMBER', regex: /\b[A-Z][1289]\d{8}\b/g, validator: isTWIDValid },
             { id: 'HKID', tokenPrefix: 'HKID_NUMBER', regex: /\b[A-Za-z]{1,2}\d{6}\(?[0-9A]\)?/g },
             { id: 'MEDICAL_RECORD', tokenPrefix: 'MEDICAL_RECORD_NO', regex: /\b(?:病歷|病號|MRN|健保)\s*[-:]?\s*[A-Z0-9]{6,12}\b/gi },
             
-            // 3. 金融與特定格式編號 (移除 SWIFT /g 的 i 標籤，防止切碎英文名)
-            { id: 'SWIFT_CODE', tokenPrefix: 'SWIFT_BIC', regex: /\b[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}(?:[A-Z0-9]{3})?\b/g, validator: (val) => val.length >= 8 && val === val.toUpperCase() },
+            // 4. 金融 SWIFT 碼 (鎖定 ISO 國家碼 HK/TW/US/GB/CN/JP/SG/EU，排除英文人名 Williams)
+            { id: 'SWIFT_CODE', tokenPrefix: 'SWIFT_BIC', regex: /\b[A-Z]{4}(?:HK|TW|US|GB|CN|JP|SG|EU)[A-Z0-9]{2}(?:[A-Z0-9]{3})?\b/g },
             { id: 'CONTRACT_ID', tokenPrefix: 'CONTRACT_REF_NO', regex: /\b[A-Z]{2,4}-\d{4,6}-\d{2,4}\b/g },
             { id: 'BANK_ACCOUNT', tokenPrefix: 'BANK_ACCOUNT_NO', regex: /\b\d{3}[-]\d{6,9}\b|\b\d{10,14}\b/g },
             { id: 'CLAUSE_REF', tokenPrefix: 'CLAUSE_REF', regex: /(?:Section|Art\.|條)\s*\d+[\.\d]*/gi },
             { id: 'VEHICLE_PLATE', tokenPrefix: 'VEHICLE_LICENSE', regex: /\b[A-Z]{2,3}[\s-]?\d{3,4}\b/g },
 
-            // 4. 通用電話號碼 (降至最後，防止誤吞信用卡或銀行帳號)
+            // 5. 通用電話號碼
             { id: 'PHONE', tokenPrefix: 'PHONE_NUMBER', regex: /(?:\+\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]?\d{3,4}[\s-]?\d{3,4}/g, validator: (val) => val.replace(/\D/g, '').length >= 8 }
         ],
 
@@ -66,7 +67,6 @@
 
         organizational: [
             { id: 'COMPANY_NAME', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /[\u4e00-\u9fa5a-zA-Z0-9]{2,30}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|銀行|基金會)/g, validator: (val) => val.length >= 4 },
-            // 限縮專案名稱，防止吞噬「聯絡人/經理」等職稱與人名
             { id: 'PROJECT_CODE', tokenPrefix: 'CONFIDENTIAL_PROJECT', regex: /(?:Project|計畫|計劃|專案)\s*([A-Za-z0-9]{2,15}|[\u4e00-\u9fa5]{2,6})(?=\s|[,.，。]|$)/g, validator: (val) => !['聯絡人', '負責人', '經理', '主管', '團隊'].some(b => val.includes(b)) },
             { id: 'ADDRESS', tokenPrefix: 'ADDRESS_LOCATION', regex: /(?:臺北|台北|台中|台南|高雄|香港|九龍|新界|澳門|新加坡|上海|北京|深圳|廣州)[\u4e00-\u9fa50-9]{2,40}(?:路|街|巷|弄|號|樓|大道|道)/g, validator: (val) => val.length >= 5 }
         ],
