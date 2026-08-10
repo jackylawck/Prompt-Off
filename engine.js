@@ -1,4 +1,4 @@
-// engine.js - Prompt Sanitizer Core v3.4 (Vocabulary Blacklist Protection)
+// engine.js - Prompt Sanitizer Core v3.5 (Priority & Boundary Guarded)
 
 class PromptSanitizerEngine {
     constructor(rulesConfig) {
@@ -54,14 +54,14 @@ class PromptSanitizerEngine {
             }
         };
 
-        // 階段 1: 依優先順序執行 PII 比對
+        // 階段 1: 依優先順序執行結構化 PII 比對
         this.allRules.forEach(rule => {
             if (rule && rule.regex) {
                 applyRule(rule.regex, rule.tokenPrefix, rule.validator);
             }
         });
 
-        // 階段 2: 中文百家姓與複姓識別 (加入精準非人名常用詞彙黑名單)
+        // 階段 2: 複姓與單字姓氏精準比對
         if (this.rules.contextual && Array.isArray(this.rules.contextual.surnames)) {
             const surnamePattern = this.rules.contextual.surnames.join('|');
             const nameRegex = new RegExp(`(?:${surnamePattern})[\\u4e00-\\u9fa5]{1,2}`, 'g');
@@ -71,12 +71,13 @@ class PromptSanitizerEngine {
                 if (val.length < 2 || val.length > 4 || /\d/.test(val)) return false;
                 if (orgSuffixes.some(s => val === s)) return false;
                 
-                // 嚴格中文非人名詞彙黑名單 (解決 高達/高階/方案/代表/計畫 等誤殺)
+                // 擴充非人名常用詞彙黑名單
                 const blacklist = [
-                    '高達', '高階', '方案', '代表', '表達', '要求', '說明', '指示', '安排', 
+                    '高達', '高階', '高管', '方案', '代表', '表達', '要求', '說明', '指示', '安排', 
                     '計畫', '計劃', '項目', '專案', '合約', '公司', '集團', '部門', '銀行', 
                     '帳號', '金額', '績效', '評核', '條例', '框架', '開發', '聯絡人', '負責人', 
-                    '辦公室', '交割', '進行', '處理', '報告', '主管', '經理', '董事'
+                    '辦公室', '交割', '進行', '處理', '報告', '主管', '經理', '董事', '處置', '通知',
+                    '決議', '處分', '管理', '公告', '股票'
                 ];
                 if (blacklist.some(b => val.includes(b) || val === b)) return false;
                 
