@@ -1,4 +1,4 @@
-// rules.js - Enterprise Knowledge Base v4.1 (Performance & Safety Hardened)
+// rules.js - Enterprise Knowledge Base v4.2 (Address & Project Edge Polish)
 
 (function(global) {
     'use strict';
@@ -57,9 +57,12 @@
         organizational: [
             { id: 'COMPANY_NAME_EN', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /\b[A-Z][A-Za-z0-9&.\s]{2,30}(?:Inc\.|Ltd\.|LLC|Corp\.|Corporation|Solutions|Systems|Capital|Group)\b/g },
             { id: 'COMPANY_NAME_ZH', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /[\u4e00-\u9fa5a-zA-Z0-9]{2,30}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|銀行|基金會)/g, validator: (val) => val.length >= 4 },
-            { id: 'PROJECT_CODE', tokenPrefix: 'CONFIDENTIAL_PROJECT', regex: /(?:Project|計畫|計劃|專案)\s*([A-Za-z0-9]{2,15}|[\u4e00-\u9fa5]{2,6})(?=\s|[,.，。]|$)/g, validator: (val) => !['聯絡人', '負責人', '經理', '主管', '團隊', '計畫', '計劃', '方案', '項目', '交割'].some(b => val.includes(b)) },
-            // v4.1 修復：將 Suite/Apt 的重複比對限制在 {0,2} 次，防止大檔極限效能卡頓
-            { id: 'ADDRESS_EN', tokenPrefix: 'ADDRESS_LOCATION', regex: /\b\d{1,5}\s+[A-Z][A-Za-z0-9\s.,'-]{2,30}(?:Street|St\.|Avenue|Ave\.|Road|Rd\.|Boulevard|Blvd\.|Drive|Dr\.|Way|Lane|Ln\.)(?:,\s*(?:Apt|Suite|Floor|Building|\d+[A-Z]?)\s*\d*){0,2}(?:,\s*[A-Z][a-z]+)?\b/g },
+            
+            // v4.2 微調 1：專案名稱整體捕獲，防止殘留「將專案」中文前綴
+            { id: 'PROJECT_CODE', tokenPrefix: 'CONFIDENTIAL_PROJECT', regex: /(?:Project|計畫|計劃|專案)\s*([A-Za-z0-9\s-]{2,20}|[\u4e00-\u9fa5]{2,6})(?=\s|[,.，。]|$)/g },
+            
+            // v4.2 微調 2：英文地址完整涵蓋 Suite/Apt 門牌與城市州名 (如 Suite 400, New York)
+            { id: 'ADDRESS_EN', tokenPrefix: 'ADDRESS_LOCATION', regex: /\b\d{1,5}\s+[A-Z][A-Za-z0-9\s.,'-]{2,30}(?:Street|St\.|Avenue|Ave\.|Road|Rd\.|Boulevard|Blvd\.|Drive|Dr\.|Way|Lane|Ln\.)(?:,\s*(?:Apt|Suite|Floor|Building|\d+[A-Z]?)\s*\d*[A-Z]*)?(?:,\s*[A-Za-z\s]+)?\b/g },
             { id: 'ADDRESS_ZH', tokenPrefix: 'ADDRESS_LOCATION', regex: /(?:臺北|台北|台中|台南|高雄|香港|九龍|新界|澳門|新加坡|上海|北京|深圳|廣州)[\u4e00-\u9fa50-9]{2,40}(?:路|街|巷|弄|號|樓|大道|道)/g, validator: (val) => val.length >= 5 }
         ],
 
