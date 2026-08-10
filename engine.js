@@ -1,4 +1,4 @@
-// engine.js - Prompt Sanitizer Core v3.9 (Bilingual Precision Guard & Capturing Group Enhanced)
+// engine.js - Prompt Sanitizer Core v4.1 (Sub-string & Blacklist Guarded)
 
 class PromptSanitizerEngine {
     constructor(rulesConfig) {
@@ -34,8 +34,7 @@ class PromptSanitizerEngine {
                 let idx = this.mapping.size;
 
                 matches.forEach(m => {
-                    // 優先選取捕獲組 m[1]（若正則設有特定提取目標），否則取完整匹配 m[0]
-                    const rawVal = (m[1] && m[1].length > 1 ? m[1] : m[0]).trim();
+                    const rawVal = m[0].trim();
                     const isValid = (typeof validator === 'function') ? validator(rawVal) : true;
 
                     if (isValid && !this.reverseMapping.has(rawVal) && rawVal.length > 0) {
@@ -55,14 +54,14 @@ class PromptSanitizerEngine {
             }
         };
 
-        // 階段 1: 依優先順序執行結構化 PII 比對 (含 API Key, 護照, HKID, 英文職稱人名等)
+        // 階段 1: 結構化 PII 比對
         this.allRules.forEach(rule => {
             if (rule && rule.regex) {
                 applyRule(rule.regex, rule.tokenPrefix, rule.validator);
             }
         });
 
-        // 階段 2: 複姓與單字姓氏精準比對 (擴充黑名單防禦，徹底杜絕「公開」、「辦公室」誤殺)
+        // 階段 2: 中文複姓與單字姓氏比對 (含切碎子字串黑名單防禦)
         if (this.rules.contextual && Array.isArray(this.rules.contextual.surnames)) {
             const surnamePattern = this.rules.contextual.surnames.join('|');
             const nameRegex = new RegExp(`(?:${surnamePattern})[\\u4e00-\\u9fa5]{1,2}`, 'g');
@@ -72,7 +71,7 @@ class PromptSanitizerEngine {
                 if (val.length < 2 || val.length > 4 || /\d/.test(val)) return false;
                 if (orgSuffixes.some(s => val === s)) return false;
                 
-                // 完整擴充非人名常用詞彙黑名單 (含行政、公務、量詞與金融常用詞組)
+                // 完整擴充非人名常用詞彙黑名單（含「辦公室」被拆切成「公室」等情況）
                 const blacklist = [
                     '高達', '高階', '高管', '方案', '代表', '表達', '要求', '說明', '指示', '安排', 
                     '計畫', '計劃', '項目', '專案', '合約', '公司', '集團', '部門', '銀行', 
@@ -81,7 +80,9 @@ class PromptSanitizerEngine {
                     '決議', '處分', '管理', '公告', '股票', '公開', '辦公', '公務', '公式', '公佈', 
                     '公營', '公有', '公務員', '公安', '公平', '公佈欄', '公文', '方舟', '夏日',
                     '公關', '公約', '公會', '公債', '公尺', '公頃', '公升', '公噸', '公積金', '公證', 
-                    '公費', '公有地', '公訴', '公積', '公假', '高壓', '高頻'
+                    '公費', '公有地', '公訴', '公積', '公假', '高壓', '高頻',
+                    // 子字串關鍵補強
+                    '公室', '公台', '公部', '公員'
                 ];
                 if (blacklist.some(b => val.includes(b) || val === b)) return false;
                 
@@ -89,7 +90,7 @@ class PromptSanitizerEngine {
             });
         }
 
-        // 階段 3: 字串長度遞減全域替換 (避免子字串碎裂)
+        // 階段 3: 字串長度遞減全域替換
         const sortedRawValues = [...this.reverseMapping.keys()].sort((a, b) => b.length - a.length);
         sortedRawValues.forEach(rawVal => {
             const token = this.reverseMapping.get(rawVal);
