@@ -123,6 +123,16 @@
         .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0, 1, 0, 1); opacity: 0; transition: opacity 0.2s ease, max-height 0.35s ease; }
         .accordion-body.open { max-height: 1000px; opacity: 1; transition: opacity 0.3s ease, max-height 0.35s ease; padding-top: 16px; }
 
+        /* Modal 彈窗樣式 */
+        .modal-overlay { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); align-items: center; justify-content: center; }
+        .modal-overlay.show { display: flex; animation: fadeIn 0.2s ease-out; }
+        .modal-content { background: #1e293b; margin: 20px; padding: 24px; border: 1px solid #334155; border-radius: 16px; max-width: 600px; width: 100%; color: #e8edf5; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 16px; }
+        .modal-header h3 { font-size: 1.1rem; color: #f8fafc; margin: 0; }
+        .close-modal { color: #94a3b8; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .close-modal:hover { color: #ef4444; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
         .suite-footer { margin-top: 30px; padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 0.72rem; color: #475569; }
         .suite-footer .footer-trust { display: flex; gap: 14px; flex-wrap: wrap; }
     </style>
@@ -202,6 +212,49 @@
                 <div class="status-bar">
                     <span id="txtLabelEncryptedMemory"><span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)</span>
                     <span id="mappingCount">對照組: 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 進階與合規擴充模組 -->
+    <div style="margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <!-- 企業規則同步 -->
+        <div class="panel" style="flex: 1; min-width: 300px; margin-bottom: 0; padding: 16px;">
+            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 8px;">🏢 企業規則同步 (Enterprise Rules)</div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 12px;">匯入由 IT 或法務部門派發的專案黑名單 JSON 檔，達成離線集中管控。</div>
+            <div class="btn-group" style="margin-bottom: 0;">
+                <input type="file" id="fileImportRules" accept=".json" style="display: none;" />
+                <button class="btn btn-outline btn-sm" id="btnImportRules" style="border-color: #6366f1; color: #a5b4fc;">📂 匯入企業規則</button>
+                <button class="btn btn-outline btn-sm" id="btnExportRules">💾 匯出目前規則</button>
+            </div>
+            <div id="ruleSyncStatus" style="font-size: 0.72rem; color: #10b981; margin-top: 8px; display: none;">✅ 規則同步成功！</div>
+        </div>
+
+        <!-- 技術限制與免責聲明按鈕 -->
+        <div class="panel" style="flex: 1; min-width: 300px; margin-bottom: 0; padding: 16px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 8px;">🛡️ 合規與技術邊界 (Compliance & Limits)</div>
+            <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 12px;">高級別資安是我們的底線。使用前請務必了解本離線沙盒的運作限制。</div>
+            <button class="btn btn-outline btn-sm" id="btnShowDisclaimer" style="border-color: #f59e0b; color: #fcd34d;">⚠️ 閱讀技術限制聲明</button>
+        </div>
+    </div>
+
+    <!-- 技術限制聲明 Modal (隱藏) -->
+    <div id="disclaimerModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ 技術限制與免責聲明 (Technical Limitations)</h3>
+                <span class="close-modal" id="btnCloseModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">「離線淨言 (Prompt-Off)」致力於提供 <strong>100% 離線、零信任、零資料留存</strong> 的極致隱私防護，但為確保資料絕對不離開您的裝置，我們在技術架構上做出了必要的取捨。請在使用前知悉以下邊界：</p>
+                <ul style="margin-top: 12px; padding-left: 20px; color: #cbd5e1; font-size: 0.82rem; line-height: 1.6;">
+                    <li style="margin-bottom: 8px;"><strong>缺乏語意理解 (No NLP/NER)：</strong> 本工具基於高精度的正規表達式 (Regex) 與黑名單運作。它無法像 AI 一樣「理解」上下文，若敏感詞未落入既定規則或字典中，可能會產生漏報。</li>
+                    <li style="margin-bottom: 8px;"><strong>無自動化攔截：</strong> 作為端點沙盒，您必須手動進行「脫敏 ➔ 貼上 AI ➔ 貼回還原」的作業流程。我們不進行底層網路攔截，以確保您的連線安全。</li>
+                    <li style="margin-bottom: 8px;"><strong>去中心化管理：</strong> 您的脫敏紀錄僅存在於當前瀏覽器的記憶體中，關閉或閒置即銷毀。企業無法從中央追蹤您的脫敏日誌。</li>
+                </ul>
+                <div style="margin-top: 16px; padding: 12px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; border-radius: 6px; font-size: 0.78rem; color: #fbbf24;">
+                    <strong>最終責任聲明：</strong> 本工具為輔助性質的第一道防線，使用者發送任何提示詞至外部 AI 服務前，仍應進行最終的人工審視。
                 </div>
             </div>
         </div>
@@ -324,7 +377,6 @@
         currentLang = lang;
         const dict = i18n[lang] || i18n['zh-HK'];
 
-        // DOM 直接綁定替換，100% 絕對生效
         document.getElementById('txtNavSuite').innerHTML = dict.navSuite;
         document.getElementById('txtAppSubtitle').innerHTML = dict.appSubtitle;
         document.getElementById('txtNavBadge').innerHTML = dict.navBadge;
@@ -346,13 +398,11 @@
         document.getElementById('txtFooterSessionVolatile').innerHTML = dict.footerSessionVolatile;
         document.getElementById('txtFooterCompliance').innerHTML = dict.footerCompliance;
 
-        // Placeholders (僅修改提示文字，不更動輸入框內容)
         inputRaw.setAttribute('placeholder', dict.inputPlaceholder);
         outputSanitized.setAttribute('placeholder', dict.outputPlaceholder);
         inputAISafe.setAttribute('placeholder', dict.inputAIPlaceholder);
         outputRestored.setAttribute('placeholder', dict.outputRestoredPlaceholder);
 
-        // 按鈕切換高亮
         document.getElementById('btnLangZH').classList.toggle('active', lang === 'zh-HK');
         document.getElementById('btnLangEN').classList.toggle('active', lang === 'en');
 
@@ -483,6 +533,77 @@
         }
         updateCharCount();
     });
+
+    // === 技術限制聲明 Modal 邏輯 ===
+    const btnShowDisclaimer = document.getElementById('btnShowDisclaimer');
+    const disclaimerModal = document.getElementById('disclaimerModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+
+    if (btnShowDisclaimer && disclaimerModal) {
+        btnShowDisclaimer.addEventListener('click', () => disclaimerModal.classList.add('show'));
+        btnCloseModal.addEventListener('click', () => disclaimerModal.classList.remove('show'));
+        window.addEventListener('click', (e) => {
+            if (e.target === disclaimerModal) disclaimerModal.classList.remove('show');
+        });
+    }
+
+    // === 企業規則 JSON 匯出/匯入邏輯 ===
+    const btnExportRules = document.getElementById('btnExportRules');
+    const btnImportRules = document.getElementById('btnImportRules');
+    const fileImportRules = document.getElementById('fileImportRules');
+    const ruleSyncStatus = document.getElementById('ruleSyncStatus');
+
+    if (btnExportRules) {
+        btnExportRules.addEventListener('click', () => {
+            const exportData = {
+                version: "4.3.4",
+                exportDate: new Date().toISOString(),
+                customRules: {
+                    orgSuffixes: PROMPT_OFFLINE_RULES.contextual.orgSuffixes || [],
+                    surnames: PROMPT_OFFLINE_RULES.contextual.surnames || [],
+                    customProjects: ["Project Aurora", "Project Dragon"]
+                }
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `prompt_off_rules_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        });
+    }
+
+    if (btnImportRules && fileImportRules) {
+        btnImportRules.addEventListener('click', () => fileImportRules.click());
+        
+        fileImportRules.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    if (importedData && importedData.customRules) {
+                        if (importedData.customRules.orgSuffixes) {
+                            PROMPT_OFFLINE_RULES.contextual.orgSuffixes = importedData.customRules.orgSuffixes;
+                        }
+                        if (importedData.customRules.surnames) {
+                            PROMPT_OFFLINE_RULES.contextual.surnames = [...new Set([...PROMPT_OFFLINE_RULES.contextual.surnames, ...importedData.customRules.surnames])];
+                        }
+                        
+                        ruleSyncStatus.style.display = 'block';
+                        setTimeout(() => ruleSyncStatus.style.display = 'none', 3000);
+                        fileImportRules.value = ''; 
+                    }
+                } catch (error) {
+                    alert('企業規則 JSON 格式錯誤，請聯絡管理員！');
+                }
+            };
+            reader.readAsText(file);
+        });
+    }
 
     // 啟動初始化 (確保輸入框留空，不執行自動載入範例)
     setLanguage(currentLang);
