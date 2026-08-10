@@ -346,7 +346,7 @@
         document.getElementById('txtFooterSessionVolatile').innerHTML = dict.footerSessionVolatile;
         document.getElementById('txtFooterCompliance').innerHTML = dict.footerCompliance;
 
-        // Placeholders
+        // Placeholders (僅修改提示文字，不更動輸入框內容)
         inputRaw.setAttribute('placeholder', dict.inputPlaceholder);
         outputSanitized.setAttribute('placeholder', dict.outputPlaceholder);
         inputAISafe.setAttribute('placeholder', dict.inputAIPlaceholder);
@@ -474,7 +474,7 @@
         });
     }
     
-    // 載入範例按鈕（手動點擊時才填入）
+    // 載入範例按鈕（手動點擊時才填入對應語言的範例文本）
     document.getElementById('btnSample').addEventListener('click', () => {
         if (currentLang === 'en') {
             inputRaw.value = `Employee John Smith (Passport: AB1234567, Email: john.smith@company.com, Phone: +1 415 555 2671) joined Enterprise Solutions Ltd on 2025-03-15. Salary is USD$12,500.\n\nHe is managing Project Aurora and contract CT-2025-0042. Manager Sarah Davis (ID: B987654321, IP: 192.168.1.1) issued a PIP with performance score 2.5 rank.`;
@@ -484,7 +484,7 @@
         updateCharCount();
     });
 
-    // 啟動初始化 (預設保持空白，不自動點擊載入範例)
+    // 啟動初始化 (確保輸入框留空，不執行自動載入範例)
     setLanguage(currentLang);
     if (inputRaw) inputRaw.value = '';
     updateCharCount();
