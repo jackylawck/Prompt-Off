@@ -1,4 +1,4 @@
-// rules.js - Enterprise Knowledge Base v4.3.3 (Cantonese Passive Voice & Boundary Shield Final)
+// rules.js - Enterprise Knowledge Base v4.3.4 (Triple-Guard Cantonese Shield)
 
 (function(global) {
     'use strict';
@@ -57,20 +57,16 @@
 
         organizational: [
             { id: 'COMPANY_NAME_EN', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /\b[A-Z][A-Za-z0-9&.\s]{2,30}(?:Inc\.|Ltd\.|LLC|Corp\.|Corporation|Solutions|Systems|Capital|Group)\b/g },
-            // v4.3.3 修正：廣東話被動語態「比/畀/被公司」前綴阻斷與 validator 雙重防護
+            // v4.3.4 廣東話語意三重安全防護：Lookbehind + Lookahead + Strict Validator
             { 
                 id: 'COMPANY_NAME_ZH', 
                 tokenPrefix: 'ENTERPRISE_CLIENT', 
-                regex: /(?<!因為|違反|正式比|正式畀|正式被|比|畀|被|同埋|代表|收購|對|向|於|在)[\u4e00-\u9fa5a-zA-Z0-9]{2,20}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|基金會)/g, 
+                regex: /(?<!因為|違反|同埋|代表|收購|對|向|於|在)(?!(?:正式)?(?:比|畀|被)公司)[\u4e00-\u9fa5a-zA-Z0-9]{2,20}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|基金會)/g, 
                 validator: (val) => {
                     if (val.length < 4) return false;
-                    const invalidPrefixes = [
-                        '因為', '違反', '同埋', '正式', '處理', 
-                        '比公司', '畀公司', '被公司', 
-                        '正式比', '正式畀', '正式被'
-                    ];
+                    const invalidPrefixes = ['因為', '違反', '同埋', '正式', '處理', '比公司', '畀公司', '被公司', '正式比', '正式畀', '正式被'];
                     if (invalidPrefixes.some(b => val.startsWith(b))) return false;
-                    if (val === '公司' || val === '本公司' || val === '貴公司') return false;
+                    if (['公司', '本公司', '貴公司', '比公司', '畀公司', '被公司'].includes(val)) return false;
                     return true;
                 }
             },
