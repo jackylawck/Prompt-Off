@@ -1,4 +1,4 @@
-// engine.js - Prompt Sanitizer Core v4.1 (Sub-string & Blacklist Guarded)
+// engine.js - Prompt Sanitizer Core v4.3 (Cantonese Sub-string & Blacklist Guarded)
 
 class PromptSanitizerEngine {
     constructor(rulesConfig) {
@@ -61,7 +61,7 @@ class PromptSanitizerEngine {
             }
         });
 
-        // 階段 2: 中文複姓與單字姓氏比對 (含切碎子字串黑名單防禦)
+        // 階段 2: 中文複姓與單字姓氏比對 (含廣東話口語及切碎子字串黑名單防禦)
         if (this.rules.contextual && Array.isArray(this.rules.contextual.surnames)) {
             const surnamePattern = this.rules.contextual.surnames.join('|');
             const nameRegex = new RegExp(`(?:${surnamePattern})[\\u4e00-\\u9fa5]{1,2}`, 'g');
@@ -71,7 +71,7 @@ class PromptSanitizerEngine {
                 if (val.length < 2 || val.length > 4 || /\d/.test(val)) return false;
                 if (orgSuffixes.some(s => val === s)) return false;
                 
-                // 完整擴充非人名常用詞彙黑名單（含「辦公室」被拆切成「公室」等情況）
+                // 完整擴充非人名常用詞彙黑名單（含「辦公室」拆切子字串及廣東話口語）
                 const blacklist = [
                     '高達', '高階', '高管', '方案', '代表', '表達', '要求', '說明', '指示', '安排', 
                     '計畫', '計劃', '項目', '專案', '合約', '公司', '集團', '部門', '銀行', 
@@ -81,8 +81,9 @@ class PromptSanitizerEngine {
                     '公營', '公有', '公務員', '公安', '公平', '公佈欄', '公文', '方舟', '夏日',
                     '公關', '公約', '公會', '公債', '公尺', '公頃', '公升', '公噸', '公積金', '公證', 
                     '公費', '公有地', '公訴', '公積', '公假', '高壓', '高頻',
-                    // 子字串關鍵補強
-                    '公室', '公台', '公部', '公員'
+                    '公室', '公台', '公部', '公員',
+                    // 廣東話專用口語黑名單補強
+                    '話事', '諗住', '點知', '睇醫生', '賣咗', '嗰位', '流出', '搞到', '即時', '拆解'
                 ];
                 if (blacklist.some(b => val.includes(b) || val === b)) return false;
                 
