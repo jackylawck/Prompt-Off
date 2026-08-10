@@ -474,6 +474,7 @@
         });
     }
     
+    // 載入範例按鈕（手動點擊時才填入）
     document.getElementById('btnSample').addEventListener('click', () => {
         if (currentLang === 'en') {
             inputRaw.value = `Employee John Smith (Passport: AB1234567, Email: john.smith@company.com, Phone: +1 415 555 2671) joined Enterprise Solutions Ltd on 2025-03-15. Salary is USD$12,500.\n\nHe is managing Project Aurora and contract CT-2025-0042. Manager Sarah Davis (ID: B987654321, IP: 192.168.1.1) issued a PIP with performance score 2.5 rank.`;
@@ -483,9 +484,10 @@
         updateCharCount();
     });
 
-    // 啟動初始化
+    // 啟動初始化 (預設保持空白，不自動點擊載入範例)
     setLanguage(currentLang);
-    document.getElementById('btnSample').click();
+    if (inputRaw) inputRaw.value = '';
+    updateCharCount();
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
