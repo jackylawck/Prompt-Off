@@ -277,7 +277,7 @@
     document.getElementById('btnLangZH').addEventListener('click', () => setLanguage('zh-HK'));
     document.getElementById('btnLangEN').addEventListener('click', () => setLanguage('en'));
 
-    // 閒置自動清空 (5分鐘)
+    // 閒置自動清空 (5分鐘無警告視窗版)
     let idleTimer;
     function resetIdleTimer() {
         clearTimeout(idleTimer);
@@ -285,7 +285,6 @@
             if (engine.mapping.size > 0 || (inputRaw && inputRaw.value !== '')) {
                 document.getElementById('btnClearInput').click();
                 document.getElementById('btnClearAI').click();
-                alert(currentLang === 'en' ? '⏳ System idle for 5 mins. Data auto-cleared.' : '⏳ 系統已閒置超過 5 分鐘，已自動清空數據。');
             }
         }, 5 * 60 * 1000);
     }
@@ -320,25 +319,35 @@
     // 按鈕動作
     document.getElementById('btnSanitize').addEventListener('click', () => {
         const raw = inputRaw.value;
-        if (!raw.trim()) return alert('請先輸入敏感文章內容。');
+        if (!raw.trim()) return;
         const result = engine.sanitize(raw);
         outputSanitized.value = result.sanitizedText;
         renderMapping(result.mappingTable);
     });
     
-    // 複製脫敏結果按鈕
-    document.getElementById('btnCopySanitized').addEventListener('click', () => {
-        const text = outputSanitized.value;
-        if (!text) return alert('沒有可複製的脫敏內容。');
-        navigator.clipboard.writeText(text).then(() => {
-            alert('✅ 脫敏文本已複製到剪貼簿！可直接貼給 AI 使用。');
+    // 複製脫敏結果按鈕 (按鈕內靜音視覺反饋)
+    const btnCopySanitized = document.getElementById('btnCopySanitized');
+    if (btnCopySanitized) {
+        btnCopySanitized.addEventListener('click', function() {
+            const text = outputSanitized.value;
+            if (!text) return;
+            const origText = this.innerHTML;
+            navigator.clipboard.writeText(text).then(() => {
+                this.innerHTML = '✅ 已複製！';
+                this.style.borderColor = '#10b981';
+                this.style.color = '#10b981';
+                setTimeout(() => {
+                    this.innerHTML = origText;
+                    this.style.borderColor = '';
+                    this.style.color = '';
+                }, 1800);
+            }).catch(() => {});
         });
-    });
+    }
 
     document.getElementById('btnRestore').addEventListener('click', () => {
         const safeText = inputAISafe.value;
-        if (!safeText.trim()) return alert('請貼上第三方 AI 回傳的內容。');
-        if (engine.mapping.size === 0) return alert('⚠️ 對照表為空，請先執行脫敏。');
+        if (!safeText.trim() || engine.mapping.size === 0) return;
         outputRestored.value = engine.restore(safeText);
     });
     
@@ -352,14 +361,26 @@
         inputAISafe.value = ''; outputRestored.value = '';
     });
     
-    document.getElementById('btnCopyResult').addEventListener('click', () => {
-        const text = outputRestored.value;
-        if (!text) return alert('沒有可複製的內容。');
-        navigator.clipboard.writeText(text).then(() => {
-            alert('✅ 還原結果已複製！(30秒後自動抹除剪貼簿)');
-            setTimeout(() => { navigator.clipboard.writeText('').catch(()=>{}); }, 30000);
+    // 複製還原結果按鈕 (按鈕內靜音視覺反饋)
+    const btnCopyResult = document.getElementById('btnCopyResult');
+    if (btnCopyResult) {
+        btnCopyResult.addEventListener('click', function() {
+            const text = outputRestored.value;
+            if (!text) return;
+            const origText = this.innerHTML;
+            navigator.clipboard.writeText(text).then(() => {
+                this.innerHTML = '✅ 已複製！';
+                this.style.borderColor = '#10b981';
+                this.style.color = '#10b981';
+                setTimeout(() => {
+                    this.innerHTML = origText;
+                    this.style.borderColor = '';
+                    this.style.color = '';
+                }, 1800);
+                setTimeout(() => { navigator.clipboard.writeText('').catch(()=>{}); }, 30000);
+            }).catch(() => {});
         });
-    });
+    }
     
     document.getElementById('btnSample').addEventListener('click', () => {
         inputRaw.value = `員工王大明 (DOB: 1990-05-20, 健保卡號 A123456789, 信用卡 4111-1111-1111-1111, 美國運通卡 3782-822463-12345) 於 2026年08月09日 負責智雲科技股份有限公司的 Project Aurora 開發案。\n\n因違反合約 CT-2026-991，將款項 HK$250,000 匯入個人銀行帳號 01234567891234 (SWIFT: HSBCHKHHXXX)。法務部律師李四 (Email: li.si@company.com, 手機 +852 9123 4567) 已於今日約談該員，並給出 2.5分 的績效評核。`;
