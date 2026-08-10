@@ -132,14 +132,14 @@
     
     <header class="suite-header">
         <div class="suite-brand">
-            <span data-i18n="navSuite">🌐 The Offline Suite</span>
-            <div class="slogan" data-i18n="appSubtitle">淨言在手 · 輸入無憂</div>
+            <span id="txtNavSuite">🌐 The Offline Suite</span>
+            <div class="slogan" id="txtAppSubtitle">淨言在手 · 輸入無憂</div>
         </div>
         <div class="header-right">
-            <span class="trust-badge" data-i18n="navBadge">⚡ 100% Local · Zero Cloud</span>
+            <span class="trust-badge" id="txtNavBadge">⚡ 100% Local · Zero Cloud</span>
             <div class="lang-switcher">
-                <button class="lang-btn active" data-lang="zh-HK" id="btnLangZH">繁體中文</button>
-                <button class="lang-btn" data-lang="en" id="btnLangEN">English</button>
+                <button class="lang-btn active" id="btnLangZH">繁體中文</button>
+                <button class="lang-btn" id="btnLangEN">English</button>
             </div>
         </div>
     </header>
@@ -147,153 +147,148 @@
     <!-- 主模組：敏感數據脫敏 -->
     <div class="panel">
         <div class="panel-title-large">
-            <span data-i18n="titleSanitize">🧹 敏感數據脫敏</span>
+            <span id="txtTitleSanitize">🧹 敏感數據脫敏</span>
             <span class="badge-large">Sanitize</span>
         </div>
         
-        <textarea id="inputRaw" data-i18n-ph="inputPlaceholder" placeholder="貼上敏感文章 / 案情敘述…"></textarea>
+        <textarea id="inputRaw" placeholder="貼上敏感文章 / 案情敘述…"></textarea>
         
         <div class="btn-group">
-            <button class="btn btn-primary" id="btnSanitize" data-i18n="btnSanitize">🔐 執行脫敏</button>
-            <button class="btn btn-outline btn-sm" id="btnClearInput" data-i18n="btnClear">清空</button>
-            <button class="btn btn-outline btn-sm" id="btnSample" data-i18n="btnSample">📥 載入範例</button>
+            <button class="btn btn-primary" id="btnSanitize">🔐 執行脫敏</button>
+            <button class="btn btn-outline btn-sm" id="btnClearInput">清空</button>
+            <button class="btn btn-outline btn-sm" id="btnSample">📥 載入範例</button>
         </div>
         
-        <div style="font-size:0.72rem;color:#64748b;margin-bottom:12px;" data-i18n="labelAutoDetect">
+        <div style="font-size:0.72rem;color:#64748b;margin-bottom:12px;" id="txtLabelAutoDetect">
             ⚡ 自動識別 (25+種)：人名 · 雙證件 · 銀行/信用卡/SWIFT · 公司/專案 · 薪酬/財務 · 電郵/電話/地址 · API/系統憑證
         </div>
         
         <!-- 自動識別後的結果區塊 -->
         <div class="section-header-flex">
-            <span class="section-label" data-i18n="labelSanitizedOutput">自動識別與脫敏結果：</span>
-            <button class="btn btn-outline btn-sm" id="btnCopySanitized" data-i18n="btnCopySanitized">📋 複製脫敏文本</button>
+            <span class="section-label" id="txtLabelSanitizedOutput">自動識別與脫敏結果：</span>
+            <button class="btn btn-outline btn-sm" id="btnCopySanitized">📋 複製脫敏文本</button>
         </div>
-        <textarea id="outputSanitized" readonly data-i18n-ph="outputPlaceholder" placeholder="點擊「執行脫敏」後，去識別化文本將顯示於此…"></textarea>
+        <textarea id="outputSanitized" readonly placeholder="點擊「執行脫敏」後，去識別化文本將顯示於此…"></textarea>
         
         <div class="mapping-box" id="mappingDisplay">
-            <span class="empty" data-i18n="labelMapping">📋 對照表 — 執行脫敏後自動生成</span>
+            <span class="empty" id="txtLabelMapping">📋 對照表 — 執行脫敏後自動生成</span>
         </div>
         
         <div class="status-bar">
-            <span data-i18n="labelLocalProcessing"><span class="dot green"></span> 本地端處理 · 零上載</span>
-            <span id="charCount"><span data-i18n="labelCharCount">字元:</span> 0</span>
+            <span id="txtLabelLocalProcessing"><span class="dot green"></span> 本地端處理 · 零上載</span>
+            <span id="charCount">字元: 0</span>
         </div>
     </div>
     
     <!-- Accordion Drawer: 一鍵復原真實數據 -->
     <div style="margin-bottom: 20px;">
         <div class="accordion-header" id="toggleRestoreAccordion">
-            <span data-i18n="accordionRestore">🔄 一鍵復原真實數據 (De-pseudonymize)</span>
-            <span class="accordion-icon" id="accordionIcon" data-i18n="accordionExpand">▼ 點擊展開</span>
+            <span id="txtAccordionRestore">🔄 一鍵復原真實數據 (De-pseudonymize)</span>
+            <span class="accordion-icon" id="accordionIcon">▼ 點擊展開</span>
         </div>
         
         <div class="accordion-body" id="accordionBody">
             <div class="panel" style="margin-bottom: 0;">
-                <textarea id="inputAISafe" data-i18n-ph="inputAIPlaceholder" placeholder="貼上第三方 AI (如 ChatGPT) 回傳的脫敏版結果…"></textarea>
+                <textarea id="inputAISafe" placeholder="貼上第三方 AI (如 ChatGPT) 回傳的脫敏版結果…"></textarea>
                 
                 <div class="btn-group">
-                    <button class="btn btn-success" id="btnRestore" data-i18n="btnRestore">🔓 復原真實數據</button>
-                    <button class="btn btn-outline btn-sm" id="btnClearAI" data-i18n="btnClear">清空</button>
-                    <button class="btn btn-outline btn-sm" id="btnCopyResult" data-i18n="btnCopyResult">📋 複製還原結果</button>
+                    <button class="btn btn-success" id="btnRestore">🔓 復原真實數據</button>
+                    <button class="btn btn-outline btn-sm" id="btnClearAI">清空</button>
+                    <button class="btn btn-outline btn-sm" id="btnCopyResult">📋 複製還原結果</button>
                 </div>
                 
-                <textarea id="outputRestored" readonly data-i18n-ph="outputRestoredPlaceholder" placeholder="還原後的真實數據將顯示於此…"></textarea>
+                <textarea id="outputRestored" readonly placeholder="還原後的真實數據將顯示於此…"></textarea>
                 
                 <div class="status-bar">
-                    <span data-i18n="labelEncryptedMemory"><span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)</span>
-                    <span id="mappingCount"><span data-i18n="labelMappingCount">對照組:</span> 0</span>
+                    <span id="txtLabelEncryptedMemory"><span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)</span>
+                    <span id="mappingCount">對照組: 0</span>
                 </div>
             </div>
         </div>
     </div>
     
     <footer class="suite-footer">
-        <div data-i18n="footerCopyright">© 2026 The Offline Suite</div>
+        <div id="txtFooterCopyright">© 2026 The Offline Suite</div>
         <div class="footer-trust">
-            <span data-i18n="footerZeroCloud">🛑 Zero Cloud Transmission</span>
-            <span data-i18n="footerSessionVolatile">🧹 Session Volatile</span>
-            <span data-i18n="footerCompliance">📄 ISO 42001 · HK PDPO</span>
+            <span id="txtFooterZeroCloud">🛑 Zero Cloud Transmission</span>
+            <span id="txtFooterSessionVolatile">🧹 Session Volatile</span>
+            <span id="txtFooterCompliance">📄 ISO 42001 · HK PDPO</span>
         </div>
     </footer>
 </div>
 
-<!-- 載入腳本 -->
+<!-- 載入核心規則與引擎 -->
 <script src="rules.js"></script>
 <script src="engine.js"></script>
-<script src="i18n/zh-HK.js"></script>
-<script src="i18n/en.js"></script>
 
 <script>
 (function() {
     'use strict';
     
-    // === 內建完整的 i18n 字典，防止 script 載入失敗 ===
-    const dictZH = {
-        navSuite: '🌐 The Offline Suite',
-        appSubtitle: '淨言在手 · 輸入無憂',
-        navBadge: '⚡ 100% Local · Zero Cloud',
-        titleSanitize: '🧹 敏感數據脫敏',
-        btnSanitize: '🔐 執行脫敏',
-        btnClear: '清空',
-        btnSample: '📥 載入範例',
-        labelAutoDetect: '⚡ 自動識別 (25+種)：人名 · 雙證件 · 銀行/信用卡/SWIFT · 公司/專案 · 薪酬/財務 · 電郵/電話/地址 · API/系統憑證',
-        labelSanitizedOutput: '自動識別與脫敏結果：',
-        btnCopySanitized: '📋 複製脫敏文本',
-        labelMapping: '📋 對照表 — 執行脫敏後自動生成',
-        labelLocalProcessing: '<span class="dot green"></span> 本地端處理 · 零上載',
-        labelCharCount: '字元:',
-        accordionRestore: '🔄 一鍵復原真實數據 (De-pseudonymize)',
-        accordionExpand: '▼ 點擊展開',
-        accordionCollapse: '▲ 點擊收起',
-        btnRestore: '🔓 復原真實數據',
-        btnCopyResult: '📋 複製還原結果',
-        labelEncryptedMemory: '<span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)',
-        labelMappingCount: '對照組:',
-        footerCopyright: '© 2026 The Offline Suite',
-        footerZeroCloud: '🛑 Zero Cloud Transmission',
-        footerSessionVolatile: '🧹 Session Volatile',
-        footerCompliance: '📄 ISO 42001 · HK PDPO',
-        inputPlaceholder: '貼上敏感文章 / 案情敘述…',
-        outputPlaceholder: '點擊「執行脫敏」後，去識別化文本將顯示於此…',
-        inputAIPlaceholder: '貼上第三方 AI (如 ChatGPT) 回傳的脫敏版結果…',
-        outputRestoredPlaceholder: '還原後的真實數據將顯示於此…'
+    // === 零外部依賴：直接將兩套語言字典寫入核心 ===
+    const i18n = {
+        'zh-HK': {
+            navSuite: '🌐 The Offline Suite',
+            appSubtitle: '淨言在手 · 輸入無憂',
+            navBadge: '⚡ 100% Local · Zero Cloud',
+            titleSanitize: '🧹 敏感數據脫敏',
+            btnSanitize: '🔐 執行脫敏',
+            btnClear: '清空',
+            btnSample: '📥 載入範例',
+            labelAutoDetect: '⚡ 自動識別 (25+種)：人名 · 雙證件 · 銀行/信用卡/SWIFT · 公司/專案 · 薪酬/財務 · 電郵/電話/地址 · API/系統憑證',
+            labelSanitizedOutput: '自動識別與脫敏結果：',
+            btnCopySanitized: '📋 複製脫敏文本',
+            labelMapping: '📋 對照表 — 執行脫敏後自動生成',
+            labelLocalProcessing: '<span class="dot green"></span> 本地端處理 · 零上載',
+            labelCharCount: '字元:',
+            accordionRestore: '🔄 一鍵復原真實數據 (De-pseudonymize)',
+            accordionExpand: '▼ 點擊展開',
+            accordionCollapse: '▲ 點擊收起',
+            btnRestore: '🔓 復原真實數據',
+            btnCopyResult: '📋 複製還原結果',
+            labelEncryptedMemory: '<span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)',
+            labelMappingCount: '對照組:',
+            footerCopyright: '© 2026 The Offline Suite',
+            footerZeroCloud: '🛑 Zero Cloud Transmission',
+            footerSessionVolatile: '🧹 Session Volatile',
+            footerCompliance: '📄 ISO 42001 · HK PDPO',
+            inputPlaceholder: '貼上敏感文章 / 案情敘述…',
+            outputPlaceholder: '點擊「執行脫敏」後，去識別化文本將顯示於此…',
+            inputAIPlaceholder: '貼上第三方 AI (如 ChatGPT) 回傳的脫敏版結果…',
+            outputRestoredPlaceholder: '還原後的真實數據將顯示於此…'
+        },
+        'en': {
+            navSuite: '🌐 The Offline Suite',
+            appSubtitle: 'Purify at Hand, Prompt with Peace',
+            navBadge: '⚡ 100% Local · Zero Cloud',
+            titleSanitize: '🧹 Prompt Sanitizer',
+            btnSanitize: '🔐 Sanitize Prompt',
+            btnClear: 'Clear',
+            btnSample: '📥 Load Sample',
+            labelAutoDetect: '⚡ Auto-Detect (25+ Types): Names · IDs/Passports · Banking/Credit Cards · Orgs/Projects · Financials · Contact Info · API Keys',
+            labelSanitizedOutput: 'Sanitized AI-Safe Output:',
+            btnCopySanitized: '📋 Copy Sanitized Prompt',
+            labelMapping: '📋 Mapping Table — Auto-generated upon sanitization',
+            labelLocalProcessing: '<span class="dot green"></span> 100% Local Processing · Zero Cloud Upload',
+            labelCharCount: 'Chars:',
+            accordionRestore: '🔄 De-pseudonymize / Restore Real Data',
+            accordionExpand: '▼ Expand',
+            accordionCollapse: '▲ Collapse',
+            btnRestore: '🔓 Restore Real Data',
+            btnCopyResult: '📋 Copy Restored Result',
+            labelEncryptedMemory: '<span class="dot blue"></span> In-Memory Mapping (Auto-clears after 5 mins idle)',
+            labelMappingCount: 'Mappings:',
+            footerCopyright: '© 2026 The Offline Suite',
+            footerZeroCloud: '🛑 Zero Cloud Transmission',
+            footerSessionVolatile: '🧹 Session Volatile',
+            footerCompliance: '📄 ISO 42001 · HK PDPO Aligned',
+            inputPlaceholder: 'Paste sensitive raw prompt or document here...',
+            outputPlaceholder: 'Sanitized AI-safe text will appear here...',
+            inputAIPlaceholder: 'Paste sanitized output returned from third-party AI...',
+            outputRestoredPlaceholder: 'Restored text with real data will appear here...'
+        }
     };
 
-    const dictEN = {
-        navSuite: '🌐 The Offline Suite',
-        appSubtitle: 'Purify at Hand, Prompt with Peace',
-        navBadge: '⚡ 100% Local · Zero Cloud',
-        titleSanitize: '🧹 Prompt Sanitizer',
-        btnSanitize: '🔐 Sanitize Prompt',
-        btnClear: 'Clear',
-        btnSample: '📥 Load Sample',
-        labelAutoDetect: '⚡ Auto-Detect (25+ Types): Names · IDs/Passports · Banking/Credit Cards · Orgs/Projects · Financials · Contact Info · API Keys',
-        labelSanitizedOutput: 'Sanitized AI-Safe Output:',
-        btnCopySanitized: '📋 Copy Sanitized Prompt',
-        labelMapping: '📋 Mapping Table — Auto-generated upon sanitization',
-        labelLocalProcessing: '<span class="dot green"></span> 100% Local Processing · Zero Cloud Upload',
-        labelCharCount: 'Chars:',
-        accordionRestore: '🔄 De-pseudonymize / Restore Real Data',
-        accordionExpand: '▼ Expand',
-        accordionCollapse: '▲ Collapse',
-        btnRestore: '🔓 Restore Real Data',
-        btnCopyResult: '📋 Copy Restored Result',
-        labelEncryptedMemory: '<span class="dot blue"></span> In-Memory Mapping (Auto-clears after 5 mins idle)',
-        labelMappingCount: 'Mappings:',
-        footerCopyright: '© 2026 The Offline Suite',
-        footerZeroCloud: '🛑 Zero Cloud Transmission',
-        footerSessionVolatile: '🧹 Session Volatile',
-        footerCompliance: '📄 ISO 42001 · HK PDPO Aligned',
-        inputPlaceholder: 'Paste sensitive raw prompt or document here...',
-        outputPlaceholder: 'Sanitized AI-safe text will appear here...',
-        inputAIPlaceholder: 'Paste sanitized output returned from third-party AI...',
-        outputRestoredPlaceholder: 'Restored text with real data will appear here...'
-    };
-
-    const langMap = { 
-        'zh-HK': typeof LANG_ZH_HK !== 'undefined' ? Object.assign({}, dictZH, LANG_ZH_HK) : dictZH, 
-        'en': typeof LANG_EN !== 'undefined' ? Object.assign({}, dictEN, LANG_EN) : dictEN 
-    };
     let currentLang = localStorage.getItem('prompt-off-lang') || 'zh-HK';
 
     // 初始化引擎
@@ -308,7 +303,7 @@
     const charCount = document.getElementById('charCount');
     const mappingCount = document.getElementById('mappingCount');
 
-    // === Accordion 手風琴抽屜 ===
+    // Accordion 手風琴
     const accordionHeader = document.getElementById('toggleRestoreAccordion');
     const accordionBody = document.getElementById('accordionBody');
     const accordionIcon = document.getElementById('accordionIcon');
@@ -316,36 +311,51 @@
     accordionHeader.addEventListener('click', () => {
         accordionHeader.classList.toggle('active');
         accordionBody.classList.toggle('open');
-        const dict = langMap[currentLang];
+        const dict = i18n[currentLang];
         if (accordionBody.classList.contains('open')) {
-            accordionIcon.textContent = dict.accordionCollapse || '▲ 點擊收起';
+            accordionIcon.textContent = dict.accordionCollapse;
         } else {
-            accordionIcon.textContent = dict.accordionExpand || '▼ 點擊展開';
+            accordionIcon.textContent = dict.accordionExpand;
         }
     });
 
-    // === 語言切換引擎 ===
+    // === 精準 DOM ID 語言切換函數 ===
     function setLanguage(lang) {
         currentLang = lang;
-        const dict = langMap[lang] || dictZH;
-        
-        // 替換所有 data-i18n 文字
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (dict[key]) el.innerHTML = dict[key];
-        });
-        
-        // 替換所有 placeholder
-        document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-            const key = el.getAttribute('data-i18n-ph');
-            if (dict[key]) el.setAttribute('placeholder', dict[key]);
-        });
-        
-        // 更新按鈕樣式
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === lang);
-        });
-        
+        const dict = i18n[lang] || i18n['zh-HK'];
+
+        // DOM 直接綁定替換，100% 絕對生效
+        document.getElementById('txtNavSuite').innerHTML = dict.navSuite;
+        document.getElementById('txtAppSubtitle').innerHTML = dict.appSubtitle;
+        document.getElementById('txtNavBadge').innerHTML = dict.navBadge;
+        document.getElementById('txtTitleSanitize').innerHTML = dict.titleSanitize;
+        document.getElementById('btnSanitize').innerHTML = dict.btnSanitize;
+        document.getElementById('btnClearInput').innerHTML = dict.btnClear;
+        document.getElementById('btnSample').innerHTML = dict.btnSample;
+        document.getElementById('txtLabelAutoDetect').innerHTML = dict.labelAutoDetect;
+        document.getElementById('txtLabelSanitizedOutput').innerHTML = dict.labelSanitizedOutput;
+        document.getElementById('btnCopySanitized').innerHTML = dict.btnCopySanitized;
+        document.getElementById('txtLabelLocalProcessing').innerHTML = dict.labelLocalProcessing;
+        document.getElementById('txtAccordionRestore').innerHTML = dict.accordionRestore;
+        document.getElementById('btnRestore').innerHTML = dict.btnRestore;
+        document.getElementById('btnClearAI').innerHTML = dict.btnClear;
+        document.getElementById('btnCopyResult').innerHTML = dict.btnCopyResult;
+        document.getElementById('txtLabelEncryptedMemory').innerHTML = dict.labelEncryptedMemory;
+        document.getElementById('txtFooterCopyright').innerHTML = dict.footerCopyright;
+        document.getElementById('txtFooterZeroCloud').innerHTML = dict.footerZeroCloud;
+        document.getElementById('txtFooterSessionVolatile').innerHTML = dict.footerSessionVolatile;
+        document.getElementById('txtFooterCompliance').innerHTML = dict.footerCompliance;
+
+        // Placeholders
+        inputRaw.setAttribute('placeholder', dict.inputPlaceholder);
+        outputSanitized.setAttribute('placeholder', dict.outputPlaceholder);
+        inputAISafe.setAttribute('placeholder', dict.inputAIPlaceholder);
+        outputRestored.setAttribute('placeholder', dict.outputRestoredPlaceholder);
+
+        // 按鈕切換高亮
+        document.getElementById('btnLangZH').classList.toggle('active', lang === 'zh-HK');
+        document.getElementById('btnLangEN').classList.toggle('active', lang === 'en');
+
         localStorage.setItem('prompt-off-lang', lang);
         updateCharCount();
         if (engine && engine.mapping) {
@@ -373,23 +383,21 @@
     resetIdleTimer();
     
     function updateCharCount() {
-        const dict = langMap[currentLang] || dictZH;
-        const prefix = dict.labelCharCount || '字元:';
+        const dict = i18n[currentLang];
         if (charCount && inputRaw) {
-            charCount.innerHTML = `<span>${prefix}</span> ${inputRaw.value.length}`;
+            charCount.innerHTML = `<span>${dict.labelCharCount}</span> ${inputRaw.value.length}`;
         }
     }
     if (inputRaw) inputRaw.addEventListener('input', updateCharCount);
     
     function renderMapping(table) {
-        const dict = langMap[currentLang] || dictZH;
+        const dict = i18n[currentLang];
         const entries = Object.entries(table);
-        const prefix = dict.labelMappingCount || '對照組:';
         
         if (!mappingDisplay) return;
         if (entries.length === 0) {
-            mappingDisplay.innerHTML = `<span class="empty">${dict.labelMapping || ''}</span>`;
-            if (mappingCount) mappingCount.innerHTML = `<span>${prefix}</span> 0`;
+            mappingDisplay.innerHTML = `<span class="empty">${dict.labelMapping}</span>`;
+            if (mappingCount) mappingCount.innerHTML = `<span>${dict.labelMappingCount}</span> 0`;
             return;
         }
         let html = '';
@@ -397,7 +405,7 @@
             html += `<span class="highlight">${token}</span> → ${raw} &nbsp;&nbsp;`;
         }
         mappingDisplay.innerHTML = html;
-        if (mappingCount) mappingCount.innerHTML = `<span>${prefix}</span> ${entries.length}`;
+        if (mappingCount) mappingCount.innerHTML = `<span>${dict.labelMappingCount}</span> ${entries.length}`;
     }
     
     // 按鈕動作
@@ -409,7 +417,7 @@
         renderMapping(result.mappingTable);
     });
     
-    // 複製脫敏結果 (按鈕動態反饋)
+    // 複製脫敏結果
     const btnCopySanitized = document.getElementById('btnCopySanitized');
     if (btnCopySanitized) {
         btnCopySanitized.addEventListener('click', function() {
@@ -445,7 +453,7 @@
         inputAISafe.value = ''; outputRestored.value = '';
     });
     
-    // 複製還原結果 (按鈕動態反饋)
+    // 複製還原結果
     const btnCopyResult = document.getElementById('btnCopyResult');
     if (btnCopyResult) {
         btnCopyResult.addEventListener('click', function() {
@@ -475,7 +483,7 @@
         updateCharCount();
     });
 
-    // 預設語言初始化
+    // 啟動初始化
     setLanguage(currentLang);
     document.getElementById('btnSample').click();
 
