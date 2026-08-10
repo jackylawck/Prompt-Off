@@ -1,90 +1,110 @@
-// engine.js - Clean & Deterministic Sanitizer Core v3.0 (Incremental & Resilient)
+// engine.js - Clean & Deterministic Sanitizer Core v3.0 (Fixed Bug Version)
 
 class PromptSanitizerEngine {
     constructor(rulesConfig) {
-        this.rules = rulesConfig;
+        this.rules = rulesConfig || {};
         this.mapping = new Map();
         this.reverseMapping = new Map();
         
-        // 扁平化所有類別的規則
+        // 安全扁平化所有類別的規則
         this.allRules = [
-            ...(rulesConfig.structured || []),
-            ...(rulesConfig.financial || []),
-            ...(rulesConfig.organizational || []),
-            ...(rulesConfig.temporal || [])
+            ...(this.rules.structured || []),
+            ...(this.rules.financial || []),
+            ...(this.rules.organizational || []),
+            ...(this.rules.temporal || [])
         ];
         
-        // 如果未來有加 custom 自訂規則，自動納入
-        if (rulesConfig.custom) {
-            Object.values(rulesConfig.custom).forEach(group => {
+        if (this.rules.custom) {
+            Object.values(this.rules.custom).forEach(group => {
                 if (Array.isArray(group)) this.allRules.push(...group);
             });
         }
     }
 
-    // 將清空邏輯獨立，由 UI (index.html) 的 btnClearInput 觸發
+    // 同時支援重置 Session (雙重方法相容 index.html 的呼叫)
     resetSession() {
         this.mapping.clear();
         this.reverseMapping.clear();
     }
 
-    sanitize(text) {
-        let result = text; // 注意：這裡不再呼叫 resetSession()，支援連續增量貼上！
+    clearSession() {
+        this.resetSession();
+    }
 
-        const applyRule = (regex, prefix, validator = () => true) => {
-            const matches = [...result.matchAll(regex)];
-            let idx = this.mapping.size; // 延續目前的數量，防止覆蓋
-            matches.forEach(m => {
-                // 如果有 capturing group 就取第一個，否則取全域匹配
-                const rawVal = (m[1] ? m[1] : m[0]).trim();
-                if (!this.reverseMapping.has(rawVal) && rawVal.length > 0 && validator(rawVal)) {
-                    let key = '';
-                    if (['EMPLOYEE_NAME', 'ENTERPRISE_CLIENT', 'CONFIDENTIAL_PROJECT'].includes(prefix)) {
-                        key = `[${prefix}_${String.fromCharCode(65 + idx % 26)}${idx >= 26 ? Math.floor(idx / 26) : ''}]`;
-                    } else {
-                        key = `[${prefix}_${idx + 1}]`;
+    sanitize(text) {
+        if (!text) return { sanitizedText: '', mappingTable: {} };
+        let result = text;
+
+        const applyRule = (regex, prefix, validator) => {
+            try {
+                // 為避免全域正則 lastIndex 狀態殘留，建立新正則執行
+                const flags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g';
+                const activeRegex = new RegExp(regex.source, flags);
+                const matches = [...result.matchAll(activeRegex)];
+                let idx = this.mapping.size;
+
+                matches.forEach(m => {
+                    const rawVal = (m[1] ? m[1] : m[0]).trim();
+                    const isValid = (typeof validator === 'function') ? validator(rawVal) : true;
+
+                    if (isValid && !this.reverseMapping.has(rawVal) && rawVal.length > 0) {
+                        let key = '';
+                        if (['EMPLOYEE_NAME', 'ENTERPRISE_CLIENT', 'CONFIDENTIAL_PROJECT'].includes(prefix)) {
+                            key = `[${prefix}_${String.fromCharCode(65 + idx % 26)}${idx >= 26 ? Math.floor(idx / 26) : ''}]`;
+                        } else {
+                            key = `[${prefix}_${idx + 1}]`;
+                        }
+                        this.mapping.set(key, rawVal);
+                        this.reverseMapping.set(rawVal, key);
+                        idx++;
                     }
-                    this.mapping.set(key, rawVal);
-                    this.reverseMapping.set(rawVal, key);
-                    idx++;
-                }
-            });
+                });
+            } catch (err) {
+                console.warn(`Rule execution failed for ${prefix}:`, err);
+            }
         };
 
-        // 階段 1: 遍歷執行所有 Taxonomy 規則
+        // 階段 1: 執行所有結構化與分類規則
         this.allRules.forEach(rule => {
-            applyRule(rule.regex, rule.tokenPrefix, rule.validator);
+            if (rule && rule.regex) {
+                applyRule(rule.regex, rule.tokenPrefix, rule.validator);
+            }
         });
 
-        // 階段 2: 人名處理優化 (放寬斷言，利用強大的百家姓庫進行非貪婪匹配)
-        const surnamePattern = this.rules.contextual.surnames.join('|');
-        const nameRegex = new RegExp(`\\b(?:${surnamePattern})[\\u4e00-\\u9fa5]{1,2}\\b`, 'g');
-        
-        applyRule(nameRegex, 'EMPLOYEE_NAME', (val) => {
-            return val.length >= 2 && !this.rules.contextual.orgSuffixes.some(s => val.includes(s)) && !/\d/.test(val);
-        });
+        // 階段 2: 中文百家姓非貪婪比對
+        if (this.rules.contextual && Array.isArray(this.rules.contextual.surnames)) {
+            const surnamePattern = this.rules.contextual.surnames.join('|');
+            const nameRegex = new RegExp(`\\b(?:${surnamePattern})[\\u4e00-\\u9fa5]{1,2}\\b`, 'g');
+            
+            applyRule(nameRegex, 'EMPLOYEE_NAME', (val) => {
+                const orgSuffixes = this.rules.contextual.orgSuffixes || [];
+                return val.length >= 2 && !orgSuffixes.some(s => val.includes(s)) && !/\d/.test(val);
+            });
+        }
 
-        // 階段 3: 執行字串全域替換
+        // 階段 3: 全域精準長度遞減替換
         const sortedRawValues = [...this.reverseMapping.keys()].sort((a, b) => b.length - a.length);
         sortedRawValues.forEach(rawVal => {
             const token = this.reverseMapping.get(rawVal);
-            // 改用正則全域替換 (g)，移除舊版 .replace(/\s+/g, ' ')，100% 保留原始合約/程式碼排版
-            result = result.replace(new RegExp(rawVal.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'g'), token);
+            const escaped = rawVal.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+            result = result.replace(new RegExp(escaped, 'g'), token);
         });
 
         return {
-            sanitizedText: result.trim(),
+            sanitizedText: result,
             mappingTable: Object.fromEntries(this.mapping)
         };
     }
 
     restore(safeAIText) {
+        if (!safeAIText) return '';
         let restored = safeAIText;
         const sortedTokens = [...this.mapping.keys()].sort((a, b) => b.length - a.length);
+        
         sortedTokens.forEach(token => {
             const rawVal = this.mapping.get(token);
-            // 使用忽略大小寫 (gi) 替換，防範 LLM 擅自改變 Token 的大小寫 (例如回傳 [employee_name_a])
-            restored = restored.replace(new RegExp(token.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi'), rawVal);
+            const escaped = token.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+            restored = restored.replace(new RegExp(escaped, 'gi'), rawVal);
         });
         return restored;
     }
