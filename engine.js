@@ -1,4 +1,4 @@
-// engine.js - Clean & Deterministic Sanitizer Core v3.0 (Fixed Bug Version)
+// engine.js - Prompt Sanitizer Core v3.1 (Name Match Fix)
 
 class PromptSanitizerEngine {
     constructor(rulesConfig) {
@@ -6,7 +6,6 @@ class PromptSanitizerEngine {
         this.mapping = new Map();
         this.reverseMapping = new Map();
         
-        // 安全扁平化所有類別的規則
         this.allRules = [
             ...(this.rules.structured || []),
             ...(this.rules.financial || []),
@@ -21,7 +20,6 @@ class PromptSanitizerEngine {
         }
     }
 
-    // 同時支援重置 Session (雙重方法相容 index.html 的呼叫)
     resetSession() {
         this.mapping.clear();
         this.reverseMapping.clear();
@@ -37,7 +35,6 @@ class PromptSanitizerEngine {
 
         const applyRule = (regex, prefix, validator) => {
             try {
-                // 為避免全域正則 lastIndex 狀態殘留，建立新正則執行
                 const flags = regex.flags.includes('g') ? regex.flags : regex.flags + 'g';
                 const activeRegex = new RegExp(regex.source, flags);
                 const matches = [...result.matchAll(activeRegex)];
@@ -64,25 +61,34 @@ class PromptSanitizerEngine {
             }
         };
 
-        // 階段 1: 執行所有結構化與分類規則
+        // 階段 1: 執行結構化與分類規則 (優先度高的 PII)
         this.allRules.forEach(rule => {
             if (rule && rule.regex) {
                 applyRule(rule.regex, rule.tokenPrefix, rule.validator);
             }
         });
 
-        // 階段 2: 中文百家姓非貪婪比對
+        // 階段 2: 精準中文人名識別 (修正「王大明」、「李四」被誤殺問題)
         if (this.rules.contextual && Array.isArray(this.rules.contextual.surnames)) {
             const surnamePattern = this.rules.contextual.surnames.join('|');
-            const nameRegex = new RegExp(`\\b(?:${surnamePattern})[\\u4e00-\\u9fa5]{1,2}\\b`, 'g');
+            // 比對 姓氏 + 1~2 個中文字
+            const nameRegex = new RegExp(`(?:${surnamePattern})[\\u4e00-\\u9fa5]{1,2}`, 'g');
+            const orgSuffixes = this.rules.contextual.orgSuffixes || [];
             
             applyRule(nameRegex, 'EMPLOYEE_NAME', (val) => {
-                const orgSuffixes = this.rules.contextual.orgSuffixes || [];
-                return val.length >= 2 && !orgSuffixes.some(s => val.includes(s)) && !/\d/.test(val);
+                // 排除長度不合、含數字、或整詞就是機構後綴 (例如「黃頁」、「陳設」)
+                if (val.length < 2 || val.length > 4 || /\d/.test(val)) return false;
+                if (orgSuffixes.some(s => val === s)) return false;
+                
+                // 確保不是常見非人名詞彙
+                const blacklist = ['專案', '計畫', '計劃', '合約', '公司', '集團', '部門', '銀行', '帳號', '金額', '績效', '評核', '條例', '框架', '開發'];
+                if (blacklist.some(b => val.includes(b))) return false;
+                
+                return true;
             });
         }
 
-        // 階段 3: 全域精準長度遞減替換
+        // 階段 3: 字串遞減長度全域替換
         const sortedRawValues = [...this.reverseMapping.keys()].sort((a, b) => b.length - a.length);
         sortedRawValues.forEach(rawVal => {
             const token = this.reverseMapping.get(rawVal);
