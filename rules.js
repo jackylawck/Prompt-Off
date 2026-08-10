@@ -1,4 +1,4 @@
-// rules.js - Enterprise Knowledge Base v4.3 (Cantonese Guard & Boundary Hardened)
+// rules.js - Enterprise Knowledge Base v4.3.1 (Cantonese Passive Voice & Boundary Shield)
 
 (function(global) {
     'use strict';
@@ -42,7 +42,7 @@
             { id: 'CLAUSE_REF', tokenPrefix: 'CLAUSE_REF', regex: /(?:Section|Art\.|條)\s*\d+[\.\d]*/gi },
             { id: 'VEHICLE_PLATE', tokenPrefix: 'VEHICLE_LICENSE', regex: /\b[A-Z]{2,3}[\s-]?\d{3,4}\b/g },
 
-            // 6. Title-Prefixed Contextual English Names (支援 O'Brien, Jean-Luc, J. R.)
+            // 6. Title-Prefixed Contextual English Names (支援 Senior, Director, O'Brien, Jean-Luc, J. R.)
             { id: 'ENGLISH_NAME', tokenPrefix: 'EMPLOYEE_NAME', regex: /\b(?:Senior\s+)?(?:Director|Manager|Patient|Doctor|Dr\.|Mr\.|Ms\.|Mrs\.|Officer|Contact|President|CEO|Executive|Vice President)\s+[A-Z][A-Za-z.'-]{1,20}(?:\s+[A-Z][A-Za-z.'-]{1,20}){1,3}\b/g },
 
             // 7. Isolated Universal Phone Numbers
@@ -51,17 +51,17 @@
 
         financial: [
             { id: 'SALARY_AMOUNT', tokenPrefix: 'CONFIDENTIAL_AMOUNT', regex: /(?:HK\$|NT\$|USD\$|\$|港幣|台幣|美元|¥|£|€)\s*[\d,]+(?:\.\d+)?(?:萬|元|K|M|B)?|[\d,]+(?:\.\d+)?\s*(?:萬|元|港幣|台幣|美元)/gi },
-            // v4.3 修正：移除 \b 避免逗號千分位阻斷比對
+            // 移除 \b 避免千分位逗號阻斷股權比對 (如 50,000 股)
             { id: 'EQUITY_SHARES', tokenPrefix: 'EQUITY_SHARES', regex: /[\d,]+(?:\s*萬)?\s*(?:股|期權|股份|shares?)/gi }
         ],
 
         organizational: [
             { id: 'COMPANY_NAME_EN', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /\b[A-Z][A-Za-z0-9&.\s]{2,30}(?:Inc\.|Ltd\.|LLC|Corp\.|Corporation|Solutions|Systems|Capital|Group)\b/g },
-            // v4.3 廣東話前綴隔斷：防止「因為/比/同埋/違反公司」被吃掉
-            { id: 'COMPANY_NAME_ZH', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /(?<![因為|違反|比|同埋|代表|收購|對|向|於|在])[\u4e00-\u9fa5a-zA-Z0-9]{2,20}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|基金會)/g, validator: (val) => val.length >= 4 && !['因為', '違反', '同埋', '正式', '處理'].some(b => val.startsWith(b)) },
+            // v4.3.1 修正：廣東話被動語態「比/被公司」隔斷與 validator 防禦
+            { id: 'COMPANY_NAME_ZH', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /(?<![因為|違反|比|被|同埋|代表|收購|對|向|於|在])[\u4e00-\u9fa5a-zA-Z0-9]{2,20}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|基金會)/g, validator: (val) => val.length >= 4 && !['因為', '違反', '同埋', '正式', '處理', '比公司', '被公司'].some(b => val.startsWith(b)) },
             { id: 'PROJECT_CODE', tokenPrefix: 'CONFIDENTIAL_PROJECT', regex: /(?:Project|計畫|計劃|專案)\s*([A-Za-z0-9\s-]{2,20}|[\u4e00-\u9fa5]{2,6})(?=\s|[,.，。]|$)/g },
             { id: 'ADDRESS_EN', tokenPrefix: 'ADDRESS_LOCATION', regex: /\b\d{1,5}\s+[A-Z][A-Za-z0-9\s.,'-]{2,30}(?:Street|St\.|Avenue|Ave\.|Road|Rd\.|Boulevard|Blvd\.|Drive|Dr\.|Way|Lane|Ln\.)(?:,\s*(?:Apt|Suite|Floor|Building|\d+[A-Z]?)\s*\d*[A-Z]*)?(?:,\s*[A-Za-z\s]+)?\b/g },
-            // v4.3 修正：中文地址支援英文樓層/單位後綴 (如 CR2 樓 / 15樓A室)
+            // 中文地址支援英文樓層與單位後綴 (如 CR2 樓 / 15樓A室)
             { id: 'ADDRESS_ZH', tokenPrefix: 'ADDRESS_LOCATION', regex: /(?:臺北|台北|台中|台南|高雄|香港|九龍|新界|澳門|新加坡|上海|北京|深圳|廣州)[\u4e00-\u9fa50-9]{2,40}(?:路|街|巷|弄|號|樓|大道|道)(?:\s*[A-Za-z0-9]+(?:\s*樓|\s*室)?)?/g, validator: (val) => val.length >= 5 }
         ],
 
