@@ -1,9 +1,9 @@
-// rules.js - Enterprise Knowledge Base v3.5 (Compound Surname & Fallback Shield)
+// rules.js - Enterprise Knowledge Base v3.7 (Unified Bilingual Precision Guard)
 
 (function(global) {
     'use strict';
 
-    // 台灣身分證格式驗證 (兼顧測試假號碼與真實號碼)
+    // Taiwan ID format validation
     const isTWIDFormat = (val) => {
         if (!val) return false;
         return /^[A-Za-z][1289]\d{8}$/.test(val.trim());
@@ -11,29 +11,35 @@
 
     const rules = {
         structured: [
-            // 1. API Key (完全涵蓋 sk-proj- / sk-live- / ghp_ / Stripe 格式)
+            // 1. API Keys & Connection Strings (OpenAI sk-proj-, Stripe, GitHub, DSN)
             { id: 'API_KEY', tokenPrefix: 'API_TOKEN', regex: /\b(?:sk|pk|api|token|secret|ghp|xoxb)[a-zA-Z0-9\-_]{16,}\b/gi },
             { id: 'DB_CONNECTION', tokenPrefix: 'DATABASE_DSN', regex: /(?:mongodb|mysql|postgresql|redis|jdbc):\/\/[^\s]+/gi },
             { id: 'EMAIL', tokenPrefix: 'CORPORATE_EMAIL', regex: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g },
             
-            // 2. 網路與證件 (優先度高於電話)
+            // 2. Network & Hardware Identifiers
             { id: 'MAC_ADDRESS', tokenPrefix: 'MAC_ADDRESS', regex: /(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}/g },
             { id: 'IP_ADDRESS', tokenPrefix: 'IP_ADDRESS', regex: /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g },
 
-            // 3. 證件與卡號
+            // 3. Financial Cards & Accounts
             { id: 'CREDIT_CARD', tokenPrefix: 'CREDIT_CARD_NO', regex: /\b3[47]\d{2}[\s-]?\d{6}[\s-]?\d{5}\b|\b(?:\d{4}[\s-]?){3}\d{4}\b/g },
+            
+            // 4. Passports & Government IDs (International Passport takes priority over HKID to prevent truncation)
+            { id: 'PASSPORT_INTL', tokenPrefix: 'PASSPORT_NO', regex: /\b(?:Passport[:\s]*)[A-Z0-9]{8,9}\b|\b[A-PR-WY][0-9]{8}\b/gi },
             { id: 'TW_ID', tokenPrefix: 'TW_ID_NUMBER', regex: /\b[A-Za-z][1289]\d{8}\b/g, validator: isTWIDFormat },
             { id: 'HKID', tokenPrefix: 'HKID_NUMBER', regex: /\b[A-Za-z]{1,2}\d{6}\(?[0-9A]\)?/g },
-            { id: 'MEDICAL_RECORD', tokenPrefix: 'MEDICAL_RECORD_NO', regex: /\b(?:病歷|病號|MRN|健保)\s*[-:]?\s*[A-Z0-9]{6,12}\b/gi },
+            { id: 'MEDICAL_RECORD', tokenPrefix: 'MEDICAL_RECORD_NO', regex: /\b(?:MRN|Medical Record Number|病歷|病號|健保)\s*[-:]?\s*[A-Z0-9]{6,12}\b/gi },
             
-            // 4. 金融與合約
+            // 5. SWIFT, Contracts & Vehicles
             { id: 'SWIFT_CODE', tokenPrefix: 'SWIFT_BIC', regex: /\b[A-Z]{4}(?:HK|TW|US|GB|CN|JP|SG|EU)[A-Z0-9]{2}(?:[A-Z0-9]{3})?\b/g },
             { id: 'CONTRACT_ID', tokenPrefix: 'CONTRACT_REF_NO', regex: /\b[A-Z]{2,4}-\d{4,6}-\d{2,4}\b/g },
             { id: 'BANK_ACCOUNT', tokenPrefix: 'BANK_ACCOUNT_NO', regex: /\b\d{3}[-]\d{6,9}\b|\b\d{10,14}\b/g },
             { id: 'CLAUSE_REF', tokenPrefix: 'CLAUSE_REF', regex: /(?:Section|Art\.|條)\s*\d+[\.\d]*/gi },
             { id: 'VEHICLE_PLATE', tokenPrefix: 'VEHICLE_LICENSE', regex: /\b[A-Z]{2,3}[\s-]?\d{3,4}\b/g },
 
-            // 5. 通用電話號碼 (加入前後非英數字隔離，防止誤切身分證/卡號)
+            // 6. Contextual English Full Names (Matches [Title] Firstname Lastname)
+            { id: 'ENGLISH_NAME', tokenPrefix: 'EMPLOYEE_NAME', regex: /\b(?:Employee|Patient|Doctor|Dr\.|Mr\.|Ms\.|Mrs\.|Officer|Contact|Manager|President|CEO|Director)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})\b/g },
+
+            // 7. Universal Phone Numbers (Negative Lookaround to prevent miscutting card/ID numbers)
             { id: 'PHONE', tokenPrefix: 'PHONE_NUMBER', regex: /(?<![A-Za-z0-9])(?:\+\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]?\d{3,4}[\s-]?\d{3,4}(?![A-Za-z0-9])/g, validator: (val) => val.replace(/\D/g, '').length >= 8 }
         ],
 
@@ -43,9 +49,11 @@
         ],
 
         organizational: [
-            { id: 'COMPANY_NAME', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /[\u4e00-\u9fa5a-zA-Z0-9]{2,30}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|銀行|基金會)/g, validator: (val) => val.length >= 4 },
+            { id: 'COMPANY_NAME_EN', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /\b[A-Z][A-Za-z0-9&.\s]{2,30}(?:Inc\.|Ltd\.|LLC|Corp\.|Corporation|Solutions|Systems|Capital|Group)\b/g },
+            { id: 'COMPANY_NAME_ZH', tokenPrefix: 'ENTERPRISE_CLIENT', regex: /[\u4e00-\u9fa5a-zA-Z0-9]{2,30}(?:有限公司|股份有限公司|集團|公司|企業|中心|事務所|銀行|基金會)/g, validator: (val) => val.length >= 4 },
             { id: 'PROJECT_CODE', tokenPrefix: 'CONFIDENTIAL_PROJECT', regex: /(?:Project|計畫|計劃|專案)\s*([A-Za-z0-9]{2,15}|[\u4e00-\u9fa5]{2,6})(?=\s|[,.，。]|$)/g, validator: (val) => !['聯絡人', '負責人', '經理', '主管', '團隊', '計畫', '計劃', '方案', '項目', '交割'].some(b => val.includes(b)) },
-            { id: 'ADDRESS', tokenPrefix: 'ADDRESS_LOCATION', regex: /(?:臺北|台北|台中|台南|高雄|香港|九龍|新界|澳門|新加坡|上海|北京|深圳|廣州)[\u4e00-\u9fa50-9]{2,40}(?:路|街|巷|弄|號|樓|大道|道)/g, validator: (val) => val.length >= 5 }
+            { id: 'ADDRESS_EN', tokenPrefix: 'ADDRESS_LOCATION', regex: /\b\d{1,5}\s+[A-Z][a-zA-Z0-9\s.,]{2,30}(?:Street|St\.|Avenue|Ave\.|Road|Rd\.|Boulevard|Blvd\.|Drive|Dr\.|Way|Lane|Ln\.)\b/g },
+            { id: 'ADDRESS_ZH', tokenPrefix: 'ADDRESS_LOCATION', regex: /(?:臺北|台北|台中|台南|高雄|香港|九龍|新界|澳門|新加坡|上海|北京|深圳|廣州)[\u4e00-\u9fa50-9]{2,40}(?:路|街|巷|弄|號|樓|大道|道)/g, validator: (val) => val.length >= 5 }
         ],
 
         temporal: [
@@ -56,7 +64,7 @@
 
         contextual: {
             orgSuffixes: ['有限公司', '股份有限公司', '集團', '企業', '中心', '事務所', '部門', '委員會', '銀行', '基金會', '協會'],
-            // 複姓必須排在單字姓氏之前，確保優先匹配
+            // Compound surnames placed ahead of single-character surnames for greedy matching priority
             surnames: [
                 '夏侯', '公孫', '上官', '歐陽', '司徒', '諸葛', '張簡', '申屠', '皇甫', '尉遲',
                 '陳', '林', '黃', '張', '李', '王', '吳', '劉', '蔡', '楊', '許', '鄭', '謝', '洪', '郭', '邱', '曾', '廖', '賴', '徐',
