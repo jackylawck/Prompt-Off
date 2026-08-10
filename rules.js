@@ -1,4 +1,4 @@
-// rules.js - Enterprise Knowledge Base v3.7 (Unified Bilingual Precision Guard)
+// rules.js - Enterprise Knowledge Base v3.7 (Bilingual Dual-Language Guard)
 
 (function(global) {
     'use strict';
@@ -16,30 +16,30 @@
             { id: 'DB_CONNECTION', tokenPrefix: 'DATABASE_DSN', regex: /(?:mongodb|mysql|postgresql|redis|jdbc):\/\/[^\s]+/gi },
             { id: 'EMAIL', tokenPrefix: 'CORPORATE_EMAIL', regex: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g },
             
-            // 2. Network & Hardware Identifiers
+            // 2. Hardware & Network Identifiers
             { id: 'MAC_ADDRESS', tokenPrefix: 'MAC_ADDRESS', regex: /(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}/g },
             { id: 'IP_ADDRESS', tokenPrefix: 'IP_ADDRESS', regex: /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g },
 
-            // 3. Financial Cards & Accounts
+            // 3. Financial Payment Cards
             { id: 'CREDIT_CARD', tokenPrefix: 'CREDIT_CARD_NO', regex: /\b3[47]\d{2}[\s-]?\d{6}[\s-]?\d{5}\b|\b(?:\d{4}[\s-]?){3}\d{4}\b/g },
             
-            // 4. Passports & Government IDs (International Passport takes priority over HKID to prevent truncation)
+            // 4. Passports & Government IDs (International Passports prioritized over HKID to prevent 8-character string truncation)
             { id: 'PASSPORT_INTL', tokenPrefix: 'PASSPORT_NO', regex: /\b(?:Passport[:\s]*)[A-Z0-9]{8,9}\b|\b[A-PR-WY][0-9]{8}\b/gi },
             { id: 'TW_ID', tokenPrefix: 'TW_ID_NUMBER', regex: /\b[A-Za-z][1289]\d{8}\b/g, validator: isTWIDFormat },
             { id: 'HKID', tokenPrefix: 'HKID_NUMBER', regex: /\b[A-Za-z]{1,2}\d{6}\(?[0-9A]\)?/g },
             { id: 'MEDICAL_RECORD', tokenPrefix: 'MEDICAL_RECORD_NO', regex: /\b(?:MRN|Medical Record Number|病歷|病號|健保)\s*[-:]?\s*[A-Z0-9]{6,12}\b/gi },
             
-            // 5. SWIFT, Contracts & Vehicles
+            // 5. Banking, SWIFT & Contracts
             { id: 'SWIFT_CODE', tokenPrefix: 'SWIFT_BIC', regex: /\b[A-Z]{4}(?:HK|TW|US|GB|CN|JP|SG|EU)[A-Z0-9]{2}(?:[A-Z0-9]{3})?\b/g },
             { id: 'CONTRACT_ID', tokenPrefix: 'CONTRACT_REF_NO', regex: /\b[A-Z]{2,4}-\d{4,6}-\d{2,4}\b/g },
             { id: 'BANK_ACCOUNT', tokenPrefix: 'BANK_ACCOUNT_NO', regex: /\b\d{3}[-]\d{6,9}\b|\b\d{10,14}\b/g },
             { id: 'CLAUSE_REF', tokenPrefix: 'CLAUSE_REF', regex: /(?:Section|Art\.|條)\s*\d+[\.\d]*/gi },
             { id: 'VEHICLE_PLATE', tokenPrefix: 'VEHICLE_LICENSE', regex: /\b[A-Z]{2,3}[\s-]?\d{3,4}\b/g },
 
-            // 6. Contextual English Full Names (Matches [Title] Firstname Lastname)
-            { id: 'ENGLISH_NAME', tokenPrefix: 'EMPLOYEE_NAME', regex: /\b(?:Employee|Patient|Doctor|Dr\.|Mr\.|Ms\.|Mrs\.|Officer|Contact|Manager|President|CEO|Director)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})\b/g },
+            // 6. Title-Prefixed Contextual English Names
+            { id: 'ENGLISH_NAME', tokenPrefix: 'EMPLOYEE_NAME', regex: /\b(?:Director|Manager|Patient|Doctor|Dr\.|Mr\.|Ms\.|Mrs\.|Officer|Contact|President|CEO|Vice President)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})\b/g },
 
-            // 7. Universal Phone Numbers (Negative Lookaround to prevent miscutting card/ID numbers)
+            // 7. Universal Phone Numbers (Isolated boundaries to protect ID numbers)
             { id: 'PHONE', tokenPrefix: 'PHONE_NUMBER', regex: /(?<![A-Za-z0-9])(?:\+\d{1,3}[\s-]?)?\(?\d{2,4}\)?[\s-]?\d{3,4}[\s-]?\d{3,4}(?![A-Za-z0-9])/g, validator: (val) => val.replace(/\D/g, '').length >= 8 }
         ],
 
@@ -64,7 +64,6 @@
 
         contextual: {
             orgSuffixes: ['有限公司', '股份有限公司', '集團', '企業', '中心', '事務所', '部門', '委員會', '銀行', '基金會', '協會'],
-            // Compound surnames placed ahead of single-character surnames for greedy matching priority
             surnames: [
                 '夏侯', '公孫', '上官', '歐陽', '司徒', '諸葛', '張簡', '申屠', '皇甫', '尉遲',
                 '陳', '林', '黃', '張', '李', '王', '吳', '劉', '蔡', '楊', '許', '鄭', '謝', '洪', '郭', '邱', '曾', '廖', '賴', '徐',
