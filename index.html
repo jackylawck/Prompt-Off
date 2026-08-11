@@ -217,7 +217,7 @@
         </div>
     </div>
 
-    <!-- 進階與合規擴充模組 -->
+    <!-- 進階與合規擴充模組 (企業規則同步 + 免責聲明按鈕) -->
     <div style="margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
         <!-- 企業規則同步 -->
         <div class="panel" style="flex: 1; min-width: 300px; margin-bottom: 0; padding: 16px;">
@@ -239,6 +239,49 @@
         </div>
     </div>
 
+    <!-- v5.0 可選擴充模組 (摺疊抽屜 Drawer) -->
+    <div style="margin-bottom: 20px;">
+        <div class="accordion-header" id="toggleV5Accordion" style="border-color: rgba(99, 102, 241, 0.2); background: rgba(99, 102, 241, 0.05);">
+            <span style="color: #a5b4fc;">⚡ 實驗性擴充功能 (v5.0 Wasm 語意與瀏覽器插件 - 可選)</span>
+            <span class="accordion-icon" id="v5AccordionIcon">▼ 點擊選擇與展開</span>
+        </div>
+        
+        <div class="accordion-body" id="v5AccordionBody">
+            <div class="panel" style="margin-bottom: 0; background: rgba(15, 23, 42, 0.6); border-color: rgba(99, 102, 241, 0.15);">
+                
+                <!-- 風險與效能提示卡片 -->
+                <div style="padding: 12px 16px; background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; border-radius: 6px; margin-bottom: 16px; font-size: 0.78rem; color: #fcd34d; line-height: 1.6;">
+                    <strong>⚠️ 使用者風險與效能須知：</strong><br />
+                    以下功能為選擇性擴充。預設之 v4.3.4 正則引擎已具備最高資安與零記憶體負擔；若啟用本地 Wasm AI 模型，將會在您瀏覽器載入約 25MB–40MB 的本地權重檔，可能對低規格裝置造成短暫記憶體佔用。
+                </div>
+
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <!-- 選項 A：下載瀏覽器插件 -->
+                    <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">🧩 Chrome / Edge 瀏覽器擴充功能</div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
+                            不安裝任何雲端服務，直接於網頁版 ChatGPT / Claude 輸入框旁提供「原地脫敏/還原」按鈕，解決複製貼上繁瑣問題。
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="alert('v5.0 Manifest V3 擴充功能套件準備中，將於下階段開放下載！')" style="border-color: #6366f1; color: #a5b4fc;">📥 取得瀏覽器擴充套件 (.zip)</button>
+                    </div>
+
+                    <!-- 選項 B：啟用本地 Wasm 語意 AI -->
+                    <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">🧠 本地 Wasm 語意辨識引擎 (NER)</div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
+                            在瀏覽器記憶體載入輕量化模型，協助辨識無後綴之未知公司名或非標準英文人名（100% 本地離線運算）。
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="chkEnableWasm" style="cursor: pointer;" />
+                            <label for="chkEnableWasm" style="font-size: 0.75rem; color: #cbd5e1; cursor: pointer;">啟用 Wasm 語意模型（需額外下載 30MB 本地權重）</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- 技術限制聲明 Modal (隱藏) -->
     <div id="disclaimerModal" class="modal-overlay">
         <div class="modal-content">
@@ -249,7 +292,7 @@
             <div class="modal-body">
                 <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">「離線淨言 (Prompt-Off)」致力於提供 <strong>100% 離線、零信任、零資料留存</strong> 的極致隱私防護，但為確保資料絕對不離開您的裝置，我們在技術架構上做出了必要的取捨。請在使用前知悉以下邊界：</p>
                 <ul style="margin-top: 12px; padding-left: 20px; color: #cbd5e1; font-size: 0.82rem; line-height: 1.6;">
-                    <li style="margin-bottom: 8px;"><strong>缺乏語意理解 (No NLP/NER)：</strong> 本工具基於高精度的正規表達式 (Regex) 與黑名單運作。它無法像 AI 一樣「理解」上下文，若敏感詞未落入既定規則或字典中，可能會產生漏報。</li>
+                    <li style="margin-bottom: 8px;"><strong>缺乏語意理解 (No NLP/NER)：</strong> 本工具預設基於高精度的正規表達式 (Regex) 與黑名單運作。它無法像 AI 一樣「理解」上下文，若敏感詞未落入既定規則或字典中，可能會產生漏報。</li>
                     <li style="margin-bottom: 8px;"><strong>無自動化攔截：</strong> 作為端點沙盒，您必須手動進行「脫敏 ➔ 貼上 AI ➔ 貼回還原」的作業流程。我們不進行底層網路攔截，以確保您的連線安全。</li>
                     <li style="margin-bottom: 8px;"><strong>去中心化管理：</strong> 您的脫敏紀錄僅存在於當前瀏覽器的記憶體中，關閉或閒置即銷毀。企業無法從中央追蹤您的脫敏日誌。</li>
                 </ul>
@@ -356,7 +399,7 @@
     const charCount = document.getElementById('charCount');
     const mappingCount = document.getElementById('mappingCount');
 
-    // Accordion 手風琴
+    // Accordion 手風琴：一鍵復原真實數據
     const accordionHeader = document.getElementById('toggleRestoreAccordion');
     const accordionBody = document.getElementById('accordionBody');
     const accordionIcon = document.getElementById('accordionIcon');
@@ -371,6 +414,23 @@
             accordionIcon.textContent = dict.accordionExpand;
         }
     });
+
+    // Accordion 手風琴：v5.0 實驗性擴充模組
+    const toggleV5Accordion = document.getElementById('toggleV5Accordion');
+    const v5AccordionBody = document.getElementById('v5AccordionBody');
+    const v5AccordionIcon = document.getElementById('v5AccordionIcon');
+
+    if (toggleV5Accordion && v5AccordionBody) {
+        toggleV5Accordion.addEventListener('click', () => {
+            toggleV5Accordion.classList.toggle('active');
+            v5AccordionBody.classList.toggle('open');
+            if (v5AccordionBody.classList.contains('open')) {
+                v5AccordionIcon.textContent = '▲ 點擊收起選項';
+            } else {
+                v5AccordionIcon.textContent = '▼ 點擊選擇與展開';
+            }
+        });
+    }
 
     // === 精準 DOM ID 語言切換函數 ===
     function setLanguage(lang) {
