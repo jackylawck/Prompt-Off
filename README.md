@@ -6,10 +6,18 @@
 [![Client Side](https://img.shields.io/badge/Processing-100%25%20Local-success.svg)](#)
 [![No AI Model](https://img.shields.io/badge/Engine-100%25%20Rule--Based%20(No%20AI)-green.svg)](#)
 [![Compliance](https://img.shields.io/badge/Compliance-ISO%2042001%20%7C%20AIGP-orange.svg)](#)
+[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](#)
 
-**Prompt Offline (離線淨言)** 是一款專為企業 HR、法務與高階主管設計的 **純本地端提示詞脫敏與反向還原沙盒（Local Prompt Sanitizer & Vault）**。
+**Prompt Offline (離線淨言)** 是一款專為企業 HR、法務、資安人員與高階主管設計的 **純本地端提示詞脫敏與反向還原沙盒（Local Prompt Sanitizer & Vault）**。
 
 > ⚠️ **資安聲明：** 本工具本身 **100% 不包含任何 AI 演算法或雲端模型**。它是一套純前端執行的硬性規則引擎，確保敏感數據在發送給外部商業 AI（如 ChatGPT、Claude、Copilot）之前，於使用者終端被硬性截斷與假名化。
+
+---
+
+## ⚡ Quick Start / 快速開始
+
+- 🌐 **Live Demo (即刻試用)：** [https://jackylawck.github.io/Prompt-Off/](https://jackylawck.github.io/Prompt-Off/)
+- 💻 **Offline Deployment (離線部署)：** 直接下載此倉庫 `.zip` 檔，解壓縮後雙擊 `index.html` 即可在物理隔離/無網絡環境（Air-gapped）下執行。
 
 ---
 
@@ -17,27 +25,28 @@
 
 為了達成極致的資安與企業客製化需求，我們採用了 **Knowledge-Engine Decoupling** 架構：
 
-
+```text
 Prompt-Off/
 ├── index.html          # UI 層與事件綁定 (瘦身至極簡)
 ├── engine.js           # 核心引擎層 (純無狀態邏輯，零外部依賴)
-├── rules.js            # 企業級知識庫 v2.0 (15+ 種 PII 規則與語意標籤)
-├── i18n/               # 語言資源檔 (獨立擴充)
-│   ├── zh-HK.js        # 繁體中文語言包
-│   └── en.js           # 英文語言包
+├── rules.js            # 企業級知識庫 v4.3.4 (25+ 種 PII 規則與語義標籤)
 ├── manifest.json       # PWA 清單
 └── sw.js               # Service Worker 快取引擎
 
+```
+
 * **`engine.js` (引擎層):** 純函式邏輯，處理比對、假名化與還原。零外部依賴、無狀態，保證運算透明可審計。
-* **`rules.js` (知識層):** 獨立抽離所有的 PII 特徵庫。企業可隨時擴充自定義的機密專案代號或內部術語，無需修改核心引擎。
+* **`rules.js` (知識層):** 獨立抽離所有的 PII 特徵庫與雙向 Lookahead/Lookbehind 語意阻斷。企業可隨時匯入/匯出 JSON 擴充自定義的機密專案代號或內部術語，無需修改核心引擎。
 
 ### 🧠 語意保留標籤 (Context-Preserving Tokens) & 25+ 種 PII
+
 棄用會破壞 LLM 推理能力的抽象代號（如 `[Amount_1]`），全面升級為分類標籤（Taxonomy Tokens），包含：
-- **結構化 PII (含行業校驗):** `[CORPORATE_EMAIL_1]`, `[HKID_NUMBER_1]`, `[TW_ID_NUMBER_1]` (含模數校驗), `[CREDIT_CARD_NO_1]` (含 Luhn 演算法校驗), `[PASSPORT_NO_1]`, `[SWIFT_BIC_1]`, `[IP_ADDRESS_1]`, `[MAC_ADDRESS_1]`
-- **DevOps & 科技資產:** `[API_TOKEN_1]`, `[DATABASE_DSN_1]`, `[SYSTEM_USER_ID_1]`
-- **財務、醫療與財產:** `[CONFIDENTIAL_AMOUNT_1]`, `[EQUITY_SHARES_1]`, `[MEDICAL_RECORD_NO_1]`, `[VEHICLE_LICENSE_1]`, `[PROPERTY_REG_NO_1]`
-- **組織與地點:** `[EMPLOYEE_NAME_A]` (100 大常見姓氏識別), `[ENTERPRISE_CLIENT_A]`, `[CONFIDENTIAL_PROJECT_A]`, `[ADDRESS_LOCATION_1]`
-- **時間與個資:** `[DATE_OF_BIRTH_1]`, `[RECORD_DATE_1]`, `[PERFORMANCE_SCORE_1]`
+
+* **結構化 PII (含行業校驗):** `[CORPORATE_EMAIL_1]`, `[HKID_NUMBER_1]`, `[TW_ID_NUMBER_1]` (含模數校驗), `[CREDIT_CARD_NO_1]` (含 Luhn 演算法校驗), `[PASSPORT_NO_1]`, `[SWIFT_BIC_1]`, `[IP_ADDRESS_1]`, `[MAC_ADDRESS_1]`
+* **DevOps & 科技資產:** `[API_TOKEN_1]`, `[DATABASE_DSN_1]`, `[SYSTEM_USER_ID_1]`
+* **財務、醫療與財產:** `[CONFIDENTIAL_AMOUNT_1]`, `[EQUITY_SHARES_1]`, `[MEDICAL_RECORD_NO_1]`, `[VEHICLE_LICENSE_1]`, `[PROPERTY_REG_NO_1]`
+* **組織與地點:** `[EMPLOYEE_NAME_A]` (100 大常見姓氏識別), `[ENTERPRISE_CLIENT_A]`, `[CONFIDENTIAL_PROJECT_A]`, `[ADDRESS_LOCATION_1]` (含英文字母樓層單位支援)
+* **時間與個資:** `[DATE_OF_BIRTH_1]`, `[RECORD_DATE_1]`, `[PERFORMANCE_SCORE_1]`
 
 ---
 
@@ -45,7 +54,7 @@ Prompt-Off/
 
 Prompt Offline 原生支援 **繁體中文** 與 **English** 雙語介面，一鍵切換無需重啟頁面。
 
-* **繁體中文：** 完整對應香港、台灣企業用戶的慣用語與法律術語。
+* **繁體中文：** 完整對應香港、台灣企業用戶的慣用語與法律術語（包含廣東話被動語態「比/畀/被公司解僱」與口語語境防護）。
 * **English：** 符合國際企業（MNCs）與外商的使用習慣。
 
 切換後，所有 UI 文字、佔位符、狀態訊息均自動轉換，**核心引擎與 PII 規則不受語言影響**，確保跨國團隊協作無縫銜接。
@@ -77,12 +86,13 @@ Prompt Offline 原生支援 **繁體中文** 與 **English** 雙語介面，一�
 1. **敏感數據脫敏 (Sanitize):** 貼上原始案情文本（例如含有真實姓名、HKID、月薪、API Key 的 PIP 或審計文件）。本工具於本地端自動偵測並替換為 `[EMPLOYEE_NAME_A]`、`[HKID_NUMBER_1]`、`[CONFIDENTIAL_AMOUNT_1]`。支援連續貼上累積處理（Incremental Session）。
 2. **安心互動 (Prompting):** 將淨化後的安全 Prompt，複製並貼至外部第三方 AI 工具（如 ChatGPT）進行處理。
 3. **一鍵還原真實數據 (De-pseudonymize):** 將外部 AI 回傳的處理結果貼回本工具，系統根據記憶體中的對照表，瞬間將代號還原為真實數據，並自動相容 AI 回傳的大小寫變異。
+4. **企業規則同步 (Enterprise Sync):** 支援以 JSON 檔匯入/匯出企業專屬機密專案黑名單，實現離線「集中管理、分散執行」。
 
 ---
 
 ## 🌐 關於 The Offline Suite
 
-**The Offline Suite** 是由 [Jacky Law](https://github.com/jackylawck) 開發的純本地端生產力與資安工具矩陣，致力於將「數據主權（Data Sovereignty）」還給使用者。
+**The Offline Suite** 是由 [Jacky Law](https://www.google.com/search?q=https://github.io/jackylawck) 開發的純本地端生產力與資安工具矩陣，致力於將「數據主權（Data Sovereignty）」還給使用者。
 
 * [🔒 Safe Offline (離線守密)](https://jackylawck.github.io/Safe-Off/)
 * [🛡️ Prompt Offline (離線淨言)](https://jackylawck.github.io/Prompt-Off/)
@@ -90,4 +100,13 @@ Prompt Offline 原生支援 **繁體中文** 與 **English** 雙語介面，一�
 * [🧮 Calculator Offline (離線算籌)](https://jackylawck.github.io/Calc-Off/)
 
 ---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+
 *Developed with focus on Corporate AI Compliance and Privacy Engineering.*
+
+```
+
+```
