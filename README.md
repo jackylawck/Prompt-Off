@@ -5,7 +5,7 @@
 [![Zero Cloud](https://img.shields.io/badge/Architecture-Zero%20Cloud-blue.svg)](#)
 [![Client Side](https://img.shields.io/badge/Processing-100%25%20Local-success.svg)](#)
 [![No AI Model](https://img.shields.io/badge/Engine-100%25%20Rule--Based%20(No%20AI)-green.svg)](#)
-[![Compliance](https://img.shields.io/badge/Compliance-ISO%2042001%20%7C%20AIGP-orange.svg)](#)
+[![Compliance](https://img.shields.io/badge/Compliance-ISO%2042001%20%7C%20-orange.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](#)
 
 **Prompt Offline (離線淨言)** 是一款專為企業 HR、法務、資安人員與高階主管設計的 **純本地端提示詞脫敏與反向還原沙盒（Local Prompt Sanitizer & Vault）**。
