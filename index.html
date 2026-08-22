@@ -4,19 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Author & Credit Code-Level Annotation for SEO (羅子淇 Jacky Law) -->
+    <!-- Author & SEO Metadata -->
     <!-- Author: 羅子淇 Jacky Law | Personal Site: https://jackylawck.github.io/jackylawck/ -->
-    
-    <!-- Google Search Console 驗證標籤 -->
     <meta name="google-site-verification" content="JZ5UohX-CcP_fQV0_DI9VadkKY4ZoTTkUifL88-fIcY" />
-    
-    <!-- 精準中英雙語 SEO 設定 -->
     <title>離線淨言 · Prompt Offline | AI 提示詞去識別化沙盒 · 淨言在手，輸入無憂</title>
     <meta name="description" content="淨言在手，輸入無憂。100% 前端離線 · 零雲端傳輸 · AI 提示詞敏感數據脫敏與還原工具，對齊 ISO 42001、AIGP 及 HK PDPO 治理要求。" />
     <meta name="keywords" content="Prompt Offline, 離線淨言, AI提示詞脫敏, PII去識別化, AI Governance, ISO 42001, AIGP, HK PDPO, 羅子淇, Jacky Law" />
     <meta name="author" content="Jacky Law 羅子淇 (https://jackylawck.github.io/jackylawck/)" />
     <link rel="author" href="https://jackylawck.github.io/jackylawck/" />
-    <link rel="me" href="https://jackylawck.github.io/jackylawck/" />
+    <link rel="canonical" href="https://jackylawck.github.io/Prompt-Off/" />
 
     <!-- Open Graph 社群標籤 -->
     <meta property="og:title" content="離線淨言 · Prompt Offline | 純本地端 AI 提示詞去識別化沙盒" />
@@ -24,7 +20,6 @@
     <meta property="og:url" content="https://jackylawck.github.io/Prompt-Off/" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_HK" />
-    <link rel="canonical" href="https://jackylawck.github.io/Prompt-Off/" />
 
     <!-- Icon 連結 -->
     <link rel="apple-touch-icon" sizes="512x512" href="PromptOfficon-512.png" />
@@ -65,89 +60,244 @@
     " />
     
     <style>
+        :root {
+            --bg-base: #0b1120;
+            --bg-panel: rgba(255, 255, 255, 0.03);
+            --bg-input: #0f172a;
+            --bg-readonly: #0a0f1a;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-focus: #60a5fa;
+            --text-main: #e8edf5;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #3b82f6;
+            --success: #059669;
+            --success-hover: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft YaHei", sans-serif; background: #0b1120; color: #e8edf5; min-height: 100vh; display: flex; flex-direction: column; padding: 20px; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft YaHei", sans-serif; 
+            background: var(--bg-base); 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 20px; 
+        }
+
+        /* 滾動條美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
         .container { max-width: 1000px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
         
-        .suite-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 16px 20px; background: rgba(255,255,255,0.04); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 20px; }
-        .suite-brand { font-size: 1.1rem; color: #94a3b8; display:flex; flex-direction: column;}
-        .suite-brand .slogan { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+        .suite-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            padding: 16px 20px; 
+            background: var(--bg-panel); 
+            border-radius: var(--radius-lg); 
+            border: 1px solid var(--border-subtle); 
+            margin-bottom: 20px; 
+        }
+        .suite-brand { font-size: 1.1rem; color: var(--text-muted); display:flex; flex-direction: column;}
+        .suite-brand .slogan { font-size: 0.75rem; color: var(--text-subtle); margin-top: 4px; }
         
         .header-right { display: flex; align-items: center; gap: 12px; }
-        .trust-badge { font-size: 0.7rem; color: #64748b; background: rgba(255,255,255,0.04); padding: 4px 14px; border-radius: 20px; white-space: nowrap; border: 1px solid rgba(255,255,255,0.06); }
+        .trust-badge { font-size: 0.7rem; color: var(--text-subtle); background: var(--bg-panel); padding: 4px 14px; border-radius: 20px; white-space: nowrap; border: 1px solid var(--border-subtle); }
         
         .lang-switcher { display: flex; align-items: center; background: #1e293b; border-radius: 20px; padding: 2px; }
-        .lang-btn { background: transparent; border: none; color: #64748b; padding: 4px 12px; font-size: 0.75rem; border-radius: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; }
-        .lang-btn:hover { color: #e8edf5; }
-        .lang-btn.active { background: #3b82f6; color: #fff; }
+        .lang-btn { background: transparent; border: none; color: var(--text-subtle); padding: 4px 12px; font-size: 0.75rem; border-radius: 16px; cursor: pointer; transition: 0.2s; font-weight: 600; }
+        .lang-btn:hover { color: var(--text-main); }
+        .lang-btn.active { background: var(--primary-hover); color: #fff; }
 
-        .panel { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; margin-bottom: 20px; }
+        .panel { 
+            background: var(--bg-panel); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            border: 1px solid var(--border-subtle); 
+            display: flex; 
+            flex-direction: column; 
+            margin-bottom: 20px; 
+        }
         
         .panel-title-large { font-size: 1.25rem; font-weight: 700; color: #f8fafc; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-        .panel-title-large .badge-large { background: #1e293b; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; color: #60a5fa; border: 1px solid rgba(96,165,250,0.2); }
+        .panel-title-large .badge-large { background: #1e293b; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; color: var(--border-focus); border: 1px solid rgba(96,165,250,0.2); }
         
-        textarea { width: 100%; min-height: 160px; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; color: #e8edf5; padding: 16px; font-size: 0.95rem; font-family: 'Menlo', monospace; resize: vertical; line-height: 1.7; transition: 0.2s; margin-bottom: 12px; }
-        textarea:focus { outline: none; border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,0.15); }
+        textarea { 
+            width: 100%; 
+            min-height: 140px; 
+            background: var(--bg-input); 
+            border: 1px solid #1e293b; 
+            border-radius: var(--radius-md); 
+            color: var(--text-main); 
+            padding: 16px; 
+            font-size: 0.95rem; 
+            font-family: 'Menlo', monospace; 
+            resize: vertical; 
+            line-height: 1.7; 
+            transition: border-color 0.2s, box-shadow 0.2s; 
+            margin-bottom: 12px; 
+            overflow-y: hidden;
+        }
+        textarea:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(96,165,250,0.15); }
         textarea::placeholder { color: #475569; }
-        textarea[readonly] { background: #0a0f1a; color: #94a3b8; cursor: default; }
+        textarea[readonly] { background: var(--bg-readonly); color: var(--text-muted); cursor: default; }
         
         .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
-        .btn { background: #1e293b; border: none; color: #e8edf5; padding: 10px 22px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
-        .btn:hover { background: #334155; transform: translateY(-1px); }
-        .btn-primary { background: #2563eb; color: #fff; }
-        .btn-primary:hover { background: #3b82f6; }
-        .btn-success { background: #059669; color: #fff; }
-        .btn-success:hover { background: #10b981; }
+        .btn { 
+            background: #1e293b; 
+            border: none; 
+            color: var(--text-main); 
+            padding: 10px 22px; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            justify-content: center; 
+            user-select: none;
+            position: relative;
+        }
+        .btn:hover:not(:disabled) { background: #334155; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
+        .btn:active:not(:disabled) { transform: translateY(0); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover:not(:disabled) { background: var(--success-hover); }
         .btn-outline { background: transparent; border: 1px solid #334155; }
-        .btn-outline:hover { background: #1e293b; }
+        .btn-outline:hover:not(:disabled) { background: #1e293b; }
         .btn-sm { padding: 6px 14px; font-size: 0.75rem; }
+
+        /* Loading Spinner 旋轉動畫 */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         .section-header-flex { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 8px; }
-        .section-label { font-size: 0.8rem; font-weight: 600; color: #94a3b8; }
+        .section-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
 
-        .mapping-box { background: #0f172a; border-radius: 12px; padding: 12px 16px; font-size: 0.78rem; font-family: 'Menlo', monospace; max-height: 120px; overflow-y: auto; border: 1px solid #1e293b; color: #94a3b8; line-height: 1.9; margin-top: 8px; }
-        .mapping-box .highlight { color: #60a5fa; }
+        .mapping-box { 
+            background: var(--bg-input); 
+            border-radius: var(--radius-md); 
+            padding: 12px 16px; 
+            font-size: 0.78rem; 
+            font-family: 'Menlo', monospace; 
+            max-height: 120px; 
+            overflow-y: auto; 
+            border: 1px solid #1e293b; 
+            color: var(--text-muted); 
+            line-height: 1.9; 
+            margin-top: 8px; 
+        }
+        .mapping-box .highlight { color: var(--border-focus); }
         .mapping-box .empty { color: #475569; }
         
-        .status-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 0.72rem; color: #64748b; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 12px; }
+        .status-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 0.72rem; color: var(--text-subtle); padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 12px; }
         .status-bar .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; }
         .dot.green { background: #22c55e; }
         .dot.blue { background: #3b82f6; }
 
-        /* Accordion Drawer */
-        .accordion-header { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: #cbd5e1; transition: 0.2s; user-select: none; }
+        /* Accordion CSS Grid Animation (零高度限制平滑過渡) */
+        .accordion-wrapper { margin-bottom: 20px; }
+        .accordion-header { 
+            background: var(--bg-panel); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            border-radius: var(--radius-md); 
+            padding: 14px 20px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: 600; 
+            color: #cbd5e1; 
+            transition: 0.2s; 
+            user-select: none; 
+        }
         .accordion-header:hover { background: rgba(255,255,255,0.07); color: #fff; }
         .accordion-icon { transition: transform 0.3s ease; font-size: 0.8rem; }
         .accordion-header.active .accordion-icon { transform: rotate(180deg); }
         
-        .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0, 1, 0, 1); opacity: 0; transition: opacity 0.2s ease, max-height 0.35s ease; }
-        .accordion-body.open { max-height: 1000px; opacity: 1; transition: opacity 0.3s ease, max-height 0.35s ease; padding-top: 16px; }
+        .accordion-content { 
+            display: grid; 
+            grid-template-rows: 0fr; 
+            transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .accordion-content.open { grid-template-rows: 1fr; }
+        .accordion-inner { overflow: hidden; }
 
         /* Modal 彈窗樣式 */
         .modal-overlay { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); align-items: center; justify-content: center; }
         .modal-overlay.show { display: flex; animation: fadeIn 0.2s ease-out; }
-        .modal-content { background: #1e293b; margin: 20px; padding: 24px; border: 1px solid #334155; border-radius: 16px; max-width: 600px; width: 100%; color: #e8edf5; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
+        .modal-content { background: #1e293b; margin: 20px; padding: 24px; border: 1px solid #334155; border-radius: var(--radius-lg); max-width: 600px; width: 100%; color: var(--text-main); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 16px; }
         .modal-header h3 { font-size: 1.1rem; color: #f8fafc; margin: 0; }
-        .close-modal { color: #94a3b8; font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .close-modal:hover { color: #ef4444; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .close-modal { color: var(--text-muted); font-size: 24px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .close-modal:hover { color: var(--danger); }
+        
+        /* Toast 輕提示樣式 */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .toast.success { border-color: var(--success-hover); color: #a7f3d0; }
+        .toast.error { border-color: var(--danger); color: #fca5a5; }
 
         .suite-footer { margin-top: 30px; padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; font-size: 0.72rem; color: #475569; }
         .suite-footer .footer-trust { display: flex; gap: 14px; flex-wrap: wrap; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 <div class="container">
     
-    <header class="suite-header">
+    <header class="suite-header" role="banner">
         <div class="suite-brand">
-            <span id="txtNavSuite">🌐 The Offline Suite</span>
-            <div class="slogan" id="txtAppSubtitle">淨言在手 · 輸入無憂</div>
+            <span data-i18n="navSuite">🌐 The Offline Suite</span>
+            <div class="slogan" data-i18n="appSubtitle">淨言在手 · 輸入無憂</div>
         </div>
         <div class="header-right">
-            <span class="trust-badge" id="txtNavBadge">⚡ 100% Local · Zero Cloud</span>
-            <div class="lang-switcher">
+            <span class="trust-badge" data-i18n="navBadge">⚡ 100% Local · Zero Cloud</span>
+            <div class="lang-switcher" role="group" aria-label="Language Selector">
                 <button class="lang-btn active" id="btnLangZH">繁體中文</button>
                 <button class="lang-btn" id="btnLangEN">English</button>
             </div>
@@ -155,160 +305,171 @@
     </header>
 
     <!-- 主模組：敏感數據脫敏 -->
-    <div class="panel">
+    <main class="panel" role="main">
         <div class="panel-title-large">
-            <span id="txtTitleSanitize">🧹 敏感數據脫敏</span>
+            <span data-i18n="titleSanitize">🧹 敏感數據脫敏</span>
             <span class="badge-large">Sanitize</span>
         </div>
         
-        <textarea id="inputRaw" placeholder="貼上敏感文章 / 案情敘述…"></textarea>
+        <textarea id="inputRaw" aria-label="原始文字輸入區" placeholder="貼上敏感文章 / 案情敘述…"></textarea>
         
         <div class="btn-group">
-            <button class="btn btn-primary" id="btnSanitize">🔐 執行脫敏</button>
-            <button class="btn btn-outline btn-sm" id="btnClearInput">清空</button>
-            <button class="btn btn-outline btn-sm" id="btnSample">📥 載入範例</button>
+            <button class="btn btn-primary" id="btnSanitize" aria-label="執行提示詞脫敏">
+                <span id="sanitizeBtnIcon">🔐</span>
+                <span id="sanitizeBtnText" data-i18n="btnSanitize">執行脫敏</span>
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnClearInput" aria-label="清空輸入與對照表"><span data-i18n="btnClear">清空</span></button>
+            <button class="btn btn-outline btn-sm" id="btnSample" aria-label="載入範例案情">📥 <span data-i18n="btnSample">載入範例</span></button>
         </div>
         
-        <div style="font-size:0.72rem;color:#64748b;margin-bottom:12px;" id="txtLabelAutoDetect">
+        <div style="font-size:0.72rem;color:var(--text-subtle);margin-bottom:12px;" data-i18n="labelAutoDetect">
             ⚡ 自動識別 (25+種)：人名 · 雙證件 · 銀行/信用卡/SWIFT · 公司/專案 · 薪酬/財務 · 電郵/電話/地址 · API/系統憑證
         </div>
         
         <!-- 自動識別後的結果區塊 -->
         <div class="section-header-flex">
-            <span class="section-label" id="txtLabelSanitizedOutput">自動識別與脫敏結果：</span>
-            <button class="btn btn-outline btn-sm" id="btnCopySanitized">📋 複製脫敏文本</button>
+            <span class="section-label" data-i18n="labelSanitizedOutput">自動識別與脫敏結果：</span>
+            <button class="btn btn-outline btn-sm" id="btnCopySanitized">📋 <span data-i18n="btnCopySanitized">複製脫敏文本</span></button>
         </div>
-        <textarea id="outputSanitized" readonly placeholder="點擊「執行脫敏」後，去識別化文本將顯示於此…"></textarea>
+        <textarea id="outputSanitized" readonly aria-label="脫敏輸出結果" placeholder="點擊「執行脫敏」後，去識別化文本將顯示於此…"></textarea>
         
+        <div class="section-header-flex" style="margin-top: 4px;">
+            <span class="section-label" data-i18n="labelMappingHeader">記憶體對照表預覽：</span>
+            <button class="btn btn-outline btn-sm" id="btnCopyMapping" style="padding: 3px 8px; font-size: 0.7rem;">📋 <span data-i18n="btnCopyMapping">複製對照表</span></button>
+        </div>
         <div class="mapping-box" id="mappingDisplay">
-            <span class="empty" id="txtLabelMapping">📋 對照表 — 執行脫敏後自動生成</span>
+            <span class="empty" data-i18n="labelMapping">📋 對照表 — 執行脫敏後自動生成</span>
         </div>
         
         <div class="status-bar">
-            <span id="txtLabelLocalProcessing"><span class="dot green"></span> 本地端處理 · 零上載</span>
+            <span><span class="dot green"></span> <span data-i18n="labelLocalProcessing">本地端處理 · 零上載</span></span>
             <span id="charCount">字元: 0</span>
         </div>
-    </div>
+    </main>
     
     <!-- Accordion Drawer: 一鍵復原真實數據 -->
-    <div style="margin-bottom: 20px;">
-        <div class="accordion-header" id="toggleRestoreAccordion">
-            <span id="txtAccordionRestore">🔄 一鍵復原真實數據 (De-pseudonymize)</span>
+    <div class="accordion-wrapper">
+        <div class="accordion-header" id="toggleRestoreAccordion" role="button" aria-expanded="false">
+            <span data-i18n="accordionRestore">🔄 一鍵復原真實數據 (De-pseudonymize)</span>
             <span class="accordion-icon" id="accordionIcon">▼ 點擊展開</span>
         </div>
         
-        <div class="accordion-body" id="accordionBody">
-            <div class="panel" style="margin-bottom: 0;">
-                <textarea id="inputAISafe" placeholder="貼上第三方 AI (如 ChatGPT) 回傳的脫敏版結果…"></textarea>
-                
-                <div class="btn-group">
-                    <button class="btn btn-success" id="btnRestore">🔓 復原真實數據</button>
-                    <button class="btn btn-outline btn-sm" id="btnClearAI">清空</button>
-                    <button class="btn btn-outline btn-sm" id="btnCopyResult">📋 複製還原結果</button>
-                </div>
-                
-                <textarea id="outputRestored" readonly placeholder="還原後的真實數據將顯示於此…"></textarea>
-                
-                <div class="status-bar">
-                    <span id="txtLabelEncryptedMemory"><span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)</span>
-                    <span id="mappingCount">對照組: 0</span>
+        <div class="accordion-content" id="accordionBody">
+            <div class="accordion-inner">
+                <div class="panel" style="margin-top: 12px; margin-bottom: 0;">
+                    <textarea id="inputAISafe" aria-label="AI 回傳結果輸入區" placeholder="貼上第三方 AI (如 ChatGPT) 回傳的脫敏版結果…"></textarea>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-success" id="btnRestore">🔓 <span data-i18n="btnRestore">復原真實數據</span></button>
+                        <button class="btn btn-outline btn-sm" id="btnClearAI"><span data-i18n="btnClear">清空</span></button>
+                        <button class="btn btn-outline btn-sm" id="btnCopyResult">📋 <span data-i18n="btnCopyResult">複製還原結果</span></button>
+                    </div>
+                    
+                    <textarea id="outputRestored" readonly aria-label="還原真實數據輸出區" placeholder="還原後的真實數據將顯示於此…"></textarea>
+                    
+                    <div class="status-bar">
+                        <span><span class="dot blue"></span> <span data-i18n="labelEncryptedMemory">記憶體對照表 (閒置 5 分鐘自動銷毀)</span></span>
+                        <span id="mappingCount">對照組: 0</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 進階與合規擴充模組 (企業規則同步 + 免責聲明按鈕) -->
+    <!-- 進階與合規擴充模組 (企業規則同步 + 免責聲明) -->
     <div style="margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
         <!-- 企業規則同步 -->
         <div class="panel" style="flex: 1; min-width: 300px; margin-bottom: 0; padding: 16px;">
-            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 8px;">🏢 企業規則同步 (Enterprise Rules)</div>
-            <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 12px;">匯入由 IT 或法務部門派發的專案黑名單 JSON 檔，達成離線集中管控。</div>
+            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 8px;">🏢 <span data-i18n="ruleSyncTitle">企業規則同步 (Enterprise Rules)</span></div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px;" data-i18n="ruleSyncDesc">匯入由 IT 或法務部門派發的專案黑名單 JSON 檔，達成離線集中管控。</div>
             <div class="btn-group" style="margin-bottom: 0;">
                 <input type="file" id="fileImportRules" accept=".json" style="display: none;" />
-                <button class="btn btn-outline btn-sm" id="btnImportRules" style="border-color: #6366f1; color: #a5b4fc;">📂 匯入企業規則</button>
-                <button class="btn btn-outline btn-sm" id="btnExportRules">💾 匯出目前規則</button>
+                <button class="btn btn-outline btn-sm" id="btnImportRules" style="border-color: #6366f1; color: #a5b4fc;">📂 <span data-i18n="btnImport">匯入企業規則</span></button>
+                <button class="btn btn-outline btn-sm" id="btnExportRules">💾 <span data-i18n="btnExport">匯出目前規則</span></button>
             </div>
-            <div id="ruleSyncStatus" style="font-size: 0.72rem; color: #10b981; margin-top: 8px; display: none;">✅ 規則同步成功！</div>
         </div>
 
         <!-- 技術限制與免責聲明按鈕 -->
         <div class="panel" style="flex: 1; min-width: 300px; margin-bottom: 0; padding: 16px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
-            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 8px;">🛡️ 合規與技術邊界 (Compliance & Limits)</div>
-            <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 12px;">高級別資安是我們的底線。使用前請務必了解本離線沙盒的運作限制。</div>
-            <button class="btn btn-outline btn-sm" id="btnShowDisclaimer" style="border-color: #f59e0b; color: #fcd34d;">⚠️ 閱讀技術限制聲明</button>
+            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 8px;">🛡️ <span data-i18n="complianceTitle">合規與技術邊界 (Compliance & Limits)</span></div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px;" data-i18n="complianceDesc">高級別資安是我們的底線。使用前請務必了解本離線沙盒的運作限制。</div>
+            <button class="btn btn-outline btn-sm" id="btnShowDisclaimer" style="border-color: var(--warning); color: #fcd34d;">⚠️ <span data-i18n="btnDisclaimer">閱讀技術限制聲明</span></button>
         </div>
     </div>
 
     <!-- v5.0 可選擴充模組 (摺疊抽屜 Drawer) -->
-    <div style="margin-bottom: 20px;">
-        <div class="accordion-header" id="toggleV5Accordion" style="border-color: rgba(99, 102, 241, 0.2); background: rgba(99, 102, 241, 0.05);">
-            <span style="color: #a5b4fc;">⚡ 實驗性擴充功能 (v5.0 Wasm 語意與瀏覽器插件 - 可選)</span>
+    <div class="accordion-wrapper">
+        <div class="accordion-header" id="toggleV5Accordion" style="border-color: rgba(99, 102, 241, 0.2); background: rgba(99, 102, 241, 0.05);" role="button" aria-expanded="false">
+            <span style="color: #a5b4fc;" data-i18n="v5Header">⚡ 實驗性擴充功能 (v5.0 Wasm 語意與瀏覽器插件 - 規劃中)</span>
             <span class="accordion-icon" id="v5AccordionIcon">▼ 點擊選擇與展開</span>
         </div>
         
-        <div class="accordion-body" id="v5AccordionBody">
-            <div class="panel" style="margin-bottom: 0; background: rgba(15, 23, 42, 0.6); border-color: rgba(99, 102, 241, 0.15);">
-                
-                <!-- 風險與效能提示卡片 -->
-                <div style="padding: 12px 16px; background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; border-radius: 6px; margin-bottom: 16px; font-size: 0.78rem; color: #fcd34d; line-height: 1.6;">
-                    <strong>⚠️ 使用者風險與效能須知：</strong><br />
-                    以下功能為選擇性擴充。預設之 v4.3.4 正則引擎已具備最高資安與零記憶體負擔；若啟用本地 Wasm AI 模型，將會在您瀏覽器載入約 25MB–40MB 的本地權重檔，可能對低規格裝置造成短暫記憶體佔用。
-                </div>
-
-                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                    <!-- 選項 A：下載瀏覽器插件 -->
-                    <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">🧩 Chrome / Edge 瀏覽器擴充功能</div>
-                        <div style="font-size: 0.72rem; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
-                            不安裝任何雲端服務，直接於網頁版 ChatGPT / Claude 輸入框旁提供「原地脫敏/還原」按鈕，解決複製貼上繁瑣問題。
-                        </div>
-                        <button class="btn btn-outline btn-sm" onclick="alert('v5.0 Manifest V3 擴充功能套件準備中，將於下階段開放下載！')" style="border-color: #6366f1; color: #a5b4fc;">📥 取得瀏覽器擴充套件 (.zip)</button>
+        <div class="accordion-content" id="v5AccordionBody">
+            <div class="accordion-inner">
+                <div class="panel" style="margin-top: 12px; margin-bottom: 0; background: rgba(15, 23, 42, 0.6); border-color: rgba(99, 102, 241, 0.15);">
+                    <div style="padding: 12px 16px; background: rgba(245, 158, 11, 0.08); border-left: 3px solid var(--warning); border-radius: 6px; margin-bottom: 16px; font-size: 0.78rem; color: #fcd34d; line-height: 1.6;" data-i18n="v5Notice">
+                        <strong>⚠️ 使用者風險與效能須知：</strong><br />
+                        以下功能為選擇性擴充。預設之 v4.3.4 正則引擎已具備最高資安與零記憶體負擔；若啟用本地 Wasm AI 模型，將會在您瀏覽器載入約 25MB–40MB 的本地權重檔，可能對低規格裝置造成短暫記憶體佔用。
                     </div>
 
-                    <!-- 選項 B：啟用本地 Wasm 語意 AI -->
-                    <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">🧠 本地 Wasm 語意辨識引擎 (NER)</div>
-                        <div style="font-size: 0.72rem; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
-                            在瀏覽器記憶體載入輕量化模型，協助辨識無後綴之未知公司名或非標準英文人名（100% 本地離線運算）。
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">🧩 Chrome / Edge 瀏覽器擴充功能</div>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+                                不安裝任何雲端服務，直接於網頁版 ChatGPT / Claude 輸入框旁提供「原地脫敏/還原」按鈕，解決複製貼上繁瑣問題。
+                            </div>
+                            <button class="btn btn-outline btn-sm" id="btnDownloadExt" style="border-color: #6366f1; color: #a5b4fc;">📥 取得瀏覽器擴充套件 (.zip)</button>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <input type="checkbox" id="chkEnableWasm" style="cursor: pointer;" />
-                            <label for="chkEnableWasm" style="font-size: 0.75rem; color: #cbd5e1; cursor: pointer;">啟用 Wasm 語意模型（需額外下載 30MB 本地權重）</label>
+
+                        <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                            <div style="font-size: 0.88rem; font-weight: 600; color: #f8fafc; margin-bottom: 6px;">🧠 本地 Wasm 語意辨識引擎 (NER)</div>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+                                在瀏覽器記憶體載入輕量化模型，協助辨識無後綴之未知公司名或非標準英文人名（100% 本地離線運算）。
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="chkEnableWasm" style="cursor: pointer;" />
+                                <label for="chkEnableWasm" style="font-size: 0.75rem; color: #cbd5e1; cursor: pointer;">啟用 Wasm 語意模型（規劃中）</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <!-- 技術限制聲明 Modal (隱藏) -->
-    <div id="disclaimerModal" class="modal-overlay">
+    <div id="disclaimerModal" class="modal-overlay" role="dialog" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>⚠️ 技術限制與免責聲明 (Technical Limitations)</h3>
-                <span class="close-modal" id="btnCloseModal">&times;</span>
+                <h3 data-i18n="modalTitle">⚠️ 技術限制與免責聲明 (Technical Limitations)</h3>
+                <span class="close-modal" id="btnCloseModal" role="button" aria-label="關閉視窗">&times;</span>
             </div>
             <div class="modal-body">
-                <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">「離線淨言 (Prompt-Off)」致力於提供 <strong>100% 離線、零信任、零資料留存</strong> 的極致隱私防護，但為確保資料絕對不離開您的裝置，我們在技術架構上做出了必要的取捨。請在使用前知悉以下邊界：</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;" data-i18n="modalDesc">「離線淨言 (Prompt-Off)」致力於提供 <strong>100% 離線、零信任、零資料留存</strong> 的極致隱私防護，但為確保資料絕對不離開您的裝置，我們在技術架構上做出了必要的取捨。請在使用前知悉以下邊界：</p>
                 <ul style="margin-top: 12px; padding-left: 20px; color: #cbd5e1; font-size: 0.82rem; line-height: 1.6;">
-                    <li style="margin-bottom: 8px;"><strong>缺乏語意理解 (No NLP/NER)：</strong> 本工具預設基於高精度的正規表達式 (Regex) 與黑名單運作。它無法像 AI 一樣「理解」上下文，若敏感詞未落入既定規則或字典中，可能會產生漏報。</li>
-                    <li style="margin-bottom: 8px;"><strong>無自動化攔截：</strong> 作為端點沙盒，您必須手動進行「脫敏 ➔ 貼上 AI ➔ 貼回還原」的作業流程。我們不進行底層網路攔截，以確保您的連線安全。</li>
-                    <li style="margin-bottom: 8px;"><strong>去中心化管理：</strong> 您的脫敏紀錄僅存在於當前瀏覽器的記憶體中，關閉或閒置即銷毀。企業無法從中央追蹤您的脫敏日誌。</li>
+                    <li style="margin-bottom: 8px;" data-i18n="modalPoint1"><strong>缺乏語意理解 (No NLP/NER)：</strong> 本工具預設基於高精度的正規表達式 (Regex) 與黑名單運作。它無法像 AI 一樣「理解」上下文，若敏感詞未落入既定規則或字典中，可能會產生漏報。</li>
+                    <li style="margin-bottom: 8px;" data-i18n="modalPoint2"><strong>無自動化攔截：</strong> 作為端點沙盒，您必須手動進行「脫敏 ➔ 貼上 AI ➔ 貼回還原」的作業流程。我們不進行底層網路攔截，以確保您的連線安全。</li>
+                    <li style="margin-bottom: 8px;" data-i18n="modalPoint3"><strong>去中心化管理：</strong> 您的脫敏紀錄僅存在於當前瀏覽器的記憶體中，關閉或閒置即銷毀。企業無法從中央追蹤您的脫敏日誌。</li>
                 </ul>
-                <div style="margin-top: 16px; padding: 12px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; border-radius: 6px; font-size: 0.78rem; color: #fbbf24;">
+                <div style="margin-top: 16px; padding: 12px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning); border-radius: 6px; font-size: 0.78rem; color: #fbbf24;" data-i18n="modalWarning">
                     <strong>最終責任聲明：</strong> 本工具為輔助性質的第一道防線，使用者發送任何提示詞至外部 AI 服務前，仍應進行最終的人工審視。
                 </div>
             </div>
         </div>
     </div>
     
-    <footer class="suite-footer">
-        <div id="txtFooterCopyright">© 2026 The Offline Suite</div>
+    <!-- 全域 Toast 輕提示元件 -->
+    <div id="appToast" class="toast" role="alert" aria-live="polite">
+        <span id="toastIcon">ℹ️</span>
+        <span id="toastMsg">通知訊息</span>
+    </div>
+
+    <footer class="suite-footer" role="contentinfo">
+        <div data-i18n="footerCopyright">© 2026 The Offline Suite</div>
         <div class="footer-trust">
-            <span id="txtFooterZeroCloud">🛑 Zero Cloud Transmission</span>
-            <span id="txtFooterSessionVolatile">🧹 Session Volatile</span>
-            <span id="txtFooterCompliance">📄 ISO 42001 · HK PDPO</span>
+            <span data-i18n="footerZeroCloud">🛑 Zero Cloud Transmission</span>
+            <span data-i18n="footerSessionVolatile">🧹 Session Volatile</span>
+            <span data-i18n="footerCompliance">📄 ISO 42001 · HK PDPO</span>
         </div>
     </footer>
 </div>
@@ -321,29 +482,54 @@
 (function() {
     'use strict';
     
-    // === 零外部依賴：直接將兩套語言字典寫入核心 ===
+    // === 0. 外部依賴載入防禦 (Fail-Safe Guard) ===
+    if (typeof PromptSanitizerEngine === 'undefined' || typeof PROMPT_OFFLINE_RULES === 'undefined') {
+        console.error('[Prompt-Off] Critical error: rules.js or engine.js failed to load.');
+        alert('警告：核心安全引擎載入失敗，請確認 rules.js 與 engine.js 存在於同一目錄。');
+        return;
+    }
+
+    // === 1. 資料驅動 i18n 多語言字典 ===
     const i18n = {
         'zh-HK': {
             navSuite: '🌐 The Offline Suite',
             appSubtitle: '淨言在手 · 輸入無憂',
             navBadge: '⚡ 100% Local · Zero Cloud',
             titleSanitize: '🧹 敏感數據脫敏',
-            btnSanitize: '🔐 執行脫敏',
+            btnSanitize: '執行脫敏',
+            btnSanitizing: '處理中…',
             btnClear: '清空',
-            btnSample: '📥 載入範例',
+            btnSample: '載入範例',
             labelAutoDetect: '⚡ 自動識別 (25+種)：人名 · 雙證件 · 銀行/信用卡/SWIFT · 公司/專案 · 薪酬/財務 · 電郵/電話/地址 · API/系統憑證',
             labelSanitizedOutput: '自動識別與脫敏結果：',
-            btnCopySanitized: '📋 複製脫敏文本',
+            btnCopySanitized: '複製脫敏文本',
+            labelMappingHeader: '記憶體對照表預覽：',
+            btnCopyMapping: '複製對照表',
             labelMapping: '📋 對照表 — 執行脫敏後自動生成',
-            labelLocalProcessing: '<span class="dot green"></span> 本地端處理 · 零上載',
+            labelLocalProcessing: '本地端處理 · 零上載',
             labelCharCount: '字元:',
             accordionRestore: '🔄 一鍵復原真實數據 (De-pseudonymize)',
             accordionExpand: '▼ 點擊展開',
             accordionCollapse: '▲ 點擊收起',
-            btnRestore: '🔓 復原真實數據',
-            btnCopyResult: '📋 複製還原結果',
-            labelEncryptedMemory: '<span class="dot blue"></span> 記憶體對照表 (閒置 5 分鐘自動銷毀)',
+            btnRestore: '復原真實數據',
+            btnCopyResult: '複製還原結果',
+            labelEncryptedMemory: '記憶體對照表 (閒置 5 分鐘自動銷毀)',
             labelMappingCount: '對照組:',
+            ruleSyncTitle: '企業規則同步 (Enterprise Rules)',
+            ruleSyncDesc: '匯入由 IT 或法務部門派發的專案黑名單 JSON 檔，達成離線集中管控。',
+            btnImport: '匯入企業規則',
+            btnExport: '匯出目前規則',
+            complianceTitle: '合規與技術邊界 (Compliance & Limits)',
+            complianceDesc: '高級別資安是我們的底線。使用前請務必了解本離線沙盒的運作限制。',
+            btnDisclaimer: '閱讀技術限制聲明',
+            v5Header: '⚡ 實驗性擴充功能 (v5.0 Wasm 語意與瀏覽器插件 - 規劃中)',
+            v5Notice: '<strong>⚠️ 使用者風險與效能須知：</strong><br />以下功能為選擇性擴充。預設之 v4.3.4 正則引擎已具備最高資安與零記憶體負擔；若啟用本地 Wasm AI 模型，將會在您瀏覽器載入約 25MB–40MB 的本地權重檔，可能對低規格裝置造成短暫記憶體佔用。',
+            modalTitle: '⚠️ 技術限制與免責聲明 (Technical Limitations)',
+            modalDesc: '「離線淨言 (Prompt-Off)」致力於提供 <strong>100% 離線、零信任、零資料留存</strong> 的極致隱私防護，但為確保資料絕對不離開您的裝置，我們在技術架構上做出了必要的取捨。請在使用前知悉以下邊界：',
+            modalPoint1: '<strong>缺乏語意理解 (No NLP/NER)：</strong> 本工具預設基於高精度的正規表達式 (Regex) 與黑名單運作。它無法像 AI 一樣「理解」上下文，若敏感詞未落入既定規則或字典中，可能會產生漏報。',
+            modalPoint2: '<strong>無自動化攔截：</strong> 作為端點沙盒，您必須手動進行「脫敏 ➔ 貼上 AI ➔ 貼回還原」的作業流程。我們不進行底層網路攔截，以確保您的連線安全。',
+            modalPoint3: '<strong>去中心化管理：</strong> 您的脫敏紀錄僅存在於當前瀏覽器的記憶體中，關閉或閒置即銷毀。企業無法從中央追蹤您的脫敏日誌。',
+            modalWarning: '<strong>最終責任聲明：</strong> 本工具為輔助性質的第一道防線，使用者發送任何提示詞至外部 AI 服務前，仍應進行最終的人工審視。',
             footerCopyright: '© 2026 The Offline Suite',
             footerZeroCloud: '🛑 Zero Cloud Transmission',
             footerSessionVolatile: '🧹 Session Volatile',
@@ -358,22 +544,40 @@
             appSubtitle: 'Purify at Hand, Prompt with Peace',
             navBadge: '⚡ 100% Local · Zero Cloud',
             titleSanitize: '🧹 Prompt Sanitizer',
-            btnSanitize: '🔐 Sanitize Prompt',
+            btnSanitize: 'Sanitize Prompt',
+            btnSanitizing: 'Processing…',
             btnClear: 'Clear',
-            btnSample: '📥 Load Sample',
+            btnSample: 'Load Sample',
             labelAutoDetect: '⚡ Auto-Detect (25+ Types): Names · IDs/Passports · Banking/Credit Cards · Orgs/Projects · Financials · Contact Info · API Keys',
             labelSanitizedOutput: 'Sanitized AI-Safe Output:',
-            btnCopySanitized: '📋 Copy Sanitized Prompt',
+            btnCopySanitized: 'Copy Sanitized Prompt',
+            labelMappingHeader: 'Memory Mapping Preview:',
+            btnCopyMapping: 'Copy Mapping',
             labelMapping: '📋 Mapping Table — Auto-generated upon sanitization',
-            labelLocalProcessing: '<span class="dot green"></span> 100% Local Processing · Zero Cloud Upload',
+            labelLocalProcessing: '100% Local Processing · Zero Cloud Upload',
             labelCharCount: 'Chars:',
             accordionRestore: '🔄 De-pseudonymize / Restore Real Data',
             accordionExpand: '▼ Expand',
             accordionCollapse: '▲ Collapse',
-            btnRestore: '🔓 Restore Real Data',
-            btnCopyResult: '📋 Copy Restored Result',
-            labelEncryptedMemory: '<span class="dot blue"></span> In-Memory Mapping (Auto-clears after 5 mins idle)',
+            btnRestore: 'Restore Real Data',
+            btnCopyResult: 'Copy Restored Result',
+            labelEncryptedMemory: 'In-Memory Mapping (Auto-clears after 5 mins idle)',
             labelMappingCount: 'Mappings:',
+            ruleSyncTitle: 'Enterprise Rules Synchronization',
+            ruleSyncDesc: 'Import corporate project blacklist JSON files distributed by IT or Legal.',
+            btnImport: 'Import Rules',
+            btnExport: 'Export Rules',
+            complianceTitle: 'Compliance & Technical Limits',
+            complianceDesc: 'High-level security is our baseline. Please review operational limits before use.',
+            btnDisclaimer: 'Read Disclaimer',
+            v5Header: '⚡ Experimental Features (v5.0 Wasm NER & Extension - Planned)',
+            v5Notice: '<strong>⚠️ User Notice & Risk Disclosure:</strong><br />These are optional extensions. The default v4.3.4 regex engine provides highest security with zero memory footprint. Enabling local Wasm AI loads ~30MB weights into browser RAM.',
+            modalTitle: '⚠️ Technical Limitations & Disclaimer',
+            modalDesc: 'Prompt Offline is committed to 100% offline, zero-trust privacy. To guarantee data never leaves your device, technical trade-offs are made:',
+            modalPoint1: '<strong>No Native NLP/NER:</strong> Runs on deterministic Regex. It cannot "understand" context like LLMs and may miss unlisted terms.',
+            modalPoint2: '<strong>No Auto-Interception:</strong> You must follow the manual sanitize-copy-restore workflow.',
+            modalPoint3: '<strong>Decentralized:</strong> Data lives in RAM only and clears upon tab close.',
+            modalWarning: '<strong>Final Disclaimer:</strong> This is a first line of defense. Always perform human verification before external submission.',
             footerCopyright: '© 2026 The Offline Suite',
             footerZeroCloud: '🛑 Zero Cloud Transmission',
             footerSessionVolatile: '🧹 Session Volatile',
@@ -387,10 +591,11 @@
 
     let currentLang = localStorage.getItem('prompt-off-lang') || 'zh-HK';
 
-    // 初始化引擎
-    const rulesConfig = typeof PROMPT_OFFLINE_RULES !== 'undefined' ? PROMPT_OFFLINE_RULES : {};
-    const engine = new PromptSanitizerEngine(rulesConfig);
-    
+    // === 2. 初始化引擎實例 ===
+    let currentRules = PROMPT_OFFLINE_RULES;
+    let engine = new PromptSanitizerEngine(currentRules);
+
+    // DOM 快取
     const inputRaw = document.getElementById('inputRaw');
     const outputSanitized = document.getElementById('outputSanitized');
     const mappingDisplay = document.getElementById('mappingDisplay');
@@ -398,65 +603,59 @@
     const outputRestored = document.getElementById('outputRestored');
     const charCount = document.getElementById('charCount');
     const mappingCount = document.getElementById('mappingCount');
+    const appToast = document.getElementById('appToast');
+    const toastMsg = document.getElementById('toastMsg');
+    const toastIcon = document.getElementById('toastIcon');
+    const btnSanitize = document.getElementById('btnSanitize');
+    const sanitizeBtnIcon = document.getElementById('sanitizeBtnIcon');
+    const sanitizeBtnText = document.getElementById('sanitizeBtnText');
 
-    // Accordion 手風琴：一鍵復原真實數據
-    const accordionHeader = document.getElementById('toggleRestoreAccordion');
-    const accordionBody = document.getElementById('accordionBody');
-    const accordionIcon = document.getElementById('accordionIcon');
-    
-    accordionHeader.addEventListener('click', () => {
-        accordionHeader.classList.toggle('active');
-        accordionBody.classList.toggle('open');
-        const dict = i18n[currentLang];
-        if (accordionBody.classList.contains('open')) {
-            accordionIcon.textContent = dict.accordionCollapse;
-        } else {
-            accordionIcon.textContent = dict.accordionExpand;
+    // === 3. Textarea 自動適應高度 (Auto-Resize) ===
+    function autoResize(el) {
+        if (!el) return;
+        el.style.height = 'auto';
+        el.style.height = Math.max(el.scrollHeight, 140) + 'px';
+    }
+    [inputRaw, outputSanitized, inputAISafe, outputRestored].forEach(el => {
+        if (el) {
+            el.addEventListener('input', () => autoResize(el));
         }
     });
 
-    // Accordion 手風琴：v5.0 實驗性擴充模組
-    const toggleV5Accordion = document.getElementById('toggleV5Accordion');
-    const v5AccordionBody = document.getElementById('v5AccordionBody');
-    const v5AccordionIcon = document.getElementById('v5AccordionIcon');
+    // === 4. 通用 Toast 提示函式 ===
+    let toastTimer;
+    function showToast(message, type = 'info', icon = 'ℹ️') {
+        clearTimeout(toastTimer);
+        toastMsg.textContent = message;
+        toastIcon.textContent = icon;
+        appToast.className = `toast ${type} show`;
+        toastTimer = setTimeout(() => {
+            appToast.classList.remove('show');
+        }, 2200);
+    }
 
-    if (toggleV5Accordion && v5AccordionBody) {
-        toggleV5Accordion.addEventListener('click', () => {
-            toggleV5Accordion.classList.toggle('active');
-            v5AccordionBody.classList.toggle('open');
-            if (v5AccordionBody.classList.contains('open')) {
-                v5AccordionIcon.textContent = '▲ 點擊收起選項';
-            } else {
-                v5AccordionIcon.textContent = '▼ 點擊選擇與展開';
-            }
+    // === 5. 通用剪貼簿複製函式 ===
+    function copyText(text, successMsg) {
+        if (!text || !text.trim()) {
+            showToast(currentLang === 'en' ? 'Nothing to copy!' : '無內容可複製！', 'error', '⚠️');
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(successMsg, 'success', '✅');
+        }).catch(() => {
+            showToast(currentLang === 'en' ? 'Clipboard access denied!' : '複製失敗，請手動選取！', 'error', '❌');
         });
     }
 
-    // === 精準 DOM ID 語言切換函數 ===
+    // === 6. 資料驅動多語言切換 ===
     function setLanguage(lang) {
         currentLang = lang;
         const dict = i18n[lang] || i18n['zh-HK'];
 
-        document.getElementById('txtNavSuite').innerHTML = dict.navSuite;
-        document.getElementById('txtAppSubtitle').innerHTML = dict.appSubtitle;
-        document.getElementById('txtNavBadge').innerHTML = dict.navBadge;
-        document.getElementById('txtTitleSanitize').innerHTML = dict.titleSanitize;
-        document.getElementById('btnSanitize').innerHTML = dict.btnSanitize;
-        document.getElementById('btnClearInput').innerHTML = dict.btnClear;
-        document.getElementById('btnSample').innerHTML = dict.btnSample;
-        document.getElementById('txtLabelAutoDetect').innerHTML = dict.labelAutoDetect;
-        document.getElementById('txtLabelSanitizedOutput').innerHTML = dict.labelSanitizedOutput;
-        document.getElementById('btnCopySanitized').innerHTML = dict.btnCopySanitized;
-        document.getElementById('txtLabelLocalProcessing').innerHTML = dict.labelLocalProcessing;
-        document.getElementById('txtAccordionRestore').innerHTML = dict.accordionRestore;
-        document.getElementById('btnRestore').innerHTML = dict.btnRestore;
-        document.getElementById('btnClearAI').innerHTML = dict.btnClear;
-        document.getElementById('btnCopyResult').innerHTML = dict.btnCopyResult;
-        document.getElementById('txtLabelEncryptedMemory').innerHTML = dict.labelEncryptedMemory;
-        document.getElementById('txtFooterCopyright').innerHTML = dict.footerCopyright;
-        document.getElementById('txtFooterZeroCloud').innerHTML = dict.footerZeroCloud;
-        document.getElementById('txtFooterSessionVolatile').innerHTML = dict.footerSessionVolatile;
-        document.getElementById('txtFooterCompliance').innerHTML = dict.footerCompliance;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (dict[key]) el.innerHTML = dict[key];
+        });
 
         inputRaw.setAttribute('placeholder', dict.inputPlaceholder);
         outputSanitized.setAttribute('placeholder', dict.outputPlaceholder);
@@ -476,7 +675,30 @@
     document.getElementById('btnLangZH').addEventListener('click', () => setLanguage('zh-HK'));
     document.getElementById('btnLangEN').addEventListener('click', () => setLanguage('en'));
 
-    // 閒置自動清空 (5分鐘)
+    // === 7. 手風琴摺疊通用控制器 ===
+    function setupAccordion(toggleId, bodyId, iconId, openTextKey, closeTextKey) {
+        const header = document.getElementById(toggleId);
+        const body = document.getElementById(bodyId);
+        const icon = document.getElementById(iconId);
+
+        if (!header || !body) return;
+
+        header.addEventListener('click', () => {
+            const isOpen = body.classList.toggle('open');
+            header.classList.toggle('active', isOpen);
+            header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            
+            const dict = i18n[currentLang];
+            if (icon) {
+                icon.textContent = isOpen ? dict[closeTextKey] : dict[openTextKey];
+            }
+        });
+    }
+
+    setupAccordion('toggleRestoreAccordion', 'accordionBody', 'accordionIcon', 'accordionExpand', 'accordionCollapse');
+    setupAccordion('toggleV5Accordion', 'v5AccordionBody', 'v5AccordionIcon', 'accordionExpand', 'accordionCollapse');
+
+    // === 8. 閒置自動銷毀機制 (5 分鐘) ===
     let idleTimer;
     function resetIdleTimer() {
         clearTimeout(idleTimer);
@@ -484,6 +706,7 @@
             if (engine.mapping.size > 0 || (inputRaw && inputRaw.value !== '')) {
                 document.getElementById('btnClearInput').click();
                 document.getElementById('btnClearAI').click();
+                showToast(currentLang === 'en' ? 'Session wiped after 5 mins idle.' : '已因閒置 5 分鐘自動銷毀對照表。', 'info', '🧹');
             }
         }, 5 * 60 * 1000);
     }
@@ -518,100 +741,110 @@
         if (mappingCount) mappingCount.innerHTML = `<span>${dict.labelMappingCount}</span> ${entries.length}`;
     }
     
-    // 按鈕動作
-    document.getElementById('btnSanitize').addEventListener('click', () => {
+    // === 9. 按鈕事件綁定 (含非同步 Loading 動畫) ===
+    btnSanitize.addEventListener('click', () => {
         const raw = inputRaw.value;
-        if (!raw.trim()) return;
-        const result = engine.sanitize(raw);
-        outputSanitized.value = result.sanitizedText;
-        renderMapping(result.mappingTable);
-    });
-    
-    // 複製脫敏結果
-    const btnCopySanitized = document.getElementById('btnCopySanitized');
-    if (btnCopySanitized) {
-        btnCopySanitized.addEventListener('click', function() {
-            const text = outputSanitized.value;
-            if (!text) return;
-            const origText = this.innerHTML;
-            navigator.clipboard.writeText(text).then(() => {
-                this.innerHTML = currentLang === 'en' ? '✅ Copied!' : '✅ 已複製！';
-                this.style.borderColor = '#10b981';
-                this.style.color = '#10b981';
-                setTimeout(() => {
-                    this.innerHTML = origText;
-                    this.style.borderColor = '';
-                    this.style.color = '';
-                }, 1800);
-            }).catch(() => {});
+        if (!raw.trim()) {
+            showToast(currentLang === 'en' ? 'Please paste raw prompt first!' : '請先貼上敏感文字！', 'error', '⚠️');
+            return;
+        }
+
+        // 啟動 Loading 狀態
+        btnSanitize.disabled = true;
+        sanitizeBtnIcon.innerHTML = '<span class="spinner"></span>';
+        const dict = i18n[currentLang];
+        sanitizeBtnText.textContent = dict.btnSanitizing || '處理中…';
+
+        // 使用 requestAnimationFrame 讓瀏覽器先渲染 Loading 動畫
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                try {
+                    const result = engine.sanitize(raw);
+                    outputSanitized.value = result.sanitizedText;
+                    renderMapping(result.mappingTable);
+                    autoResize(outputSanitized);
+                    showToast(currentLang === 'en' ? 'Prompt sanitized successfully!' : '脫敏處理完成！', 'success', '🔐');
+                } catch (err) {
+                    showToast(currentLang === 'en' ? 'Sanitization error!' : '脫敏處理發生錯誤！', 'error', '❌');
+                } finally {
+                    btnSanitize.disabled = false;
+                    sanitizeBtnIcon.textContent = '🔐';
+                    sanitizeBtnText.textContent = dict.btnSanitize;
+                }
+            }, 10);
         });
-    }
+    });
+
+    document.getElementById('btnCopySanitized').addEventListener('click', () => {
+        copyText(outputSanitized.value, currentLang === 'en' ? 'Sanitized prompt copied!' : '脫敏文本已複製！');
+    });
+
+    document.getElementById('btnCopyMapping').addEventListener('click', () => {
+        if (engine.mapping.size === 0) {
+            showToast(currentLang === 'en' ? 'Mapping table is empty!' : '對照表目前為空！', 'error', '⚠️');
+            return;
+        }
+        const mappingObj = Object.fromEntries(engine.mapping);
+        copyText(JSON.stringify(mappingObj, null, 2), currentLang === 'en' ? 'Mapping JSON copied!' : '對照表 JSON 已複製！');
+    });
 
     document.getElementById('btnRestore').addEventListener('click', () => {
         const safeText = inputAISafe.value;
-        if (!safeText.trim() || engine.mapping.size === 0) return;
-        outputRestored.value = engine.restore(safeText);
+        if (!safeText.trim()) {
+            showToast(currentLang === 'en' ? 'Please paste AI response!' : '請貼上 AI 回覆內容！', 'error', '⚠️');
+            return;
+        }
+        if (engine.mapping.size === 0) {
+            showToast(currentLang === 'en' ? 'Mapping table is empty or expired!' : '對照表為空或已銷毀，無法還原！', 'error', '⚠️');
+            return;
+        }
+        try {
+            outputRestored.value = engine.restore(safeText);
+            autoResize(outputRestored);
+            showToast(currentLang === 'en' ? 'Real data restored!' : '真實數據已成功還原！', 'success', '🔓');
+        } catch (err) {
+            showToast(currentLang === 'en' ? 'Restoration error!' : '還原處理發生錯誤！', 'error', '❌');
+        }
     });
-    
+
+    document.getElementById('btnCopyResult').addEventListener('click', () => {
+        copyText(outputRestored.value, currentLang === 'en' ? 'Restored text copied! (Auto-clears in 30s)' : '還原結果已複製！（30秒後自動抹除剪貼簿）');
+        setTimeout(() => { navigator.clipboard.writeText('').catch(()=>{}); }, 30000);
+    });
+
     document.getElementById('btnClearInput').addEventListener('click', () => {
-        inputRaw.value = ''; outputSanitized.value = ''; 
+        inputRaw.value = ''; 
+        outputSanitized.value = ''; 
         if (typeof engine.resetSession === 'function') engine.resetSession();
-        renderMapping({}); updateCharCount();
+        renderMapping({}); 
+        updateCharCount();
+        autoResize(inputRaw);
+        autoResize(outputSanitized);
+        showToast(currentLang === 'en' ? 'Inputs & mappings cleared.' : '輸入與對照表已清空。', 'info', '🧹');
     });
     
     document.getElementById('btnClearAI').addEventListener('click', () => {
-        inputAISafe.value = ''; outputRestored.value = '';
+        inputAISafe.value = ''; 
+        outputRestored.value = '';
+        autoResize(inputAISafe);
+        autoResize(outputRestored);
     });
-    
-    // 複製還原結果
-    const btnCopyResult = document.getElementById('btnCopyResult');
-    if (btnCopyResult) {
-        btnCopyResult.addEventListener('click', function() {
-            const text = outputRestored.value;
-            if (!text) return;
-            const origText = this.innerHTML;
-            navigator.clipboard.writeText(text).then(() => {
-                this.innerHTML = currentLang === 'en' ? '✅ Copied!' : '✅ 已複製！';
-                this.style.borderColor = '#10b981';
-                this.style.color = '#10b981';
-                setTimeout(() => {
-                    this.innerHTML = origText;
-                    this.style.borderColor = '';
-                    this.style.color = '';
-                }, 1800);
-                setTimeout(() => { navigator.clipboard.writeText('').catch(()=>{}); }, 30000);
-            }).catch(() => {});
-        });
-    }
-    
-    // 載入範例按鈕（手動點擊時才填入對應語言的範例文本）
+
     document.getElementById('btnSample').addEventListener('click', () => {
         if (currentLang === 'en') {
-            inputRaw.value = `Employee John Smith (Passport: AB1234567, Email: john.smith@company.com, Phone: +1 415 555 2671) joined Enterprise Solutions Ltd on 2025-03-15. Salary is USD$12,500.\n\nHe is managing Project Aurora and contract CT-2025-0042. Manager Sarah Davis (ID: B987654321, IP: 192.168.1.1) issued a PIP with performance score 2.5 rank.`;
+            inputRaw.value = `Employee John Smith (Passport: AB1234567, Email: john.smith@company.com, Phone: +1 415 555 2671) joined Enterprise Solutions Ltd on 2025-03-15. Salary is USD$12,500.\n\nHe is managing Project Aurora and contract CT-2025-0042. Manager Sarah Davis (HKID: A123456(7), IP: 192.168.1.1) issued a PIP with performance score 2.5 rank.`;
         } else {
-            inputRaw.value = `員工王大明 (DOB: 1990-05-20, 健保卡號 A123456789, 信用卡 4111-1111-1111-1111, 美國運通卡 3782-822463-12345) 於 2026年08月09日 負責智雲科技股份有限公司的 Project Aurora 開發案。\n\n因違反合約 CT-2026-991，將款項 HK$250,000 匯入個人銀行帳號 01234567891234 (SWIFT: HSBCHKHHXXX)。法務部律師李四 (Email: li.si@company.com, 手機 +852 9123 4567) 已於今日約談該員，並給出 2.5分 的績效評核。`;
+            inputRaw.value = `員工王大明 (DOB: 1990-05-20, 香港身份證 A123456(7), 信用卡 4111-1111-1111-1111, 美國運通卡 3782-822463-12345) 於 2026年08月09日 負責智雲科技股份有限公司的 Project Aurora 開發案。\n\n因違反合約 CT-2026-991，將款項 HK$250,000 匯入個人銀行帳號 (IBAN: GB82WEST12345698765432, SWIFT: HSBCHKHHXXX)。法務部律師李四 (Email: li.si@company.com, 手機 +852 9123 4567) 已於今日約談該員，並給出 2.5分 的績效評核。`;
         }
         updateCharCount();
+        autoResize(inputRaw);
+        showToast(currentLang === 'en' ? 'Sample text loaded.' : '範例資料已載入。', 'info', '📥');
     });
 
-    // === 技術限制聲明 Modal 邏輯 ===
-    const btnShowDisclaimer = document.getElementById('btnShowDisclaimer');
-    const disclaimerModal = document.getElementById('disclaimerModal');
-    const btnCloseModal = document.getElementById('btnCloseModal');
-
-    if (btnShowDisclaimer && disclaimerModal) {
-        btnShowDisclaimer.addEventListener('click', () => disclaimerModal.classList.add('show'));
-        btnCloseModal.addEventListener('click', () => disclaimerModal.classList.remove('show'));
-        window.addEventListener('click', (e) => {
-            if (e.target === disclaimerModal) disclaimerModal.classList.remove('show');
-        });
-    }
-
-    // === 企業規則 JSON 匯出/匯入邏輯 ===
+    // === 10. 企業規則 JSON 匯入/匯出 ===
     const btnExportRules = document.getElementById('btnExportRules');
     const btnImportRules = document.getElementById('btnImportRules');
     const fileImportRules = document.getElementById('fileImportRules');
-    const ruleSyncStatus = document.getElementById('ruleSyncStatus');
 
     if (btnExportRules) {
         btnExportRules.addEventListener('click', () => {
@@ -619,8 +852,8 @@
                 version: "4.3.4",
                 exportDate: new Date().toISOString(),
                 customRules: {
-                    orgSuffixes: PROMPT_OFFLINE_RULES.contextual.orgSuffixes || [],
-                    surnames: PROMPT_OFFLINE_RULES.contextual.surnames || [],
+                    blacklist: Array.from(engine.blacklist),
+                    surnames: currentRules.contextual?.surnames || [],
                     customProjects: ["Project Aurora", "Project Dragon"]
                 }
             };
@@ -631,6 +864,7 @@
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
+            showToast(currentLang === 'en' ? 'Rules exported!' : '企業規則已成功匯出！', 'success', '💾');
         });
     }
 
@@ -646,29 +880,49 @@
                 try {
                     const importedData = JSON.parse(event.target.result);
                     if (importedData && importedData.customRules) {
-                        if (importedData.customRules.orgSuffixes) {
-                            PROMPT_OFFLINE_RULES.contextual.orgSuffixes = importedData.customRules.orgSuffixes;
+                        if (importedData.customRules.blacklist) {
+                            currentRules.contextual.blacklist = [...new Set([...(currentRules.contextual.blacklist || []), ...importedData.customRules.blacklist])];
                         }
                         if (importedData.customRules.surnames) {
-                            PROMPT_OFFLINE_RULES.contextual.surnames = [...new Set([...PROMPT_OFFLINE_RULES.contextual.surnames, ...importedData.customRules.surnames])];
+                            currentRules.contextual.surnames = [...new Set([...(currentRules.contextual.surnames || []), ...importedData.customRules.surnames])];
                         }
                         
-                        ruleSyncStatus.style.display = 'block';
-                        setTimeout(() => ruleSyncStatus.style.display = 'none', 3000);
+                        engine = new PromptSanitizerEngine(currentRules);
+                        renderMapping({});
                         fileImportRules.value = ''; 
+                        showToast(currentLang === 'en' ? 'Enterprise rules imported & recompiled!' : '企業規則匯入成功，引擎已重新編譯！', 'success', '🏢');
                     }
                 } catch (error) {
-                    alert('企業規則 JSON 格式錯誤，請聯絡管理員！');
+                    showToast(currentLang === 'en' ? 'Invalid JSON rule format!' : 'JSON 格式錯誤，匯入失敗！', 'error', '❌');
                 }
             };
             reader.readAsText(file);
         });
     }
 
-    // 啟動初始化 (確保輸入框留空，不執行自動載入範例)
+    // === 11. 免責聲明 Modal 控制 ===
+    const btnShowDisclaimer = document.getElementById('btnShowDisclaimer');
+    const disclaimerModal = document.getElementById('disclaimerModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+
+    if (btnShowDisclaimer && disclaimerModal) {
+        btnShowDisclaimer.addEventListener('click', () => disclaimerModal.classList.add('show'));
+        btnCloseModal.addEventListener('click', () => disclaimerModal.classList.remove('show'));
+        window.addEventListener('click', (e) => {
+            if (e.target === disclaimerModal) disclaimerModal.classList.remove('show');
+        });
+    }
+
+    // 插件下載佔位提示
+    document.getElementById('btnDownloadExt').addEventListener('click', () => {
+        showToast(currentLang === 'en' ? 'Manifest V3 extension package is in progress!' : 'v5.0 擴充套件正在準備中，即將開放下載！', 'info', '🧩');
+    });
+
+    // 啟動初始化
     setLanguage(currentLang);
     if (inputRaw) inputRaw.value = '';
     updateCharCount();
+    autoResize(inputRaw);
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
